@@ -6,17 +6,37 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model User {
+  id          String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  displayName String
+  firstName   String
+  lastName    String
+  email       String @unique
+  role        Role   @default(GRANT_USER)
 
-    id String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    displayName String
-    firstName String
-    lastName String
+  sessions Session[]
 
-    @@map("users")
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+enum Role {
+  GRANT_USER
+  GRANT_ADMIN
+  SYS_ADMIN
+
+  @@map("role")
 }
