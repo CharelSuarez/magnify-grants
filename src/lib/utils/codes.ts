@@ -9,23 +9,27 @@ export const generateEmailVerificationCode = async (userId: string) => {
     const expiresAt = createDate(new TimeSpan(5, "m"));
 
     try {
+
         await db.emailVerificationCode.upsert({
             where: {
-                user_id: userId,
+                userId: userId,
             },
             update: {
                 code: code,
-                expires_at: expiresAt,
+                expiresAt: expiresAt,
             },
             create: {
-                user_id: userId,
+                userId: userId,
                 code: code,
-                expires_at: expiresAt,
+                expiresAt: expiresAt,
             }
         });
+
+        return code;
+
     } catch (err) {
         console.log(err);
     }
 
-
+    return null;
 }

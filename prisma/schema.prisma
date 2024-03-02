@@ -14,41 +14,41 @@ datasource db {
 model User {
   id                String                 @id
   email             String                 @unique
-  email_verified    Boolean                @default(false)
-  hashed_password   String
+  emailVerified    Boolean                @default(false)
+  hashedPassword   String
   sessions          Session[]
   profile           Profile?
-  verification_code EmailVerificationCode?
+  verificationCode EmailVerificationCode?
 
   @@map("users")
 }
 
 model EmailVerificationCode {
   id         String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id    String   @unique
+  userId    String   @unique
   code       String
-  expires_at DateTime
-  user       User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  expiresAt DateTime
+  user       User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("email_verification_codes")
 }
 
 model Profile {
   id         String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user_id    String @unique
-  first_name String
-  last_name  String
+  userId    String @unique
+  firstName String
+  lastName  String
   role       Role   @default(GRANT_USER)
-  user       User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  user       User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("profiles")
 }
 
 model Session {
   id         String   @id @unique
-  user_id    String
-  expires_at DateTime
-  user       User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
+  userId    String
+  expiresAt DateTime
+  user       User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("sessions")
 }

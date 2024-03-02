@@ -9,6 +9,7 @@ import { lucia } from "$lib/server/auth";
 import { redirect } from "sveltekit-flash-message/server";
 import { generateId } from "lucia";
 import { generateEmailVerificationCode } from "$lib/utils/codes";
+import { sendEmail } from "$lib/server/email";
 
 export const load: PageServerLoad = async () => {
     return {
@@ -39,7 +40,7 @@ export const actions: Actions = {
                 data: {
                     id: userId,
                     email: email,
-                    hashed_password: hashedPassword,
+                    hashedPassword: hashedPassword,
                 }
             }));
 
@@ -66,9 +67,8 @@ export const actions: Actions = {
         }
 
         const verificationCode = await generateEmailVerificationCode(userId);
-        console.log(verificationCode);
 
-        //TODO: send email
+        sendEmail(email, "Confirm your email", `Your verification code is ${verificationCode}`);
 
         redirect(303, "/", {
             type: "success",
