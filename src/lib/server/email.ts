@@ -1,12 +1,25 @@
 import { Resend } from "resend";
+import { env } from "$env/dynamic/private";
+import { sendMail } from "./dev/nodemailer";
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+const devEnv = env.NODE_ENV !== "PRODUCTION";
+
+const resend = devEnv ? null : new Resend(env.RESEND_API_KEY);
 
 export const sendEmail = (to: string, subject: string, message: string) => {
-    resend.emails.send({
-        from: "c01project@resend.dev",
+
+    const email = {
+        from: "noreply@c01project.local",
         to: to,
         subject: subject,
-        html: `<p>${message}<p>`
-    });
+        html: `<p>${message}<p>`,
+    }
+
+    if (devEnv) {
+        // Send to local inbucket instead so we don't rate limit resend lol
+        sendMail(email);
+        return;
+    }
+
+    resend?.emails.send(email);
 }
