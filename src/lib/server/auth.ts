@@ -14,7 +14,6 @@ export const lucia = new Lucia(adapter, {
     sessionExpiresIn: new TimeSpan(30, "d"),
     getUserAttributes: (attributes) => {
         return {
-            userId: attributes.id,
             email: attributes.email,
             emailVerified: attributes.emailVerified,
             profile: attributes.profile,
@@ -30,7 +29,6 @@ declare module "lucia" {
 }
 
 interface DatabaseUserAttributes {
-    id: string
     email: string,
     emailVerified: string,
     profile: Profile

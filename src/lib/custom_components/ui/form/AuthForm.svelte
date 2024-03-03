@@ -21,7 +21,7 @@
         <div class="relative hidden h-full flex-col p-10 lg:flex">
             <div class="absolute z-49 inset-0 bg-cover"
             style="background-image: url({wave}); transform: scaleX(-1);">
-                <img class="z-50 hidden xl:inline" src={image} alt="Magnify Access Branding">
+                <!-- <img class="z-50 hidden xl:inline" src={image} alt="Magnify Access Branding"> -->
             </div>
             <div class="relative z-50 flex text-neutral-700 items-center text-xl font-[900]">
                 {title}

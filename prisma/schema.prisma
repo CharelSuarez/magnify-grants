@@ -12,45 +12,65 @@ datasource db {
 }
 
 model User {
-  id                String                 @id
-  email             String                 @unique
+  id               String                 @id
+  email            String                 @unique
   emailVerified    Boolean                @default(false)
   hashedPassword   String
-  sessions          Session[]
-  profile           Profile?
+  sessions         Session[]
+  profile          Profile?
   verificationCode EmailVerificationCode?
 
   @@map("users")
 }
 
 model EmailVerificationCode {
-  id         String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId    String   @unique
-  code       String
+  code      String
   expiresAt DateTime
-  user       User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("email_verification_codes")
 }
 
+model PasswordResetToken {
+  id        String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @unique
+  expiresAt DateTime
+
+  @@map("password_reset_tokens")
+}
+
 model Profile {
-  id         String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId    String @unique
   firstName String
   lastName  String
-  role       Role   @default(GRANT_USER)
-  user       User   @relation(references: [id], fields: [userId], onDelete: Cascade)
+  role      Role   @default(GRANT_USER)
+  user      User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("profiles")
 }
 
 model Session {
-  id         String   @id @unique
+  id        String   @id @unique
   userId    String
   expiresAt DateTime
-  user       User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+model Grant {
+  id                    String  @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                 String  @default("")
+  description           String  @default("")
+  acceptingApplications Boolean @default(false)
+  rangeLow              Int     @default(0)
+  rangeHigh             Int     @default(0)
+  published             Boolean @default(false)
+
+  @@map("grants")
 }
 
 enum Role {
