@@ -10,8 +10,19 @@ import { redirect } from "sveltekit-flash-message/server";
 import { generateId } from "lucia";
 import { generateEmailVerificationCode } from "$lib/utils/codes";
 import { sendEmail } from "$lib/server/email";
+import { setCookie } from "$lib/utils/cookies";
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async (event) => {
+
+    const user = event.locals.user;
+
+    if (user) {
+        if (user.emailVerified) {
+            redirect(300, "/");
+        }
+        redirect(300, "/email-verification");
+    }
+
     return {
         form: await superValidate(zod(signupSchema)),
     };
@@ -47,17 +58,12 @@ export const actions: Actions = {
             const session = await lucia.createSession(userId, {});
             const sessionCookie = lucia.createSessionCookie(session.id);
 
-            event.cookies.set(sessionCookie.name, sessionCookie.value, {
-                path: ".",
-                ...sessionCookie.attributes,
-            });
+            setCookie(sessionCookie, event);
 
         } catch (err) {
 
             const errMsg = "A user with that email already exists";
             setError(form, "email", errMsg);
-
-            console.log(err);
 
             return message(form, {
                 type: "error",
@@ -70,7 +76,7 @@ export const actions: Actions = {
 
         sendEmail(email, "Confirm your email", `Your verification code is ${verificationCode}`);
 
-        redirect(303, "/", {
+        redirect(303, "/email-verification", {
             type: "success",
             richColors: true,
             message: "A confirmation email has been sent to",

@@ -1,6 +1,50 @@
 import { db } from "$lib/server/db"
-import { TimeSpan, createDate } from "oslo";
+import { TimeSpan, createDate, isWithinExpirationDate } from "oslo";
 import { alphabet, generateRandomString } from "oslo/crypto";
+
+export const verifyVerificationCode = async (userId: string, code: string) => {
+
+    const deleteCode = async () => {
+        await db.emailVerificationCode.delete({
+            where: {
+                code: code,
+                userId: userId,
+            }
+        });
+    };
+
+    try {
+
+        const dbCode = await db.emailVerificationCode.findFirst({
+            where: {
+                userId: userId,
+            }
+        })
+
+        console.log(dbCode);
+
+        if (!dbCode) {
+            return false;
+        }
+
+        if (!isWithinExpirationDate(dbCode.expiresAt)) {
+            deleteCode();
+            return false;
+        }
+
+        if (dbCode.code !== code || dbCode.userId !== userId) {
+            return false;
+        }
+
+        deleteCode();
+
+        return true;
+
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+}
 
 export const generateEmailVerificationCode = async (userId: string) => {
 

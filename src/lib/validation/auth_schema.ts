@@ -5,12 +5,17 @@ export const emailSchema = z.object({
 });
 
 export const codeSchema = z.object({
-    code: z.string().length(8, "Your code is 8 characters long"),
+    code: z.string().length(8, "Your code should be 8 characters long"),
+});
+
+export const loginSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(1).max(50),
 });
 
 export const signupSchema = z.object({
     email: z.string().email(),
-    password: z.string(),
+    password: z.string().min(1).max(50),
     confirm_password: z.string().min(1).max(50),
 }).superRefine(({ password, confirm_password }, ctx) => validatePassword(password, confirm_password, ctx));
 
@@ -62,4 +67,6 @@ const validatePassword = (password: string, confirmPassword: string, ctx: z.Refi
 }
 
 export type EmailSchema = typeof emailSchema;
+export type LoginSchema = typeof loginSchema;
 export type SignupSchema = typeof signupSchema;
+export type CodeSchema = typeof codeSchema;
