@@ -4,7 +4,7 @@ import { alphabet, generateRandomString } from "oslo/crypto";
 
 export const generateEmailVerificationCode = async (userId: string) => {
 
-    const code = generateRandomString(8, alphabet("0-9"));
+    const code = generateRandomString(8, alphabet("0-9", "A-Z", "a-z"));
 
     const expiresAt = createDate(new TimeSpan(5, "m"));
 

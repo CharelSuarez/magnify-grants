@@ -4,6 +4,10 @@ export const emailSchema = z.object({
     email: z.string().email(),
 });
 
+export const codeSchema = z.object({
+    code: z.string().length(8, "Your code is 8 characters long"),
+});
+
 export const signupSchema = z.object({
     email: z.string().email(),
     password: z.string(),
