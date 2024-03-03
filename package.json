@@ -44,7 +44,7 @@
   "type": "module",
   "dependencies": {
     "@lucia-auth/adapter-prisma": "^4.0.0",
-    "@prisma/client": "5.9.1",
+    "@prisma/client": "^5.10.2",
     "@supabase/supabase-js": "^2.39.7",
     "@types/nodemailer": "^6.4.14",
     "bits-ui": "^0.18.4",
