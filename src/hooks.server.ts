@@ -3,7 +3,7 @@ import { setCookie } from "$lib/utils/cookies";
 import { redirect, type Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 
-const alwaysAllowed = ["/", "/login", "/signup", "/reset-password"];
+const alwaysAllowed = ["/login", "/signup", "/reset-password"];
 
 // inherits from alwaysAllowed
 const userAllowed = ["/logout", "/email-verification"]
@@ -53,7 +53,7 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 
     const allowed = visited(alwaysAllowed);
 
-    if (allowed) {
+    if (allowed || event.url.pathname == "/") {
         return resolve(event);
     }
 
@@ -67,6 +67,8 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 
     if (user?.emailVerified && visitedVerifiedAllowed) {
         return resolve(event);
+    } else if (!user?.emailVerified) {
+        redirect(303, "email-verification");
     }
 
     // if we reached here they tried to access a bad route

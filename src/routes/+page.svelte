@@ -1,9 +1,18 @@
-<script>
+<script lang="ts">
 	import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
 	import image from '$lib/assets/branding/images/magnify_image.webp';
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
+	import type { PageData } from './$types';
+
+    export let data: PageData;
 </script>
+
+{#if data.loggedIn}
+    <form action="/logout" method="POST">
+        <Button type="submit">Log out</Button>
+    </form>
+{/if}
 
 <main class="flex-col h-auto">
 	<Taskbar />
@@ -23,7 +32,7 @@
 		<img class="z-50 hidden xl:inline" src={image} alt="Magnify Access Branding" />
 	</div>
 
-    
+
     <div class="flex justify-evenly items-center h-screen max-sm:flex-col">
         <Card.Root>
             <Card.Header>
@@ -75,5 +84,5 @@
 	</div>
 
 
-	
+
 </main>
