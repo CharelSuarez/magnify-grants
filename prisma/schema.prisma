@@ -53,6 +53,18 @@ model Session {
   @@map("sessions")
 }
 
+model Grant {
+  id                    String  @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                 String  @default("")
+  description           String  @default("")
+  acceptingApplications Boolean @default(false)
+  rangeLow              Int     @default(0)
+  rangeHigh             Int     @default(0)
+  published             Boolean @default(false)
+
+  @@map("grants")
+}
+
 enum Role {
   GRANT_USER
   GRANT_ADMIN
