@@ -62,15 +62,26 @@ model Session {
 }
 
 model Grant {
-  id                    String  @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title                 String  @default("")
-  description           String  @default("")
-  acceptingApplications Boolean @default(false)
-  rangeLow              Int     @default(0)
-  rangeHigh             Int     @default(0)
-  published             Boolean @default(false)
+  id                    String       @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                 String       @default("")
+  description           String       @default("")
+  acceptingApplications Boolean      @default(false)
+  rangeLow              Int          @default(0)
+  rangeHigh             Int          @default(0)
+  published             Boolean      @default(false)
+  organization          Organization @relation(fields: [organizationId], references: [id])
+  organizationId        String       @db.Uuid
+  expirationDate        DateTime?
 
   @@map("grants")
+}
+
+model Organization {
+  id    String  @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name  String  @default("")
+  Grant Grant[]
+
+  @@map("organizations")
 }
 
 enum Role {
