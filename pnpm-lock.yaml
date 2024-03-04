@@ -7,10 +7,10 @@ settings:
 dependencies:
   '@lucia-auth/adapter-prisma':
     specifier: ^4.0.0
-    version: 4.0.0(@prisma/client@5.9.1)(lucia@3.0.1)
+    version: 4.0.0(@prisma/client@5.10.2)(lucia@3.0.1)
   '@prisma/client':
-    specifier: 5.9.1
-    version: 5.9.1(prisma@5.10.2)
+    specifier: ^5.10.2
+    version: 5.10.2(prisma@5.10.2)
   '@supabase/supabase-js':
     specifier: ^2.39.7
     version: 2.39.7
@@ -47,6 +47,9 @@ dependencies:
   resend:
     specifier: ^3.2.0
     version: 3.2.0
+  svelte-radix:
+    specifier: ^1.0.3
+    version: 1.0.3(svelte@4.2.12)
   svelte-sonner:
     specifier: ^0.3.19
     version: 0.3.19(svelte@4.2.12)
@@ -712,13 +715,13 @@ packages:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  /@lucia-auth/adapter-prisma@4.0.0(@prisma/client@5.9.1)(lucia@3.0.1):
+  /@lucia-auth/adapter-prisma@4.0.0(@prisma/client@5.10.2)(lucia@3.0.1):
     resolution: {integrity: sha512-TJg4/U1K1slS4A/OzDYCgmHTrIArntIynue14zGIEaMDu+OD+tGyq9WwQWqOabpx2Gm9xtDsoK+tTokAY3Up7A==}
     peerDependencies:
       '@prisma/client': ^4.2.0 || ^5.0.0
       lucia: 3.x
     dependencies:
-      '@prisma/client': 5.9.1(prisma@5.10.2)
+      '@prisma/client': 5.10.2(prisma@5.10.2)
       lucia: 3.0.1
     dev: false
 
@@ -1377,8 +1380,8 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@prisma/client@5.9.1(prisma@5.10.2):
-    resolution: {integrity: sha512-caSOnG4kxcSkhqC/2ShV7rEoWwd3XrftokxJqOCMVvia4NYV/TPtJlS9C2os3Igxw/Qyxumj9GBQzcStzECvtQ==}
+  /@prisma/client@5.10.2(prisma@5.10.2):
+    resolution: {integrity: sha512-ef49hzB2yJZCvM5gFHMxSFL9KYrIP9udpT5rYo0CsHD4P9IKj473MbhU1gjKKftiwWBTIyrt9jukprzZXazyag==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
@@ -4791,6 +4794,14 @@ packages:
       svelte: 4.2.12
       typescript: 5.3.3
     dev: true
+
+  /svelte-radix@1.0.3(svelte@4.2.12):
+    resolution: {integrity: sha512-Du3q9kvrPM5JCJqTUTEKyt136SRbx7AiLAKmJPHmB4chTXc6xOIWjJupDqZRRnaN70WmT8v4VOPSFFSnZnbvWw==}
+    peerDependencies:
+      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0
+    dependencies:
+      svelte: 4.2.12
+    dev: false
 
   /svelte-render@2.0.1(svelte@4.2.12):
     resolution: {integrity: sha512-RpB0SurwXm4xhjvHHtjeqMmvd645FURb79GFOotScOSqnKK5vpqBgoBPGC0pp+E/eZgDSQ9rRAdn/+N4ys1mXQ==}

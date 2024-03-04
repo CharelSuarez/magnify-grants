@@ -3,7 +3,7 @@ import { setCookie } from "$lib/utils/cookies";
 import { redirect, type Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 
-const alwaysAllowed = ["/login", "/signup", "/reset-password"];
+const alwaysAllowed = ["/login", "/signup", "/reset-password", "/organization/applications"];
 
 // inherits from alwaysAllowed
 const userAllowed = ["/logout", "/email-verification"]
