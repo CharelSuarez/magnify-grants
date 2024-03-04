@@ -1,5 +1,4 @@
 <script lang="ts">
-    import image from "$lib/assets/branding/images/magnify_image.webp";
     import * as Form from "$lib/components/ui/form";
     import { Input } from "$lib/components/ui/input";
     import { Button } from "$lib/components/ui/button";
