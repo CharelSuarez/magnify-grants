@@ -47,6 +47,9 @@ dependencies:
   resend:
     specifier: ^3.2.0
     version: 3.2.0
+  svelte-radix:
+    specifier: ^1.0.3
+    version: 1.0.3(svelte@4.2.12)
   svelte-sonner:
     specifier: ^0.3.19
     version: 0.3.19(svelte@4.2.12)
@@ -4791,6 +4794,14 @@ packages:
       svelte: 4.2.12
       typescript: 5.3.3
     dev: true
+
+  /svelte-radix@1.0.3(svelte@4.2.12):
+    resolution: {integrity: sha512-Du3q9kvrPM5JCJqTUTEKyt136SRbx7AiLAKmJPHmB4chTXc6xOIWjJupDqZRRnaN70WmT8v4VOPSFFSnZnbvWw==}
+    peerDependencies:
+      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0
+    dependencies:
+      svelte: 4.2.12
+    dev: false
 
   /svelte-render@2.0.1(svelte@4.2.12):
     resolution: {integrity: sha512-RpB0SurwXm4xhjvHHtjeqMmvd645FURb79GFOotScOSqnKK5vpqBgoBPGC0pp+E/eZgDSQ9rRAdn/+N4ys1mXQ==}
