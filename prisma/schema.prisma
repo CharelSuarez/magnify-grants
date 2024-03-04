@@ -91,3 +91,35 @@ enum Role {
 
   @@map("role")
 }
+
+model Form {
+  id     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fields Field[]
+
+  @@map("forms")
+}
+
+model Field {
+  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type    FieldType
+  formId  String    @db.Uuid
+  values  String[]
+  values2 String[]
+  form    Form      @relation(references: [id], fields: [formId], onDelete: Cascade)
+
+  @@map("fields")
+}
+
+enum FieldType {
+  ShortAnswer
+  Paragraph
+  MultipleChoice
+  Checkbox
+  Dropdown
+  FileUpload
+  LinearScale
+  MultipleChoiceGrid
+  CheckboxGrid
+  Date
+  Time
+}
