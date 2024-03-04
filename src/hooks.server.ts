@@ -3,6 +3,25 @@ import { setCookie } from '$lib/utils/cookies';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
+// TODO: Implement this
+// enum ALLOWED {
+// 	ALWAYS,
+// 	HAS_USER,
+// 	IS_VERIFIED,
+// 	HAS_PROFILE,
+// }
+
+// const routes = {
+// 	login: {
+// 		route: '/login',
+// 		allowed: ALLOWED.ALWAYS
+// 	},
+// 	signup: {
+// 		route: "/signup",
+// 		allowed: ALLOWED.ALWAYS
+// 	}
+// }
+
 const alwaysAllowed = [
 	'/login',
 	'/signup',
@@ -71,9 +90,9 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 
 	const visitedVerifiedAllowed = visited(verifiedAllowed);
 
-	if (user?.emailVerified && visitedVerifiedAllowed) {
+	if (user && user.emailVerified && visitedVerifiedAllowed) {
 		return resolve(event);
-	} else if (!user?.emailVerified) {
+	} else if (user && !user.emailVerified) {
 		redirect(303, 'email-verification');
 	}
 
