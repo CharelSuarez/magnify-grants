@@ -5,17 +5,12 @@
 	import * as Card from '$lib/components/ui/card';
 	import type { PageData } from './$types';
 
-    export let data: PageData;
+  export let data: PageData;
 </script>
 
-{#if data.loggedIn}
-    <form action="/logout" method="POST">
-        <Button type="submit">Log out</Button>
-    </form>
-{/if}
-
 <main class="flex-col h-auto">
-	<Taskbar />
+
+	<Taskbar loggedIn={data.loggedIn}/>
 
 	<div class="flex justify-evenly items-center h-screen">
 		<div class="flex-col justify-center items-center w-auto">
