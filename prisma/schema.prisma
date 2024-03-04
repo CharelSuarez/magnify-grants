@@ -118,8 +118,6 @@ enum FieldType {
   Dropdown
   FileUpload
   LinearScale
-  MultipleChoiceGrid
-  CheckboxGrid
   Date
   Time
 }

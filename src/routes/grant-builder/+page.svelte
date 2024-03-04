@@ -31,63 +31,70 @@
 		if (!type) {
 			return;
 		}
-
-		switch (type) {
-			case FieldType.ShortAnswer:
-				fields = {
-					...fields,
-					[`field${count}`]: {
-						type: FieldType.ShortAnswer,
-						prompt: "",
-					}
-				}
-				break;
+    
+		fields = {
+			...fields,
+			[`field${count}`]: {
+				type: type,
+				prompt: "",
+				options: []
+			}
 		}
 
 		count++;
 
 	}
 
-	let fields: { field: { type: FieldType, prompt: string } } = {};
+	const hasOptions = (type: FieldType) => {
+		return type === FieldType.MultipleChoice || type === FieldType.Checkbox || type === FieldType.Dropdown;
+	}
+
+	const addOption = (key: string) => {
+		const field = fields[key];
+		const options = field.options;
+		fields[key].options = [...options, ""];
+	}
+
+	let fields: { [field: string]: { type: FieldType, prompt?: string, options: string[] } } = {};
+
+	$: console.log(fields);
 
 </script>
 
+
 <container class="container flex w-screen flex-col items-center md:my-20">
-	<form method="POST" class="w-1/2 border-none border-2 p-7 shadow-none md:shadow-2xl rounded-md" use:enhance>
+	<form method="POST" class="w-1/2" use:enhance>
 		<Form.Field {form} name="test">
 			<Form.Control>
-					{#each Object.values(fields) as field}
-						<form method="POST" use:enhance>
-
+					{#each Object.entries(fields) as [key, field]}
+						<div class="border-slate-500 bg-white border-2 shadow-none md:shadow-2xl p-7 rounded-md">
+							<Form.Label>{field.type}</Form.Label>
+							<Input placeholder="Question..." bind:value={field.prompt} />
 							<Form.Field {form} name="test">
 								<Form.Control>
-									<Form.Label>{field.type}</Form.Label>
-									{#if field.type === FieldType.ShortAnswer || field.type === FieldType.MultipleChoice || field.type === FieldType.Checkbox || field.type === FieldType.Dropdown}
-										<Form.Label>Option</Form.Label>
-										<Input bind:value={field.prompt}/>
-										<Button>Add option</Button>
+									{#if hasOptions(field.type)}
+										<Form.Label>{field.type} Options</Form.Label>
+										<div class="flex flex-col gap-10">
+											{#each field.options as _, i}
+												<Input bind:value={field.options[i]}/>
+											{/each}
+											<Button on:click={() => addOption(key)}>Add option</Button>
+										</div>
 									{/if}
 								</Form.Control>
 								<Form.Description />
 								<Form.FieldErrors />
 							</Form.Field>
-
-						</form>
+						</div>
 					{/each}
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger class="border-none">
 						<Button>Add new field</Button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content>
-						<DropdownMenu.Item on:click={() => addField(FieldType.ShortAnswer)}>Short Answer</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => addField(FieldType.Paragraph)}>Paragraph</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => addField(FieldType.MultipleChoice)}>Multiple Choice</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => addField(FieldType.Checkbox)}>Checkboxes</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => addField(FieldType.Dropdown)}>Dropdown</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => addField(FieldType.FileUpload)}>File Upload</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => addField(FieldType.LinearScale)}>Linear Scale</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => addField(FieldType.Date)}>Date</DropdownMenu.Item>
-						<DropdownMenu.Item on:click={() => addField(FieldType.Time)}>Time</DropdownMenu.Item>
+						{#each Object.values(FieldType) as type}
+							<DropdownMenu.Item on:click={() => addField(type)}>{type}</DropdownMenu.Item>
+						{/each}
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			</Form.Control>
@@ -96,75 +103,3 @@
 		</Form.Field>
 	</form>
 </container>
-
-
-<!--<Dialog.Root>-->
-<!--	<Dialog.Trigger>Edit Profile</Dialog.Trigger>-->
-<!--	<Dialog.Content class="sm:max-w-[425px]">-->
-<!--		<Dialog.Header>-->
-<!--			<Dialog.Title>Add Question</Dialog.Title>-->
-<!--			<Dialog.Description>-->
-<!--				Make changes to your profile here. Click save when you're done.-->
-<!--			</Dialog.Description>-->
-<!--		</Dialog.Header>-->
-<!--		<div class="grid gap-4 py-4">-->
-<!--			<div class="grid grid-cols-4 items-center gap-4">-->
-<!--				<Label class="text-right">Name</Label>-->
-<!--				<DropdownMenu.Root>-->
-<!--					<DropdownMenu.Trigger asChild let:builder>-->
-<!--						<Button builders={[builder]} variant="outline">Select Field Type</Button>-->
-<!--					</DropdownMenu.Trigger>-->
-<!--					<DropdownMenu.Content>-->
-<!--						<DropdownMenu.Group>-->
-<!--							&lt;!&ndash;			<DropdownMenu.Item on:click={(e) => e.preventDefault()}><AddFieldDialog type={FieldType.ShortAnswer}></AddFieldDialog>></DropdownMenu.Item>&ndash;&gt;-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.ShortAnswer)}>Short Answer</DropdownMenu.Item>-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.Paragraph)}>Paragraph</DropdownMenu.Item>-->
-<!--							<DropdownMenu.Separator />-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.MultipleChoice)}>Multiple Choice</DropdownMenu.Item>-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.Checkbox)}>Checkbox</DropdownMenu.Item>-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.Dropdown)}>Dropdown</DropdownMenu.Item>-->
-<!--							<DropdownMenu.Separator />-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.FileUpload)}>File Upload</DropdownMenu.Item>-->
-<!--							<DropdownMenu.Separator />-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.LinearScale)}>Linear Scale</DropdownMenu.Item>-->
-<!--							&lt;!&ndash;			<DropdownMenu.Item>Multiple Choice Grid</DropdownMenu.Item>&ndash;&gt;-->
-<!--							&lt;!&ndash;			<DropdownMenu.Item>Checkbox Grid</DropdownMenu.Item>&ndash;&gt;-->
-<!--							<DropdownMenu.Separator />-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.Date)}>Date</DropdownMenu.Item>-->
-<!--							<DropdownMenu.Item on:click={() => addField(FieldType.Time)}>Time</DropdownMenu.Item>-->
-<!--						</DropdownMenu.Group>-->
-<!--					</DropdownMenu.Content>-->
-<!--				</DropdownMenu.Root>-->
-<!--			</div>-->
-<!--		<Dialog.Footer>-->
-<!--			<Button type="submit">Save changes</Button>-->
-<!--		</Dialog.Footer>-->
-<!--	</Dialog.Content>-->
-<!--</Dialog.Root>-->
-
-<!--<DropdownMenu.Root>-->
-<!--	<DropdownMenu.Trigger asChild let:builder>-->
-<!--		<Button builders={[builder]} variant="outline">Add Field</Button>-->
-<!--	</DropdownMenu.Trigger>-->
-<!--	<DropdownMenu.Content>-->
-<!--		<DropdownMenu.Group>-->
-<!--&lt;!&ndash;			<DropdownMenu.Item on:click={(e) => e.preventDefault()}><AddFieldDialog type={FieldType.ShortAnswer}></AddFieldDialog>></DropdownMenu.Item>&ndash;&gt;-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.ShortAnswer)}>Short Answer</DropdownMenu.Item>-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.Paragraph)}>Paragraph</DropdownMenu.Item>-->
-<!--			<DropdownMenu.Separator />-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.MultipleChoice)}>Multiple Choice</DropdownMenu.Item>-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.Checkbox)}>Checkbox</DropdownMenu.Item>-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.Dropdown)}>Dropdown</DropdownMenu.Item>-->
-<!--			<DropdownMenu.Separator />-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.FileUpload)}>File Upload</DropdownMenu.Item>-->
-<!--			<DropdownMenu.Separator />-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.LinearScale)}>Linear Scale</DropdownMenu.Item>-->
-<!--			&lt;!&ndash;			<DropdownMenu.Item>Multiple Choice Grid</DropdownMenu.Item>&ndash;&gt;-->
-<!--			&lt;!&ndash;			<DropdownMenu.Item>Checkbox Grid</DropdownMenu.Item>&ndash;&gt;-->
-<!--			<DropdownMenu.Separator />-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.Date)}>Date</DropdownMenu.Item>-->
-<!--			<DropdownMenu.Item on:click={() => addField(FieldType.Time)}>Time</DropdownMenu.Item>-->
-<!--		</DropdownMenu.Group>-->
-<!--	</DropdownMenu.Content>-->
-<!--</DropdownMenu.Root>-->
-
