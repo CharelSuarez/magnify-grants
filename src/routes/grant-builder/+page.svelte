@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import * as Dialog from "$lib/components/ui/dialog";
 	import * as Form from "$lib/components/ui/form";
-	import * as Select from "$lib/components/ui/select";
 	import { Input } from "$lib/components/ui/input";
 	import { formSchema, type FormSchema } from "./schema";
 	import {
@@ -31,7 +29,7 @@
 		if (!type) {
 			return;
 		}
-    
+
 		fields = {
 			...fields,
 			[`field${count}`]: {
