@@ -21,8 +21,6 @@ export const verifyVerificationCode = async (userId: string, code: string) => {
             }
         })
 
-        console.log(dbCode);
-
         if (!dbCode) {
             return false;
         }
