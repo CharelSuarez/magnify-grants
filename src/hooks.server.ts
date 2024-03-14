@@ -1,5 +1,6 @@
 import { lucia } from '$lib/server/auth';
 import { setCookie } from '$lib/utils/cookies';
+import { getProfile } from '$lib/utils/user';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
@@ -37,7 +38,10 @@ const alwaysAllowed = [
 const userAllowed = ['/logout', '/email-verification'];
 
 // inherits from userAllowed
-const verifiedAllowed: string[] = [];
+const verifiedAllowed = ['/profile/create'];
+
+// inherits from verifiedAllowed
+const hasProfileAllowed: string[] = [];
 
 const verifySession: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
@@ -95,11 +99,41 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 	if (user && user.emailVerified && visitedVerifiedAllowed) {
 		return resolve(event);
 	} else if (user && !user.emailVerified) {
-		redirect(303, 'email-verification');
+		redirect(303, "/email-verification");
+	}
+
+	const visitedHasProfileAllowed = visited(hasProfileAllowed);
+
+	if (user) {
+		const profile = await getProfile(user.id);
+		if (profile && visitedHasProfileAllowed) {
+			return resolve(event);
+		} else if (!profile) {
+			redirect(303, "/profile/create")
+		}
 	}
 
 	// if we reached here they tried to access a bad route
 	redirect(303, '/');
 };
 
-export const handle: Handle = sequence(verifySession, authenticateRoute);
+const addFunctionHooks: Handle = async ({ event, resolve }) => {
+
+	event.locals.getUserProfile = async () => {
+
+		if (!event.locals.user) {
+			return null;
+		}
+
+		return await getProfile(event.locals.user.id);
+
+	}
+
+	return resolve(event);
+}
+
+export const handle: Handle = sequence(
+	verifySession,
+	authenticateRoute,
+	addFunctionHooks
+	);

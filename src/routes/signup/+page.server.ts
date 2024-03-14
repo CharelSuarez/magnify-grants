@@ -18,9 +18,9 @@ export const load: PageServerLoad = async (event) => {
 
     if (user) {
         if (user.emailVerified) {
-            redirect(300, "/");
+            redirect(303, "/");
         }
-        redirect(300, "/email-verification");
+        redirect(303, "/email-verification");
     }
 
     return {

@@ -3,7 +3,7 @@
 // See https://kit.svelte.dev/docs/types#app
 
 import type { PrismaAdapter } from "@lucia-auth/adapter-prisma";
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient, Profile } from "@prisma/client";
 import lucia from "lucia";
 
 // for information about these interfaces
@@ -20,6 +20,7 @@ declare global {
 		interface Locals {
 			user: lucia.User | null;
 			session: lucia.Session | null;
+			getUserProfile(): Promise<Profile | null>
 		}
 	}
 	// eslint-disable-next-line no-var

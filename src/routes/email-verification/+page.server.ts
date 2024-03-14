@@ -11,11 +11,11 @@ export const load: PageServerLoad = async (event) => {
 
 
     if (!event.locals.user) {
-        redirect(300, "/");
+        redirect(303, "/");
     }
 
     if (event.locals.user.emailVerified) {
-        redirect(300, "/"); //TODO: redirect to their dashboard or smthing
+        redirect(303, "/"); //TODO: redirect to their dashboard or smthing
     }
 
     return {
