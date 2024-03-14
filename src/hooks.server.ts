@@ -28,7 +28,9 @@ const alwaysAllowed = [
 	'/reset-password',
 	'/organization/applications',
 	'/grants-user',
-	'/grants'
+	'/grants',
+	'/grant-builder',
+	'/grant-preview'
 ];
 
 // inherits from alwaysAllowed
