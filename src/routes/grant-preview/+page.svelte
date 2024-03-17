@@ -29,8 +29,8 @@
         </Card.Content>
     
         <Card.Footer class="flex justify-between">
-            <Button variant="outline">Go back</Button>
-            <Button>Edit</Button>
+            <Button variant="outline" href="/grants">Go back</Button>
+            <Button href="/grant-builder">Edit</Button>
           </Card.Footer>
     </Card.Root>
 </div>
