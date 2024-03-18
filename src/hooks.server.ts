@@ -31,7 +31,8 @@ const alwaysAllowed = [
 	'/grants-user',
 	'/grants',
 	'/grant-builder',
-	'/grant-preview'
+	'/grant-preview',
+	'/analytics'
 ];
 
 // inherits from alwaysAllowed
@@ -99,7 +100,7 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 	if (user && user.emailVerified && visitedVerifiedAllowed) {
 		return resolve(event);
 	} else if (user && !user.emailVerified) {
-		redirect(303, "/email-verification");
+		redirect(303, '/email-verification');
 	}
 
 	const visitedHasProfileAllowed = visited(hasProfileAllowed);
@@ -109,7 +110,7 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 		if (profile && visitedHasProfileAllowed) {
 			return resolve(event);
 		} else if (!profile) {
-			redirect(303, "/profile/create")
+			redirect(303, '/profile/create');
 		}
 	}
 
@@ -118,22 +119,15 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 };
 
 const addFunctionHooks: Handle = async ({ event, resolve }) => {
-
 	event.locals.getUserProfile = async () => {
-
 		if (!event.locals.user) {
 			return null;
 		}
 
 		return await getProfile(event.locals.user.id);
-
-	}
+	};
 
 	return resolve(event);
-}
+};
 
-export const handle: Handle = sequence(
-	verifySession,
-	authenticateRoute,
-	addFunctionHooks
-	);
+export const handle: Handle = sequence(verifySession, authenticateRoute, addFunctionHooks);

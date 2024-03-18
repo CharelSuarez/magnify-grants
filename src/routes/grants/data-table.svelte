@@ -5,9 +5,10 @@
 		addSortBy,
 		addTableFilter,
 		addHiddenColumns,
-		addSelectedRows
+		addSelectedRows,
+		addColumnFilters
 	} from 'svelte-headless-table/plugins';
-	import { readable } from 'svelte/store';
+	import { get, readable, type Writable } from 'svelte/store';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import * as Table from '$lib/components/ui/table';
@@ -25,6 +26,7 @@
 
 	export let grants: GrantWithPosts[];
 
+
 	const table = createTable(readable(grants), {
 		page: addPagination(),
 		sort: addSortBy({
@@ -37,6 +39,7 @@
 		hide: addHiddenColumns(),
 		select: addSelectedRows()
 	});
+
 
 	const columns = table.createColumns([
 		table.column({
