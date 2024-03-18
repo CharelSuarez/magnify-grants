@@ -15,9 +15,9 @@ export const load: PageServerLoad = async (event) => {
 
     if (user) {
         if (!user.emailVerified) {
-            redirect(300, "/email-verification");
+            redirect(303, "/email-verification");
         }
-        redirect(300, "/");
+        redirect(303, "/");
     }
 
     return {
@@ -42,6 +42,9 @@ export const actions: Actions = {
         const user = await db.user.findFirst({
             where: {
                 email: email
+            },
+            include: {
+                profile: true
             },
         });
 
@@ -72,7 +75,9 @@ export const actions: Actions = {
 
         setCookie(sessionCookie, event);
 
-        const route = user.emailVerified ? "/" : "/email-verification";
+        const route = !user.emailVerified ? "/email-verification"
+                        : !user.profile ? "/profile/create"
+                        : "/";
 
         redirectFlash(303, route, {
             type: "success",

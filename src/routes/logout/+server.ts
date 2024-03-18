@@ -8,7 +8,7 @@ export const POST: RequestHandler = async (event) => {
 
     // redundant but keep in case
     if (!user) {
-        redirect(300, "/");
+        redirect(303, "/");
     }
 
     await lucia.invalidateUserSessions(user.id);
