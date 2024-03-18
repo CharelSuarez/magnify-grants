@@ -16,9 +16,14 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import DataTableCheckbox from './data-table-checkbox.svelte';
-	import type { Grant } from '@prisma/client';
+	import { Prisma } from '@prisma/client';
+	import Cross2 from 'svelte-radix/Cross2.svelte';
 
-	export let grants: Grant[];
+	type GrantWithPosts = Prisma.GrantGetPayload<{
+		include: { organization: true };
+	}>
+
+	export let grants: GrantWithPosts[];
 
 	const table = createTable(readable(grants), {
 		page: addPagination(),
@@ -104,6 +109,11 @@
 			}
 		}),
 		table.column({
+			accessor: 'organization',
+			header: 'Organization',
+			cell: ({ value }) => value?.name
+		}),
+		table.column({
 			accessor: ({ id }) => id,
 			header: '',
 			cell: ({ value }) => {
@@ -125,17 +135,31 @@
 	$: $hiddenColumnIds = Object.entries(hideForId)
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
-	const hidableCols = ['title', 'acceptingApplications', 'published', 'description'];
+	const hidableCols = ['title', 'acceptingApplications', 'published', 'description', 'range', 'organization'];
+
+	$: showReset = Object.values({ $filterValue }).some((v) => v.length > 0);
 </script>
 
 <div>
 	<div class="flex items-center py-4">
 		<Input
 			bind:value={$filterValue}
-			class="max-w-sm"
+			class="max-w-sm pr-40"
 			placeholder="Search titles or descriptions"
 			type="text"
 		/>
+		{#if showReset}
+			<Button
+				on:click={() => {
+					$filterValue = "";
+				}}
+				variant="secondary"
+				class="h-8 px-2 lg:px-2"
+			>
+				Reset filters
+				<Cross2 class="ml-2 h-4 w-4" />
+			</Button>
+		{/if}
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<Button builders={[builder]} class="ml-auto" variant="outline">
