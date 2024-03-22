@@ -19,6 +19,7 @@ model User {
   sessions         Session[]
   profile          Profile?
   verificationCode EmailVerificationCode?
+  applications     Application[]
 
   @@map("users")
 }
@@ -42,12 +43,13 @@ model PasswordResetToken {
 }
 
 model Profile {
-  id        String @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String @unique
-  firstName String
-  lastName  String
-  role      Role   @default(GRANT_USER)
-  user      User   @relation(references: [id], fields: [userId], onDelete: Cascade)
+  id          String    @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String    @unique
+  firstName   String
+  lastName    String
+  dateOfBirth DateTime?
+  role        Role      @default(GRANT_USER)
+  user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("profiles")
 }
@@ -72,6 +74,7 @@ model Grant {
   organization          Organization @relation(fields: [organizationId], references: [id])
   organizationId        String       @db.Uuid
   expirationDate        DateTime?
+  form                  Form?
 
   @@map("grants")
 }
@@ -93,8 +96,11 @@ enum Role {
 }
 
 model Form {
-  id     String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  fields Field[]
+  id           String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  grant        Grant   @relation(fields: [grantId], references: [id], onDelete: Cascade)
+  grantId      String  @db.Uuid @unique
+  fields       Field[]
+  applications Application[]
 
   @@map("forms")
 }
@@ -106,6 +112,7 @@ model Field {
   values  String[]
   values2 String[]
   form    Form      @relation(references: [id], fields: [formId], onDelete: Cascade)
+  entries ApplicationEntry[]
 
   @@map("fields")
 }
@@ -120,4 +127,29 @@ enum FieldType {
   LinearScale
   Date
   Time
+}
+
+model Application {
+  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  form    Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId  String @db.Uuid
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  version Int    @default(0)
+  entries ApplicationEntry[]
+
+  @@unique([userId, formId, version])
+  @@index([userId, formId])
+  @@map("applications")
+}
+
+model ApplicationEntry {
+  app     Application @relation(fields: [appId], references: [id], onDelete: Cascade)
+  appId   String      @db.Uuid
+  field   Field       @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  fieldId String      @db.Uuid
+  value   String      @default("")
+
+  @@id(name: "id", fields: [appId, fieldId])
+  @@map("application_entries")
 }
