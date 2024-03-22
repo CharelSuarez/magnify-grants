@@ -144,12 +144,14 @@ model Application {
 }
 
 model ApplicationEntry {
+  id      String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   app     Application @relation(fields: [appId], references: [id], onDelete: Cascade)
   appId   String      @db.Uuid
   field   Field       @relation(fields: [fieldId], references: [id], onDelete: Cascade)
   fieldId String      @db.Uuid
   value   String      @default("")
 
-  @@id(name: "id", fields: [appId, fieldId])
+  @@index([appId, fieldId])
+  @@unique([appId, fieldId])
   @@map("application_entries")
 }

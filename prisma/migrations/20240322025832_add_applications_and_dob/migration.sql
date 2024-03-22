@@ -36,11 +36,12 @@ CREATE TABLE "applications" (
 
 -- CreateTable
 CREATE TABLE "application_entries" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "appId" UUID NOT NULL,
     "fieldId" UUID NOT NULL,
     "value" TEXT NOT NULL DEFAULT '',
 
-    CONSTRAINT "application_entries_pkey" PRIMARY KEY ("appId","fieldId")
+    CONSTRAINT "application_entries_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -48,6 +49,12 @@ CREATE INDEX "applications_userId_formId_idx" ON "applications"("userId", "formI
 
 -- CreateIndex
 CREATE UNIQUE INDEX "applications_userId_formId_version_key" ON "applications"("userId", "formId", "version");
+
+-- CreateIndex
+CREATE INDEX "application_entries_appId_fieldId_idx" ON "application_entries"("appId", "fieldId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "application_entries_appId_fieldId_key" ON "application_entries"("appId", "fieldId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "forms_grantId_key" ON "forms"("grantId");
