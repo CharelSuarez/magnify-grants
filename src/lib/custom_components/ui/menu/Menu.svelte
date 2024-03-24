@@ -30,9 +30,9 @@
             Grant Service
         </div>
          <div class="flex absolute  top-[15%] flex-col space-y-4 p-4 text-[1.8rem] left-8 font-normal">
-              <a href="/login" class="text-white w-fit">Visit Magnify Access</a>
-              <a href="/signup" class="text-white w-fit">Login</a>
-              <a href="/contact" class="text-white w-fit">Sign up</a>
+              <a href="https://www.magnifyaccess.ai/" class="text-white w-fit">Visit Magnify Access</a>
+              <a href="/login" class="text-white w-fit">Login</a>
+              <a href="/signup" class="text-white w-fit">Sign up</a>
               {#if loggedIn}
               <form action="/logout" method="POST">
                   <Button type="submit">Log out</Button>
@@ -43,13 +43,13 @@
             <div class="flex font-semibold p-4 px-8 text-[2rem]">Font Size</div>
             <ToggleGroup.Root type="single" class="mt-8">
                 <ToggleGroup.Item value="Small" aria-label="Toggle small" >
-                    <div class="text-[1.5rem]">Small</div>
+                    <div class="text-[1.5rem] font-normal">Small</div>
                 </ToggleGroup.Item>
                 <ToggleGroup.Item value="Medium" aria-label="Toggle italic">
-                    <div class="text-[1.5rem]">Medium</div>
+                    <div class="text-[1.5rem] font-normal">Medium</div>
                 </ToggleGroup.Item>
                 <ToggleGroup.Item value="Large" aria-label="Toggle strikethrough">
-                    <div class="text-[1.5rem]">Large</div>
+                    <div class="text-[1.5rem] font-normal">Large</div>
                 </ToggleGroup.Item>
               </ToggleGroup.Root>
            
