@@ -1,6 +1,9 @@
 <script lang="ts">
     import GrantTable from "$lib/custom_components/ui/application-table/app-table.svelte";
-    import GrantTableFilter from "$lib/custom_components/ui/application-filter/grant-table-filter.svelte";
+    import GrantTableFilter from "./ApplicationFilter.svelte";
+	import type { PageData } from "./$types";
+
+    export let data: PageData;
 </script>
 
 <div class="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -12,6 +15,6 @@
 	</div>
     <div class="flex flex-1 justify-between h-full w-full gap-10">
         <GrantTable class="w-4/5"/>
-        <GrantTableFilter class="w-1/5 h-min items-center"/>
+        <GrantTableFilter data={data.filter} class="w-1/5 h-min items-center"/>
     </div>
 </div>
