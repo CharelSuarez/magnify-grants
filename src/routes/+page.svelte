@@ -4,13 +4,16 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
 	import type { PageData } from './$types';
+	import Menu from '$lib/custom_components/ui/menu/Menu.svelte';
 
   export let data: PageData;
 </script>
 
 <main class="flex-col h-auto">
 
-	<Taskbar loggedIn={data.loggedIn}/>
+	<!-- <Taskbar loggedIn={data.loggedIn}/> -->
+
+  <Menu />
 
 	<div class="flex justify-evenly items-center h-screen">
 		<div class="flex-col justify-center items-center w-auto">
@@ -24,7 +27,7 @@
 			</div>
 		</div>
 
-		<img class="z-50 hidden xl:inline" src={image} alt="Magnify Access Branding" />
+		<img class="hidden xl:inline" src={image} alt="Magnify Access Branding" />
 	</div>
 
 
