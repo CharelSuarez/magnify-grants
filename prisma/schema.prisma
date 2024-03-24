@@ -135,17 +135,27 @@ enum FieldType {
 }
 
 model Application {
-  id      String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  form    Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
-  formId  String             @db.Uuid
-  user    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  form    Form                           @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId  String                         @db.Uuid
+  user    User                           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String
-  version Int                @default(0)
+  version Int                            @default(0)
+  draft   Boolean            @default(true)
+  status  ApplicationStatus  @default(IN_PROGRESS)
   entries ApplicationEntry[]
 
   @@unique([userId, formId, version])
   @@index([userId, formId])
   @@map("applications")
+}
+
+enum ApplicationStatus {
+  REJECTED
+  IN_PROGRESS
+  ACCEPTED
+
+  @@map("application_status")
 }
 
 model ApplicationEntry {
