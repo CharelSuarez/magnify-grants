@@ -13,7 +13,7 @@
 
 	<!-- <Taskbar loggedIn={data.loggedIn}/> -->
 
-  <Menu />
+  <Menu loggedIn={data.loggedIn} />
 
 	<div class="flex justify-evenly items-center h-screen">
 		<div class="flex-col justify-center items-center w-auto">
