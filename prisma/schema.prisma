@@ -86,29 +86,29 @@ model Organization {
 }
 
 model Form {
-
   id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  organizationId String       @db.Uuid
   description    String
   name           String
   createdAt      DateTime     @default(now())
   fields         Field[]
   organization   Organization @relation(fields: [organizationId], references: [id])
-  grant        Grant   @relation(fields: [grantId], references: [id], onDelete: Cascade)
-  grantId      String  @db.Uuid @unique
+  organizationId String       @db.Uuid
+
+  grant        Grant?        @relation(fields: [grantId], references: [id], onDelete: Cascade)
+  grantId      String?       @unique @db.Uuid
   applications Application[]
 
   @@map("forms")
 }
 
 model Field {
-  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id      String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   type    FieldType
-  formId  String    @db.Uuid
+  formId  String             @db.Uuid
   options String[]
   prompt  String
   index   Int
-  form    Form      @relation(fields: [formId], references: [id], onDelete: Cascade)
+  form    Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
   entries ApplicationEntry[]
 
   @@map("fields")
@@ -135,12 +135,12 @@ enum FieldType {
 }
 
 model Application {
-  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  form    Form   @relation(fields: [formId], references: [id], onDelete: Cascade)
-  formId  String @db.Uuid
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id      String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  form    Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId  String             @db.Uuid
+  user    User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String
-  version Int    @default(0)
+  version Int                @default(0)
   entries ApplicationEntry[]
 
   @@unique([userId, formId, version])
@@ -156,7 +156,7 @@ model ApplicationEntry {
   fieldId String      @db.Uuid
   value   String      @default("")
 
-  @@index([appId, fieldId])
   @@unique([appId, fieldId])
+  @@index([appId, fieldId])
   @@map("application_entries")
 }

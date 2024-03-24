@@ -39,7 +39,11 @@ export const POST: RequestHandler = async (event) => {
 		const data = {
 			name: body.name,
 			description: body.description,
-			organizationId: 'ce191ebf-ace0-4224-8c78-5b0ad38a7c66',
+			organization: {
+				connect: {
+					id: 'ce191ebf-ace0-4224-8c78-5b0ad38a7c66'
+				}
+			},
 			fields: {}
 		};
 
@@ -56,7 +60,8 @@ export const POST: RequestHandler = async (event) => {
 				},
 				data: data,
 				include: {
-					fields: true
+					fields: true,
+					organization: true
 				}
 			});
 
@@ -68,7 +73,8 @@ export const POST: RequestHandler = async (event) => {
 			form = await db.form.create({
 				data: data,
 				include: {
-					fields: true
+					fields: true,
+					organization: true
 				}
 			});
 			message = 'Form created successfully';
