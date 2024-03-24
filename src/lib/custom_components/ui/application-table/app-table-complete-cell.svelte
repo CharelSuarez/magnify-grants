@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { completeStatuses } from "./grant-complete-statuses";
+    import { CompleteStatus } from "./app-complete-statuses";
 
 	export let value: boolean;
-	const status = completeStatuses[value ? "COMPLETE" : "INCOMPLETE"];
+	const status = value ? CompleteStatus.COMPLETE : CompleteStatus.INCOMPLETE;
 	const Icon = status?.icon;
 </script>
 

@@ -12,13 +12,13 @@
     } from "svelte-headless-table/plugins";
     import { readable } from "svelte/store";
     import * as Table from "$lib/components/ui/table";
-    import GrantTableActions from "./grant-table-actions.svelte";
+    import GrantTableActions from "./app-table-actions.svelte";
     import { Button } from "$lib/components/ui/button";
     import { Input } from "$lib/components/ui/input";
     import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-	  import GrantTableCheckbox from "./grant-table-checkbox.svelte";
-    import GrantTableStatusCell from "./grant-table-status-cell.svelte";
-    import GrantTableCompleteStatus from "./grant-table-complete-status.svelte";
+	  import GrantTableCheckbox from "./app-table-checkbox-cell.svelte";
+    import GrantTableStatusCell from "./app-table-accept-cell.svelte";
+    import GrantTableCompleteStatus from "./app-table-complete-cell.svelte";
     import { t } from '$lib/i18n/i18n';
    
     type Application = {

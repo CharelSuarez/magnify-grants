@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { statuses } from "./grant-statuses";
+    import { AcceptStatus } from "./app-acceptance-statuses";
 
 	export let value: string;
-	const status = statuses[value];
+	const status = AcceptStatus.fromString(value);
 	const Icon = status?.icon;
 </script>
 
