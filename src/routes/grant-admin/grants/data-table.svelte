@@ -5,10 +5,9 @@
 		addSortBy,
 		addTableFilter,
 		addHiddenColumns,
-		addSelectedRows,
-		addColumnFilters
+		addSelectedRows
 	} from 'svelte-headless-table/plugins';
-	import { get, readable, type Writable } from 'svelte/store';
+	import { readable } from 'svelte/store';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import * as Table from '$lib/components/ui/table';
@@ -16,16 +15,10 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import DataTableCheckbox from './data-table-checkbox.svelte';
-	import { Prisma } from '@prisma/client';
-	import Cross2 from 'svelte-radix/Cross2.svelte';
+  import DataTableCheckbox from '$lib/custom_components/ui/table/grant-table-checkbox.svelte'
+	import type { Grant } from '@prisma/client';
 
-	type GrantWithPosts = Prisma.GrantGetPayload<{
-		include: { organization: true };
-	}>
-
-	export let grants: GrantWithPosts[];
-
+	export let grants: Grant[];
 
 	const table = createTable(readable(grants), {
 		page: addPagination(),
@@ -33,12 +26,12 @@
 			toggleOrder: ['asc', 'desc']
 		}),
 		filter: addTableFilter({
-			fn: ({ filterValue, value }) => value.toLowerCase().includes(filterValue.toLowerCase())
+			fn: ({ filterValue, value }) =>
+				value.toLowerCase().includes(filterValue.toLowerCase())
 		}),
 		hide: addHiddenColumns(),
 		select: addSelectedRows()
 	});
-
 
 	const columns = table.createColumns([
 		table.column({
@@ -70,8 +63,10 @@
 			accessor: 'description',
 			header: 'Description',
 			cell: ({ value }) => {
-				if (value.length == 0) return 'None';
-				else if (value.length < 25) return value;
+				if (value.length == 0)
+					return 'None';
+				else if (value.length < 25)
+					return value;
 				return value.substring(0, 25) + '...';
 			}
 		}),
@@ -94,7 +89,7 @@
 			}
 		}),
 		table.column({
-			accessor: (item) => item,
+			accessor: item => item,
 			header: 'Range',
 			cell: ({ value: { rangeLow, rangeHigh } }) => {
 				const rangeLowFormatted = new Intl.NumberFormat('en-US', {
@@ -109,15 +104,10 @@
 			}
 		}),
 		table.column({
-			accessor: 'organization',
-			header: 'Organization',
-			cell: ({ value }) => value?.name
-		}),
-		table.column({
 			accessor: ({ id }) => id,
 			header: '',
 			cell: ({ value }) => {
-				return createRender(DataTableActions);
+				return createRender(DataTableActions, { id: value });
 			}
 		})
 	]);
@@ -135,31 +125,17 @@
 	$: $hiddenColumnIds = Object.entries(hideForId)
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
-	const hidableCols = ['title', 'acceptingApplications', 'published', 'description', 'range', 'organization'];
-
-	$: showReset = Object.values({ $filterValue }).some((v) => v.length > 0);
+	const hidableCols = ['title', 'acceptingApplications', 'published', 'description'];
 </script>
 
 <div>
 	<div class="flex items-center py-4">
 		<Input
 			bind:value={$filterValue}
-			class="max-w-sm pr-40"
+			class="max-w-sm"
 			placeholder="Search titles or descriptions"
 			type="text"
 		/>
-		{#if showReset}
-			<Button
-				on:click={() => {
-					$filterValue = "";
-				}}
-				variant="secondary"
-				class="h-8 px-2 lg:px-2"
-			>
-				Reset filters
-				<Cross2 class="ml-2 h-4 w-4" />
-			</Button>
-		{/if}
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<Button builders={[builder]} class="ml-auto" variant="outline">
@@ -187,14 +163,14 @@
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
 									<Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
-										{#if cell.id === 'amount'}
+										{#if cell.id === "amount"}
 											<div class="text-right">
 												<Render of={cell.render()} />
 											</div>
-										{:else if cell.id === 'title'}
+										{:else if cell.id === "title"}
 											<Button variant="ghost" on:click={props.sort.toggle}>
 												<Render of={cell.render()} />
-												<ArrowUpDown class={'ml-2 h-4 w-4'} />
+												<ArrowUpDown class={"ml-2 h-4 w-4"} />
 											</Button>
 										{:else}
 											<Render of={cell.render()} />
@@ -209,7 +185,10 @@
 			<Table.Body {...$tableBodyAttrs}>
 				{#each $pageRows as row (row.id)}
 					<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-						<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'}>
+						<Table.Row
+							{...rowAttrs}
+							data-state={$selectedDataIds[row.id] && "selected"}
+						>
 							{#each row.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs>
 									<Table.Cell {...attrs}>
@@ -225,22 +204,22 @@
 	</div>
 	<div class="flex items-center justify-end space-x-4 py-4">
 		<div class="flex-1 text-sm text-muted-foreground">
-			{Object.keys($selectedDataIds).length} of{' '}
+			{Object.keys($selectedDataIds).length} of{" "}
 			{$rows.length} row(s) selected.
 		</div>
 		<Button
 			disabled={!$hasPreviousPage}
 			on:click={() => ($pageIndex = $pageIndex - 1)}
 			size="sm"
-			variant="outline"
-			>Previous
-		</Button>
+			variant="outline">Previous
+		</Button
+		>
 		<Button
 			disabled={!$hasNextPage}
 			on:click={() => ($pageIndex = $pageIndex + 1)}
 			size="sm"
-			variant="outline"
-			>Next
-		</Button>
+			variant="outline">Next
+		</Button
+		>
 	</div>
 </div>

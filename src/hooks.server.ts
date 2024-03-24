@@ -32,6 +32,7 @@ const alwaysAllowed = [
 	'/grants',
 	'/grant-builder',
 	'/grant-preview',
+	'/grant-admin' // temp
 	'/analytics'
 ];
 

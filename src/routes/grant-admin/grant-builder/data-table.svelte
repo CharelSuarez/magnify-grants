@@ -5,29 +5,47 @@
 		addSortBy,
 		addTableFilter,
 		addHiddenColumns,
-		addSelectedRows,
-		addColumnFilters
+		addSelectedRows
 	} from 'svelte-headless-table/plugins';
-	import { get, readable, type Writable } from 'svelte/store';
+	import { writable } from 'svelte/store';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
-	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import * as Table from '$lib/components/ui/table';
 	import DataTableActions from './data-table-actions.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import DataTableCheckbox from './data-table-checkbox.svelte';
-	import { Prisma } from '@prisma/client';
-	import Cross2 from 'svelte-radix/Cross2.svelte';
+	import DataTableCheckbox from '$lib/custom_components/ui/table/grant-table-checkbox.svelte';
+	import type { Form } from '@prisma/client';
+	import { updateFlash } from 'sveltekit-flash-message';
+	import { page } from '$app/stores';
+	import { PlusCircle } from 'lucide-svelte';
 
-	type GrantWithPosts = Prisma.GrantGetPayload<{
-		include: { organization: true };
-	}>
+	export let forms: Form[];
 
-	export let grants: GrantWithPosts[];
+	const data = writable(forms);
 
+	const deleteForm = async (id: string) => {
+		const res = await fetch('/grant-admin/grant-builder/delete/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: id
+			})
+		});
 
-	const table = createTable(readable(grants), {
+		if (res.status === 200) {
+			await updateFlash(page);
+			const index = forms.map((f) => f.id).indexOf(id);
+			if (index < 0 || index >= forms.length) {
+				return;
+			}
+			forms.splice(index, 1);
+			$data = $data;
+		}
+	};
+
+	const table = createTable(data, {
 		page: addPagination(),
 		sort: addSortBy({
 			toggleOrder: ['asc', 'desc']
@@ -38,7 +56,6 @@
 		hide: addHiddenColumns(),
 		select: addSelectedRows()
 	});
-
 
 	const columns = table.createColumns([
 		table.column({
@@ -63,8 +80,8 @@
 			}
 		}),
 		table.column({
-			accessor: 'title',
-			header: 'Title'
+			accessor: 'name',
+			header: 'Name'
 		}),
 		table.column({
 			accessor: 'description',
@@ -76,48 +93,22 @@
 			}
 		}),
 		table.column({
-			accessor: 'acceptingApplications',
-			header: 'Accepting Applications',
-			plugins: {
-				filter: {
-					exclude: true
-				}
+			accessor: 'createdAt',
+			header: 'Created',
+			cell: ({ value }) => {
+				const date = value.toLocaleString();
+				if (date.length == 0) return 'None';
+				else if (date.length < 25) return date;
+				return date.substring(0, 25) + '...';
 			}
-		}),
-		table.column({
-			accessor: 'published',
-			header: 'Published',
-			plugins: {
-				filter: {
-					exclude: true
-				}
-			}
-		}),
-		table.column({
-			accessor: (item) => item,
-			header: 'Range',
-			cell: ({ value: { rangeLow, rangeHigh } }) => {
-				const rangeLowFormatted = new Intl.NumberFormat('en-US', {
-					style: 'currency',
-					currency: 'CAD'
-				}).format(rangeLow);
-				const rangeHighFormatted = new Intl.NumberFormat('en-US', {
-					style: 'currency',
-					currency: 'CAD'
-				}).format(rangeHigh);
-				return `${rangeLowFormatted} to ${rangeHighFormatted}`;
-			}
-		}),
-		table.column({
-			accessor: 'organization',
-			header: 'Organization',
-			cell: ({ value }) => value?.name
 		}),
 		table.column({
 			accessor: ({ id }) => id,
 			header: '',
 			cell: ({ value }) => {
-				return createRender(DataTableActions);
+				return createRender(DataTableActions, { id: value }).on('delete', (e) =>
+					deleteForm(e.detail.id)
+				);
 			}
 		})
 	]);
@@ -135,50 +126,21 @@
 	$: $hiddenColumnIds = Object.entries(hideForId)
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
-	const hidableCols = ['title', 'acceptingApplications', 'published', 'description', 'range', 'organization'];
-
-	$: showReset = Object.values({ $filterValue }).some((v) => v.length > 0);
 </script>
 
 <div>
-	<div class="flex items-center py-4">
+	<div class="flex flex-row items-center py-4">
+		<Button href="/grant-admin/grant-builder/new" size="icon" variant="outline">
+			<PlusCircle />
+		</Button>
 		<Input
 			bind:value={$filterValue}
-			class="max-w-sm pr-40"
-			placeholder="Search titles or descriptions"
+			class="max-w-sm"
+			placeholder="Search names or descriptions"
 			type="text"
 		/>
-		{#if showReset}
-			<Button
-				on:click={() => {
-					$filterValue = "";
-				}}
-				variant="secondary"
-				class="h-8 px-2 lg:px-2"
-			>
-				Reset filters
-				<Cross2 class="ml-2 h-4 w-4" />
-			</Button>
-		{/if}
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger asChild let:builder>
-				<Button builders={[builder]} class="ml-auto" variant="outline">
-					Columns
-					<ChevronDown class="ml-2 h-4 w-4" />
-				</Button>
-			</DropdownMenu.Trigger>
-			<DropdownMenu.Content>
-				{#each flatColumns as col}
-					{#if hidableCols.includes(col.id)}
-						<DropdownMenu.CheckboxItem bind:checked={hideForId[col.id]}>
-							{col.header}
-						</DropdownMenu.CheckboxItem>
-					{/if}
-				{/each}
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
 	</div>
-	<div class="rounded-md border">
+	<div class="bg-white rounded-md border">
 		<Table.Root {...$tableAttrs}>
 			<Table.Header>
 				{#each $headerRows as headerRow}
