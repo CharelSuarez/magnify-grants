@@ -7,7 +7,10 @@
 	export let data: PageData;
 
 	const form = data.form;
-	const fields = form && form.fields ? form.fields.sort((i, j) => i.index - j.index) : null;
+	const fields =
+		form && form.fields
+			? form.fields.sort((i: { index: number }, j: { index: number }) => i.index - j.index)
+			: null;
 </script>
 
 {#if form}
