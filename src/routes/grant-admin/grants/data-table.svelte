@@ -15,7 +15,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  import DataTableCheckbox from '$lib/custom_components/ui/table/grant-table-checkbox.svelte'
+  	import DataTableCheckbox from '$lib/custom_components/ui/table/table-checkbox.svelte'
 	import type { Grant } from '@prisma/client';
 
 	export let grants: Grant[];

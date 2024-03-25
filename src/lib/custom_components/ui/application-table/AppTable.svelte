@@ -1,0 +1,180 @@
+<script lang="ts">
+	import { createTable, Render, Subscribe, createRender } from 'svelte-headless-table';
+	import { addPagination, addTableFilter, addSelectedRows } from 'svelte-headless-table/plugins';
+	import { readable, writable } from 'svelte/store';
+	import * as Table from '$lib/components/ui/table';
+	import GrantTableActions from './AppTableActions.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import { Input } from '$lib/components/ui/input';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import GrantTableCheckbox from '../table/table-checkbox.svelte';
+	import GrantTableStatusCell from './AppTableAcceptCell.svelte';
+	import GrantTableCompleteStatus from './AppTableCompleteCell.svelte';
+	import type { Applications } from '$lib/validation/app_schema';
+	import AppTableAge from './AppTableAgeCell.svelte';
+
+	let className: string = '';
+	export { className as class };
+
+	export let data: Applications | undefined;
+
+    /* Store table state in writable store and update it. */
+    let tableState = writable(data?.applications || []);
+    $: !data?.applications || ($tableState = data.applications);
+
+	const table = createTable(tableState, {
+		page: addPagination(),
+		filter: addTableFilter({
+			fn: ({ filterValue, value }) => value.toLowerCase().includes(filterValue.toLowerCase())
+		}),
+		select: addSelectedRows()
+	});
+
+	const columns = table.createColumns([
+		table.column({
+			accessor: 'id',
+			header: (_, { pluginStates }) => {
+				const { allPageRowsSelected } = pluginStates.select;
+				return createRender(GrantTableCheckbox, {
+					checked: allPageRowsSelected
+				});
+			},
+			cell: ({ row }, { pluginStates }) => {
+				const { getRowState } = pluginStates.select;
+				const { isSelected } = getRowState(row);
+
+				return createRender(GrantTableCheckbox, {
+					checked: isSelected
+				});
+			},
+			plugins: {
+				filter: {
+					exclude: true
+				}
+			}
+		}),
+		table.column({
+			accessor: 'grantTitle',
+			header: 'Grant'
+		}),
+		table.column({
+			accessor: 'userProfileName',
+			header: 'Name'
+		}),
+		table.column({
+			accessor: 'userProfileDateOfBirth',
+			header: 'Age',
+            cell: ({ value }) => {
+				return createRender(AppTableAge, {
+					value
+				});
+			}
+		}),
+		table.column({
+			accessor: 'userProfileEmail',
+			header: 'Email'
+		}),
+		table.column({
+			accessor: 'complete',
+			header: 'Complete/Draft',
+			cell: ({ value }) => {
+				return createRender(GrantTableCompleteStatus, {
+					value
+				});
+			}
+		}),
+		table.column({
+			accessor: 'status',
+			header: 'Accepted Status',
+			cell: ({ value }) => {
+				return createRender(GrantTableStatusCell, {
+					value
+				});
+			}
+		}),
+		table.column({
+			accessor: ({ id }) => id,
+			header: '',
+			cell: ({ value }) => {
+				return createRender(GrantTableActions, { id: value });
+			}
+		})
+	]);
+
+	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, rows } =
+		table.createViewModel(columns);
+
+	const { hasNextPage, hasPreviousPage, pageIndex } = pluginStates.page;
+	const { filterValue } = pluginStates.filter;
+	const { selectedDataIds } = pluginStates.select;
+</script>
+
+<div class={className}>
+	<div class="flex items-center py-4 gap-6">
+		<Input
+			class="max-w-sm"
+			placeholder="Search by any field..."
+			type="text"
+			bind:value={$filterValue}
+		/>
+		<Button
+			variant="destructive"
+			size="sm"
+			color="red"
+			on:click={() => ($pageIndex = $pageIndex - 1)}
+			disabled={Object.keys($selectedDataIds).length == 0}>Delete All Selected</Button
+		>
+	</div>
+	<div class="rounded-md border">
+		<Table.Root {...$tableAttrs}>
+			<Table.Header>
+				{#each $headerRows as headerRow}
+					<Subscribe rowAttrs={headerRow.attrs()}>
+						<Table.Row>
+							{#each headerRow.cells as cell (cell.id)}
+								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()}>
+									<Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
+										<Render of={cell.render()} />
+									</Table.Head>
+								</Subscribe>
+							{/each}
+						</Table.Row>
+					</Subscribe>
+				{/each}
+			</Table.Header>
+			<Table.Body {...$tableBodyAttrs}>
+				{#each $pageRows as row (row.id)}
+					<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
+						<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'}>
+							{#each row.cells as cell (cell.id)}
+								<Subscribe attrs={cell.attrs()} let:attrs>
+									<Table.Cell {...attrs} class="[&:has([role=checkbox])]:pl-3">
+										<Render of={cell.render()} />
+									</Table.Cell>
+								</Subscribe>
+							{/each}
+						</Table.Row>
+					</Subscribe>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+	</div>
+	<div class="flex items-center justify-end space-x-4 py-4">
+		<div class="flex-1 text-sm text-muted-foreground">
+			{Object.keys($selectedDataIds).length} of{' '}
+			{$rows.length} row(s) selected.
+		</div>
+		<Button
+			variant="outline"
+			size="sm"
+			on:click={() => ($pageIndex = $pageIndex - 1)}
+			disabled={!$hasPreviousPage}>Previous</Button
+		>
+		<Button
+			variant="outline"
+			size="sm"
+			disabled={!$hasNextPage}
+			on:click={() => ($pageIndex = $pageIndex + 1)}>Next</Button
+		>
+	</div>
+</div>

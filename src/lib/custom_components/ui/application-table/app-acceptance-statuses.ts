@@ -4,7 +4,7 @@ import CrossCircled from "svelte-radix/CrossCircled.svelte";
 import type { ComponentType } from "svelte";
 
 export class AcceptStatus {
-    static readonly PENDING = new AcceptStatus("PENDING", "In Progress", Stopwatch, "fill-yellow-500");
+    static readonly IN_PROGRESS = new AcceptStatus("IN_PROGRESS", "In Progress", Stopwatch, "fill-yellow-500");
     static readonly ACCEPTED = new AcceptStatus("ACCEPTED", "Accepted", CheckCircled, "fill-green-500");
     static readonly REJECTED = new AcceptStatus("REJECTED", "Rejected", CrossCircled, "fill-red-500");
 
@@ -12,8 +12,8 @@ export class AcceptStatus {
 
     public static fromString(name: string) : AcceptStatus {
         switch (name) {
-            case AcceptStatus.PENDING.key:
-                return AcceptStatus.PENDING;
+            case AcceptStatus.IN_PROGRESS.key:
+                return AcceptStatus.IN_PROGRESS;
             case AcceptStatus.ACCEPTED.key:
                 return AcceptStatus.ACCEPTED;
             case AcceptStatus.REJECTED.key:
