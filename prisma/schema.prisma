@@ -135,15 +135,15 @@ enum FieldType {
 }
 
 model Application {
-  id      String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  form    Form                           @relation(fields: [formId], references: [id], onDelete: Cascade)
-  formId  String                         @db.Uuid
-  user    User                           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String
-  version Int                            @default(0)
-  draft   Boolean            @default(true)
-  status  ApplicationStatus  @default(IN_PROGRESS)
-  entries ApplicationEntry[]
+  id       String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  form     Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId   String             @db.Uuid
+  user     User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String
+  version  Int                @default(0)
+  complete Boolean            @default(false)
+  status   ApplicationStatus  @default(IN_PROGRESS)
+  entries  ApplicationEntry[]
 
   @@unique([userId, formId, version])
   @@index([userId, formId])
