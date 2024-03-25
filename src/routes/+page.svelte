@@ -11,9 +11,8 @@
 
 <main class="flex-col h-auto">
 
-	<!-- <Taskbar loggedIn={data.loggedIn}/> -->
+	<Taskbar loggedIn={data.loggedIn}/>
 
-  <Menu loggedIn={data.loggedIn} />
 
 	<div class="flex justify-evenly items-center h-screen">
 		<div class="flex-col justify-center items-center w-auto">
