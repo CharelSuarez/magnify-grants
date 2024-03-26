@@ -4,8 +4,6 @@
 
 	export let name: string;
 	export let description: string;
-	export let id: string;
-
     export let endpoint : string;
 
 

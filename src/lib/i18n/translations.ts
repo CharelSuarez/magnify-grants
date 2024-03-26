@@ -69,7 +69,14 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'table.header.title': 'Title',
 		'table.header.acceptingApplications': 'Accepting Applications',
 		'table.header.published': 'Published',
-		'table.header.range': 'Range'
+		'table.header.range': 'Range',
+		'nav.home': 'Home',
+		'body.organization': 'Organization',
+		'body.grants': 'Grants',
+		'body.search.grants': 'Search for Grants',
+		'body.search.organizations': 'Search for Organizations',
+		'body.organizations.notfound': 'No organizations found',
+		'body.grants.notfound': 'No grants found',
 
 	},
 	'fr': {
@@ -142,7 +149,14 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'table.header.title': 'Titre',
 		'table.header.acceptingApplications': 'Acceptation des candidatures',
 		'table.header.published': 'Publié',
-		'table.header.range': 'Gamme'
+		'table.header.range': 'Gamme',
+		'nav.home': 'Maison',
+		'body.organization': 'Organisation',
+		'body.grants': 'Subventions',
+		'body.search.grants': 'Rechercher des subventions',
+		'body.search.organizations': 'Rechercher des organisations',
+		'body.organizations.notfound': 'Aucune organisation trouvée',
+		'body.grants.notfound': 'Aucune subvention trouvée',
 	}
 };
 
