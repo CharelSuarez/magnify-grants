@@ -3,9 +3,13 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
+	import { Image } from 'svelte-radix';
+	import { Separator } from '$lib/components/ui/separator';
+
+	import image from '$lib/assets/branding/images/magnify_image.webp';
 
 	export let data: PageData;
-	let grants = data.grants;
+	let orgs = data.organizations;
 </script>
 
 <div>
@@ -17,20 +21,17 @@
 					<p class="text-muted-foreground">View grants and apply today!</p>
 				</div>
 			</div>
-			<div class="grid grid-cols-2 gap-4">
-				{#each grants as grant (grant.id)}
+			<Separator />
+			<div class="py-2 grid grid-cols-3 gap-4">
+				{#each orgs as org (org.id)}
 					<Card.Root>
+						<img class="h-auto max-w-full" src="{image}">
 						<Card.Header>
-							<Card.Title>{grant.title}</Card.Title>
-							<Card.Description>{grant.organization.name}</Card.Description>
+							<Card.Title>{org.name}</Card.Title>
+							<Card.Description>{org.description}</Card.Description>
 						</Card.Header>
-						<Card.Content>
-							<p>{grant.description}</p>
-							<Badge variant="secondary">{grant.expirationDate}</Badge>
-						</Card.Content>
 						<Card.Footer class="flex justify-between">
-							<Button variant="secondary">Favorite</Button>
-							<Button>Apply</Button>
+							<Button href={`/grants-user/${org.id}`}>View Grants</Button>
 						</Card.Footer>
 					</Card.Root>
 				{/each}

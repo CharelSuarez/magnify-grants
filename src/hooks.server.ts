@@ -33,7 +33,8 @@ const alwaysAllowed = [
 	'/grant-builder',
 	'/grant-preview',
 	'/grant-admin', // temp
-	'/analytics'
+	'/analytics',
+	'/organizations-user'
 ];
 
 // inherits from alwaysAllowed
