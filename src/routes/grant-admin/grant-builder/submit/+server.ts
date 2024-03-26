@@ -39,9 +39,17 @@ export const POST: RequestHandler = async (event) => {
 		const data = {
 			name: body.name,
 			description: body.description,
-			organization: {
-				connect: {
-					id: 'b972df40-15bf-48c7-a7cf-0c20a0d1669b'
+			grant: {
+				connectOrCreate: {
+					where: {
+						id: '69696969-6969-6969-6969-696969696969' // TODO Use real grant...
+					},
+					create: {
+						id: '69696969-6969-6969-6969-696969696969',
+						organizationId: 'b972df40-15bf-48c7-a7cf-0c20a0d1669b', // TODO Use real grant/organization...
+						title: body.name,
+						description: body.description
+					}
 				}
 			},
 			fields: {}
@@ -58,11 +66,7 @@ export const POST: RequestHandler = async (event) => {
 				where: {
 					id: id
 				},
-				data: data,
-				include: {
-					fields: true,
-					organization: true
-				}
+				data: data
 			});
 
 			message = 'Form updated successfully';
@@ -71,11 +75,7 @@ export const POST: RequestHandler = async (event) => {
 				create: body.fields
 			};
 			form = await db.form.create({
-				data: data,
-				include: {
-					fields: true,
-					organization: true
-				}
+				data: data
 			});
 			message = 'Form created successfully';
 		}

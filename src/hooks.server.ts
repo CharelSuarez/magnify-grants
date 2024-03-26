@@ -34,7 +34,8 @@ const alwaysAllowed = [
 	'/grant-preview',
 	'/grant-admin', // temp
 	'/analytics',
-	'/organizations-user'
+	'/organizations-user',
+	'/grant'
 ];
 
 // inherits from alwaysAllowed
