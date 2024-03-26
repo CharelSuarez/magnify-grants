@@ -72,6 +72,8 @@ model Grant {
   expirationDate        DateTime?
   organization          Organization @relation(fields: [organizationId], references: [id])
   form                  Form?
+  sector                Sector       @default(OTHER)
+  postedDate            DateTime     @default(now())
 
   @@map("grants")
 }
@@ -136,15 +138,17 @@ enum FieldType {
 }
 
 model Application {
-  id       String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  form     Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
-  formId   String             @db.Uuid
-  user     User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId   String
-  version  Int                @default(0)
-  complete Boolean            @default(false)
-  status   ApplicationStatus  @default(IN_PROGRESS)
-  entries  ApplicationEntry[]
+  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  form           Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formId         String             @db.Uuid
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  version        Int                @default(0)
+  complete       Boolean            @default(false)
+  status         ApplicationStatus  @default(IN_PROGRESS)
+  entries        ApplicationEntry[]
+  submissionDate DateTime?
+  amountAwarded  Int
 
   @@unique([userId, formId, version])
   @@index([userId, formId])
@@ -170,4 +174,17 @@ model ApplicationEntry {
   @@unique([appId, fieldId])
   @@index([appId, fieldId])
   @@map("application_entries")
+}
+
+enum Sector {
+  AGRICULTURE
+  ARTS
+  BUSINESS
+  EDUCATION
+  ENVIRONMENT
+  HEALTH
+  SCIENCE_TECHNOLOGY
+  OTHER
+
+  @@map("sector")
 }

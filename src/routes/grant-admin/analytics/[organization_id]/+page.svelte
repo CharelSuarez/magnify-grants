@@ -10,9 +10,13 @@
 
 	export let data: PageData;
 	let organization = data.organization;
+	let fundsAllocated = data.fundsAllocated;
+	let grantsPosted = data.totalGrants;
+	let totalApplications = data.totalApplications;
+	let acceptanceRate = data.acceptanceRate;
+	let fundsAwarded = data.fundsAwarded;
+	let grantsPerSector = data.grantsPerSector;
 </script>
-
-
 
 <div>
 	<main>
@@ -32,7 +36,7 @@
 							<Card.Description>{$t('card.users.description')}</Card.Description>
 						</Card.Header>
 						<Card.Content>
-							<h1 class="text-7xl">{$t('card.users.content')}</h1>
+							<h1 class="text-7xl">{totalApplications} {$t('card.users.content')}</h1>
 						</Card.Content>
 					</Card.Root>
 				</div>
@@ -42,7 +46,7 @@
 						<Card.Description>{$t('card.grants.description')}</Card.Description>
 					</Card.Header>
 					<Card.Content>
-						<h1 class="text-7xl">{$t('card.grants.content')}</h1>
+						<h1 class="text-7xl">{grantsPosted}</h1>
 					</Card.Content>
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
@@ -51,7 +55,7 @@
 						<Card.Description>{$t('card.funding.description')}</Card.Description>
 					</Card.Header>
 					<Card.Content>
-						<p class="text-3xl">{$t('card.funding.content')}</p>
+						<p class="text-3xl">{fundsAwarded} / {fundsAllocated}</p>
 					</Card.Content>
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
@@ -59,10 +63,9 @@
 						<Card.Title>{$t('card.sectors.title')}</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<p>{$t('card.sectors.education')}</p>
-						<p>{$t('card.sectors.research')}</p>
-						<p>{$t('card.sectors.smallBusiness')}</p>
-						<p>{$t('card.sectors.nonProfit')}</p>
+						{#each grantsPerSector as sector}
+							<p>{$t(`card.sectors.${sector.sector.replace("_", "").toLowerCase()}`)}: {sector._count.sector}</p>
+						{/each}
 					</Card.Content>
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
@@ -70,7 +73,7 @@
 						<Card.Title>{$t('card.acceptanceRate.title')}</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<p class="text-7xl">{$t('card.acceptanceRate.content')}</p>
+						<p class="text-7xl">{acceptanceRate}%</p>
 					</Card.Content>
 				</Card.Root>
 			</div>
