@@ -12,15 +12,26 @@
 	import GrantTableCompleteStatus from './AppTableCompleteCell.svelte';
 	import type { Applications } from '$lib/validation/app_schema';
 	import AppTableAge from './AppTableAgeCell.svelte';
+	import { t } from '$lib/i18n/i18n';
 
 	let className: string = '';
 	export { className as class };
 
 	export let data: Applications | undefined;
 
+	$: console.log("data", data);
+
+
     /* Store table state in writable store and update it. */
     let tableState = writable(data?.applications || []);
-    $: !data?.applications || ($tableState = data.applications);
+    $: updateTable(data);
+
+	const updateTable = (data: Applications | undefined) => {
+		if (!data?.applications) {
+			return;
+		}
+		$tableState = data.applications;
+	}
 
 	const table = createTable(tableState, {
 		page: addPagination(),
@@ -55,16 +66,16 @@
 		}),
 		table.column({
 			accessor: 'grantTitle',
-			header: 'Grant'
+			header: $t('table.header.grant')
 		}),
 		table.column({
 			accessor: 'userProfileName',
-			header: 'Name'
+			header: $t('table.header.name')
 		}),
 		table.column({
 			accessor: 'userProfileDateOfBirth',
-			header: 'Age',
-            cell: ({ value }) => {
+			header: $t('table.header.age'),
+			cell: ({ value }) => {
 				return createRender(AppTableAge, {
 					value
 				});
@@ -72,11 +83,11 @@
 		}),
 		table.column({
 			accessor: 'userProfileEmail',
-			header: 'Email'
+			header: $t('table.header.email')
 		}),
 		table.column({
 			accessor: 'complete',
-			header: 'Complete/Draft',
+			header: $t('table.header.complete'),
 			cell: ({ value }) => {
 				return createRender(GrantTableCompleteStatus, {
 					value
@@ -85,7 +96,7 @@
 		}),
 		table.column({
 			accessor: 'status',
-			header: 'Accepted Status',
+			header: $t('table.header.status'),
 			cell: ({ value }) => {
 				return createRender(GrantTableStatusCell, {
 					value
@@ -113,7 +124,7 @@
 	<div class="flex items-center py-4 gap-6">
 		<Input
 			class="max-w-sm"
-			placeholder="Search by any field..."
+			placeholder={$t('search.placeholder')}
 			type="text"
 			bind:value={$filterValue}
 		/>
@@ -122,8 +133,10 @@
 			size="sm"
 			color="red"
 			on:click={() => ($pageIndex = $pageIndex - 1)}
-			disabled={Object.keys($selectedDataIds).length == 0}>Delete All Selected</Button
+			disabled={Object.keys($selectedDataIds).length == 0}
 		>
+			{$t('button.deleteAll')}
+		</Button>
 	</div>
 	<div class="rounded-md border">
 		<Table.Root {...$tableAttrs}>
@@ -161,20 +174,26 @@
 	</div>
 	<div class="flex items-center justify-end space-x-4 py-4">
 		<div class="flex-1 text-sm text-muted-foreground">
-			{Object.keys($selectedDataIds).length} of{' '}
-			{$rows.length} row(s) selected.
+			{$t('pagination.selectedCount', {
+				count: Object.keys($selectedDataIds).length,
+				total: $rows.length
+			})}
 		</div>
 		<Button
 			variant="outline"
 			size="sm"
 			on:click={() => ($pageIndex = $pageIndex - 1)}
-			disabled={!$hasPreviousPage}>Previous</Button
+			disabled={!$hasPreviousPage}
 		>
+			{$t('pagination.previous')}
+		</Button>
 		<Button
 			variant="outline"
 			size="sm"
 			disabled={!$hasNextPage}
-			on:click={() => ($pageIndex = $pageIndex + 1)}>Next</Button
+			on:click={() => ($pageIndex = $pageIndex + 1)}
 		>
+			{$t('pagination.next')}
+		</Button>
 	</div>
 </div>

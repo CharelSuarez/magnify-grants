@@ -10,6 +10,7 @@
 	import { filterSchema, type FilterSchema } from "$lib/validation/app_schema";
     import { Loader2 } from "lucide-svelte";
     import * as Form from "$lib/components/ui/form";
+	import { t } from '$lib/i18n/i18n';
 
 	let CompleteIcon = CompleteStatus.COMPLETE.icon;
 	let IncompleteIcon = CompleteStatus.INCOMPLETE.icon;
@@ -23,10 +24,12 @@
 
 	let isLoading = false;
     let filterForm = superForm(data, {
-		clearOnSubmit: 'none',
+		dataType: 'json',
         validators: zodClient(filterSchema),
-		onSubmit: () => isLoading = true,
-		onResult: () => setTimeout(() => isLoading = false, 1000),
+		onSubmit: (e) => {
+			isLoading = true
+		},
+		onResult: () => setTimeout(() => isLoading = false, 1000)
     });
 	
 	const { form: formData, enhance } = filterForm;
@@ -36,7 +39,7 @@
 	let lastMinAge : number | undefined = undefined, lastMaxAge : number | undefined = undefined;
 	formData.subscribe((value) => {
 		if (value.minAge !== undefined && value.minAge !== lastMinAge) 
-			lastMinAge = ageSlider[0] = value.minAge;
+			lastMinAge = ageSlider[0] = value.minAge;``
 		if (value.maxAge !== undefined && value.maxAge !== lastMaxAge) 
 			lastMaxAge = ageSlider[1] = value.maxAge;
 	});
@@ -46,10 +49,10 @@
 
 <Card.Root class={className}>
 	<Card.Header>
-		<Card.Title>Filter Applications</Card.Title>
-		<Card.Description>Populate the table with applicants that match the given criteria.</Card.Description>
+		<Card.Title>{$t("applications.filter.title")}</Card.Title>
+		<Card.Description>{$t("applications.filter.description")}</Card.Description>
 	</Card.Header>
-	<form use:enhance method="POST" class="w-full">
+	<form method="POST" use:enhance class="w-full">
 		<Card.Content class="grid gap-6">
 			<div class="grid gap-2">
 				<Label>Age Range</Label>
@@ -143,7 +146,7 @@
 				{#if isLoading}
 					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 				{/if}
-				Filter
+				{$t("applications.filter")}
 			</Form.Button>
 		</Card.Footer>
 	</form>

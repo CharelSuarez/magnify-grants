@@ -1,12 +1,5 @@
 import type { ApplicationStatus } from "@prisma/client";
 import { z } from "zod";
-// import { AcceptStatus } from "$lib/custom_components/ui/application-table/app-acceptance-statuses";
-// import { CompleteStatus } from "$lib/custom_components/ui/application-table/app-complete-statuses";
-
-// export const completeStatuses = z.enum([CompleteStatus.COMPLETE.toString(), CompleteStatus.INCOMPLETE.toString()]);
-
-// export const applicationStatuses = z.enum([AcceptStatus.PENDING.toString(), 
-//     AcceptStatus.ACCEPTED.toString(), AcceptStatus.REJECTED.toString()]);
 
 export type Applications = {
     applications: {   

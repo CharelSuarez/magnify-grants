@@ -146,9 +146,13 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"alert.title": "Are you absolutely sure?",
 		"alert.description": "This action cannot be undone. This will permanently delete this form and remove its data from our servers.",
 		"alert.cancel": "Cancel",
-		"alert.delete": "Delete"
-
-
+		"alert.delete": "Delete",
+		"applications.filter.title": "Filter Applications",
+		"applications.filter.description": "Populate the table with applicants that match the given criteria.",
+		"applications.filter": "Filter",
+		"application.status.inProgress": "In Progress",
+		"application.status.accepted": "Accepted",
+		"application.status.rejectd": "Rejected"
 	},
 	'fr': {
 		'homepage.title': '¡Hola Mundo!',

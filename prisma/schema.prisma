@@ -14,7 +14,7 @@ model User {
   emailVerified    Boolean                @default(false)
   hashedPassword   String
   verificationCode EmailVerificationCode?
-  profile          Profile?
+  profile          Profile? // TODO Make this non-optional?
   sessions         Session[]
   applications     Application[]
 
@@ -44,7 +44,7 @@ model Profile {
   userId      String    @unique
   firstName   String
   lastName    String
-  dateOfBirth DateTime?
+  dateOfBirth DateTime? // TODO Make this non-optional?
   role        Role      @default(GRANT_USER)
   user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
 
