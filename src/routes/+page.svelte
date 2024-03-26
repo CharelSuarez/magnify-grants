@@ -5,7 +5,6 @@
   import shape_3 from '$lib/assets/abstract/shape_3.png';
   import magnify_logo from '$lib/assets/branding/images/magnify_image.webp';
 	import type { PageData } from './$types';
-
   export let data: PageData;
 </script>
 
