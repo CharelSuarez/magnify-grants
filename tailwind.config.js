@@ -55,7 +55,8 @@ const config = {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				sans: ['Varela Round', ...fontFamily.sans]
+				sans: ['Varela Round', ...fontFamily.sans],
+				satoshi: ['Satoshi', ...fontFamily.sans]
 			}
 		}
 	}
