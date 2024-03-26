@@ -8,7 +8,6 @@
 
     export let endpoint : string;
 
-	console.log(id);
 
 	const handleClick = () => {
 		goto(endpoint);

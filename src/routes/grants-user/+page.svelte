@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+    import { toShort } from '$lib/utils/url';
 
 	import logo from '$lib/assets/branding/images/magnify_logo.png';
 	import Orgs from '$lib/custom_components/ui/grant-user/Orgs.svelte';
@@ -64,7 +65,7 @@
 					name={grant.title}
 					description={grant.description}
 					id={grant.id}
-					endpoint={`/grant/${grant.id}`}
+					endpoint={`/grant/${toShort(grant.id)}`}
 				/>
 			{/each}
 		</div>
