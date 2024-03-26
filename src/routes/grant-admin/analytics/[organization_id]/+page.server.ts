@@ -9,6 +9,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		}
 	});
 
+
 	const numGrants = await db.grant.count({
 		where: {
 			postedDate: {

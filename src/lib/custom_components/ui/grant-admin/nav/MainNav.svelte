@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
 	import { t, locale, locales } from "../../../../i18n/i18n";
 	import * as Select from "$lib/components/ui/select/index.js";
 	import type { Selected } from 'bits-ui';
+
 
 	const navButtons = {
 		Overview: '/grant-admin',
@@ -11,6 +13,7 @@
 		'Grant Builder': '/grant-admin/grant-builder',
 		Analytics: '/grant-admin/analytics'
 	};
+
 
 	let selected: Selected<string>;
 	$: if (selected && selected.value) $locale = selected.value;
@@ -29,20 +32,5 @@
 
 <div class="w-full"/>
 
-<Select.Root bind:selected={selected}>
-	<Select.Trigger class="w-[180px]">
-		<Select.Value placeholder="en" />
-	</Select.Trigger>
-	<Select.Content>
-		<Select.Group>
-			<Select.Label>Language</Select.Label>
-			{#each locales as l}
-				<Select.Item value={l} label={l}>
-					{l}
-				</Select.Item>
-			{/each}
-		</Select.Group>
-	</Select.Content>
-		<Select.Input name="favoriteFruit" />
-	</Select.Root>
+<LocaleSelection />
 

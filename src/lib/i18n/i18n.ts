@@ -1,7 +1,15 @@
 import { derived, writable } from "svelte/store";
 import { translations } from "./translations";
+import { browser } from '$app/environment';
 
-export const locale = writable("en");
+const storedLocale = browser ? localStorage.getItem("locale") || "en" : "en";
+export const locale = writable(storedLocale);
+locale.subscribe((value) => {
+	if (browser) {
+		return localStorage.setItem("locale", value)
+	}
+});
+
 export const locales = Object.keys(translations);
 
 const translate = (locale: string, key: string | number, vars: {[x: string]: string}) => {

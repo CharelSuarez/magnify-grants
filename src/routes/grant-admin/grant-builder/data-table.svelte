@@ -18,6 +18,8 @@
 	import { updateFlash } from 'sveltekit-flash-message';
 	import { page } from '$app/stores';
 	import { PlusCircle } from 'lucide-svelte';
+	import { locale, t } from '$lib/i18n/i18n';
+	import { onMount } from 'svelte';
 
 	export let forms: Form[];
 
@@ -57,61 +59,66 @@
 		select: addSelectedRows()
 	});
 
-	const columns = table.createColumns([
-		table.column({
-			accessor: 'id',
-			header: (_, { pluginStates }) => {
-				const { allPageRowsSelected } = pluginStates.select;
-				return createRender(DataTableCheckbox, {
-					checked: allPageRowsSelected
-				});
-			},
-			cell: ({ row }, { pluginStates }) => {
-				const { getRowState } = pluginStates.select;
-				const { isSelected } = getRowState(row);
-				return createRender(DataTableCheckbox, {
-					checked: isSelected
-				});
-			},
-			plugins: {
-				filter: {
-					exclude: true
+	const createColumns = () => {
+		return table.createColumns([
+			table.column({
+				accessor: 'id',
+				header: (_, { pluginStates }) => {
+					const { allPageRowsSelected } = pluginStates.select;
+					return createRender(DataTableCheckbox, {
+						checked: allPageRowsSelected
+					});
+				},
+				cell: ({ row }, { pluginStates }) => {
+					const { getRowState } = pluginStates.select;
+					const { isSelected } = getRowState(row);
+					return createRender(DataTableCheckbox, {
+						checked: isSelected
+					});
+				},
+				plugins: {
+					filter: {
+						exclude: true
+					}
 				}
-			}
-		}),
-		table.column({
-			accessor: 'name',
-			header: 'Name'
-		}),
-		table.column({
-			accessor: 'description',
-			header: 'Description',
-			cell: ({ value }) => {
-				if (value.length == 0) return 'None';
-				else if (value.length < 25) return value;
-				return value.substring(0, 25) + '...';
-			}
-		}),
-		table.column({
-			accessor: 'createdAt',
-			header: 'Created',
-			cell: ({ value }) => {
-				const date = value.toLocaleString();
-				if (date.length == 0) return 'None';
-				else if (date.length < 25) return date;
-				return date.substring(0, 25) + '...';
-			}
-		}),
-		table.column({
-			accessor: ({ id }) => id,
-			header: '',
-			cell: ({ value }) => {
-				return createRender(DataTableActions, { id: value }).on('delete', (e) =>
-					deleteForm(e.detail.id)
-				);
-			}
-		})
-	]);
+			}),
+
+			table.column({
+				accessor: 'name',
+				header: $t('table.header.name')
+			}),
+			table.column({
+				accessor: 'description',
+				header: $t('table.header.description'),
+				cell: ({ value }) => {
+					if (value.length == 0) return 'None';
+					else if (value.length < 25) return value;
+					return value.substring(0, 25) + '...';
+				}
+			}),
+			table.column({
+				accessor: 'createdAt',
+				header: $t('table.header.created'),
+				cell: ({ value }) => {
+					const date = value.toLocaleString();
+					if (date.length == 0) return $t('common.none');
+					else if (date.length < 25) return date;
+					return date.substring(0, 25) + '...';
+				}
+			}),
+			table.column({
+				accessor: ({ id }) => id,
+				header: '',
+				cell: ({ value }) => {
+					return createRender(DataTableActions, { id: value }).on($t('action.delete'), (e) =>
+						deleteForm(e.detail.id)
+					);
+				}
+			})
+		]);
+	}
+
+	const columns = createColumns();
 
 	const { headerRows, pageRows, tableAttrs, tableBodyAttrs, pluginStates, flatColumns, rows } =
 		table.createViewModel(columns);
@@ -136,7 +143,7 @@
 		<Input
 			bind:value={$filterValue}
 			class="max-w-sm"
-			placeholder="Search names or descriptions"
+			placeholder="{$t('table.searchPlaceholder')}"
 			type="text"
 		/>
 	</div>
@@ -187,22 +194,23 @@
 	</div>
 	<div class="flex items-center justify-end space-x-4 py-4">
 		<div class="flex-1 text-sm text-muted-foreground">
-			{Object.keys($selectedDataIds).length} of{' '}
-			{$rows.length} row(s) selected.
+			{$t('table.pagination.selectedCount', { count: Object.keys($selectedDataIds).length, total: $rows.length })}
 		</div>
 		<Button
 			disabled={!$hasPreviousPage}
 			on:click={() => ($pageIndex = $pageIndex - 1)}
 			size="sm"
 			variant="outline"
-			>Previous
+		>
+			{$t('table.pagination.previous')}
 		</Button>
 		<Button
 			disabled={!$hasNextPage}
 			on:click={() => ($pageIndex = $pageIndex + 1)}
 			size="sm"
 			variant="outline"
-			>Next
+		>
+			{$t('table.pagination.next')}
 		</Button>
 	</div>
 </div>

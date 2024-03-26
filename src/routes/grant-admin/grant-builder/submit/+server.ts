@@ -41,7 +41,7 @@ export const POST: RequestHandler = async (event) => {
 			description: body.description,
 			organization: {
 				connect: {
-					id: 'ce191ebf-ace0-4224-8c78-5b0ad38a7c66'
+					id: 'b972df40-15bf-48c7-a7cf-0c20a0d1669b'
 				}
 			},
 			fields: {}

@@ -6,6 +6,7 @@
 	import { Separator } from '$lib/components/ui/separator';
 	import { t, locale, locales } from '$lib/i18n/i18n';
 	import { translations } from '$lib/i18n/translations';
+
 	import { onMount } from 'svelte';
 
 	export let data: PageData;
@@ -17,6 +18,7 @@
 	let fundsAwarded = data.fundsAwarded;
 	let grantsPerSector = data.grantsPerSector;
 </script>
+
 
 <div>
 	<main>
@@ -37,6 +39,7 @@
 						</Card.Header>
 						<Card.Content>
 							<h1 class="text-7xl">{totalApplications} {$t('card.users.content')}</h1>
+
 						</Card.Content>
 					</Card.Root>
 				</div>
@@ -47,6 +50,7 @@
 					</Card.Header>
 					<Card.Content>
 						<h1 class="text-7xl">{grantsPosted}</h1>
+
 					</Card.Content>
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">

@@ -19,6 +19,7 @@
 	  import GrantTableCheckbox from "./grant-table-checkbox.svelte";
     import GrantTableStatusCell from "./grant-table-status-cell.svelte";
     import GrantTableCompleteStatus from "./grant-table-complete-status.svelte";
+    import { t } from '$lib/i18n/i18n';
    
     type Application = {
       id: string;
@@ -157,23 +158,23 @@
       }),
       table.column({
         accessor: "grant",
-        header: "Grant",
+        header: $t('table.header.grant'),
       }),
       table.column({
         accessor: "name",
-        header: "Name",
+        header: $t('table.header.name'),
       }),
       table.column({
         accessor: "age",
-        header: "Age",
+        header: $t('table.header.age'),
       }),
       table.column({
         accessor: "email",
-        header: "Email",
+        header: $t('table.header.email'),
       }),
       table.column({
         accessor: "complete",
-        header: "Complete",
+        header: $t('table.header.complete'),
         cell: ({ value }) => {
           return createRender(GrantTableCompleteStatus, {
             value,
@@ -182,7 +183,7 @@
       }),
       table.column({
         accessor: "status",
-        header: "Status",
+        header: $t('table.header.status'),
         cell: ({ value }) => {
           return createRender(GrantTableStatusCell, {
             value,
@@ -219,7 +220,7 @@
   <div class="flex items-center py-4 gap-6">
     <Input
       class="max-w-sm"
-      placeholder="Search anything..."
+      placeholder="{$t('search.placeholder')}"
       type="text"
       bind:value={$filterValue}
     />
@@ -228,8 +229,10 @@
       size="sm"
       color="red"
       on:click={() => ($pageIndex = $pageIndex - 1)}
-      disabled={Object.keys($selectedDataIds).length == 0}>Delete All Selected</Button
+      disabled={Object.keys($selectedDataIds).length == 0}
     >
+      {$t('button.deleteAll')}
+    </Button>
   </div>
   <div class="rounded-md border">
     <Table.Root {...$tableAttrs}>
@@ -239,7 +242,7 @@
             <Table.Row>
               {#each headerRow.cells as cell (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()}>
-                  <Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
+                  <Table.Head {...attrs}>
                     <Render of={cell.render()} />
                   </Table.Head>
                 </Subscribe>
@@ -254,7 +257,7 @@
             <Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && "selected"}>
               {#each row.cells as cell (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs>
-                  <Table.Cell {...attrs} class="[&:has([role=checkbox])]:pl-3">
+                  <Table.Cell {...attrs}>
                     <Render of={cell.render()} />
                   </Table.Cell>
                 </Subscribe>
@@ -267,20 +270,23 @@
   </div>
   <div class="flex items-center justify-end space-x-4 py-4">
     <div class="flex-1 text-sm text-muted-foreground">
-      {Object.keys($selectedDataIds).length} of{" "}
-      {$rows.length} row(s) selected.
+      {$t('pagination.selectedCount', { count: Object.keys($selectedDataIds).length, total: $rows.length })}
     </div>
     <Button
       variant="outline"
       size="sm"
       on:click={() => ($pageIndex = $pageIndex - 1)}
-      disabled={!$hasPreviousPage}>Previous</Button
+      disabled={!$hasPreviousPage}
     >
+      {$t('pagination.previous')}
+    </Button>
     <Button
       variant="outline"
       size="sm"
       disabled={!$hasNextPage}
-      on:click={() => ($pageIndex = $pageIndex + 1)}>Next</Button
+      on:click={() => ($pageIndex = $pageIndex + 1)}
     >
+      {$t('pagination.next')}
+    </Button>
   </div>
 </div>

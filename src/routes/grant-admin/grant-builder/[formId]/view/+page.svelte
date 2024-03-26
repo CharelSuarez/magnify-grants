@@ -3,6 +3,7 @@
 	import FormElement from '$lib/custom_components/ui/grant-admin/grant-builder/FormElement.svelte';
 	import type { PageData } from './$types';
 	import { Button } from '$lib/components/ui/button';
+	import { t } from '$lib/i18n/i18n';
 
 	export let data: PageData;
 
@@ -25,7 +26,7 @@
 				<FormElement type="field" allowHover={false}>
 					<h1 class="font-bold">{field.prompt}</h1>
 					{#if hasOptions(field.type)}
-						<h1 class="font-bold pt-5">Options</h1>
+						<h1 class="font-bold pt-5">{$t('form.options')}</h1>
 						{#each field.options as option}
 							<p class="text-muted-foreground">{option}</p>
 						{/each}
@@ -34,7 +35,7 @@
 			{/each}
 		{/if}
 		<div class="flex flex-row w-full h-full justify-items-start">
-			<Button variant="outline" href="/grant-admin/grant-builder/{form.id}/edit">Edit</Button>
+			<Button variant="outline" href="/grant-admin/grant-builder/{form.id}/edit">{$t('form.editButton')}</Button>
 		</div>
 	</container>
 {/if}

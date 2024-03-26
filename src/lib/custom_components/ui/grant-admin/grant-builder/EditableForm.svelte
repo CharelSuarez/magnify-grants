@@ -6,6 +6,7 @@
 	import { PlusCircle, Trash2 } from 'lucide-svelte';
 	import FormElement from '$lib/custom_components/ui/grant-admin/grant-builder/FormElement.svelte';
 	import FormDropdown from '$lib/custom_components/ui/grant-admin/grant-builder/FormDropdown.svelte';
+	import { t } from '$lib/i18n/i18n';
 
 	export let errors: { [key: string | number]: { field: string; message: string } } = {};
 
@@ -110,8 +111,8 @@
 
 <container class="container flex w-screen flex-col space-y-5 items-center my-20">
 	<FormElement type="header">
-		<Input placeholder="Form name" bind:value={formName} />
-		<Input placeholder="Form description" bind:value={formDescription} />
+		<Input placeholder={$t('form.placeholder.name')} bind:value={formName} />
+		<Input placeholder={$t('form.placeholder.description')} bind:value={formDescription} />
 	</FormElement>
 	{#if 'name' in errors}
 		<FormElement type="error">
@@ -124,7 +125,6 @@
 		</FormElement>
 	{/if}
 	{#each fields as field, i}
-		<div class="py-2" />
 		<FormElement
 			on:addfield={(e) => addFieldHandler(e, i)}
 			on:clickup={() => moveUp(i)}
@@ -132,13 +132,12 @@
 			on:clickdelete={() => deleteField(i)}
 			type="field"
 		>
-			<h1 class="text-muted-foreground">{field.type} Prompt</h1>
-			<Input placeholder="Question..." bind:value={field.prompt} />
+			<h1 class="text-muted-foreground">{$t(`fieldType.${field.type}`)} Prompt</h1>
+			<Input placeholder={$t('form.placeholder.question')} bind:value={field.prompt} />
 			{#if hasOptions(field.type)}
-				<div class="pt-5" />
-				<h1 class="text-muted-foreground">{field.type} Options</h1>
+				<h1 class="text-muted-foreground">{$t('form.field.options', { fieldType: field.type })}</h1>
 				<div class="flex flex-col space-y-5">
-					{#each field.options as _, j}
+					{#each field.options as option, j}
 						<div class="flex space-x-1 flex-row w-full h-full">
 							<Input bind:value={field.options[j]} />
 							<Button on:click={() => deleteOption(i, j)} variant="outline" size="icon">
@@ -164,8 +163,7 @@
 		{/if}
 	{/each}
 	<div class="flex flex-row w-full space-x-2">
-		<!-- Button -->
-		<slot />
+		<!-- Placeholder for other buttons or elements -->
 		<FormDropdown on:addfield={(e) => addFieldHandler(e, null)} variant="outline" />
 	</div>
 </container>
