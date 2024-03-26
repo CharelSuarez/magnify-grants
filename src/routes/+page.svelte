@@ -1,85 +1,67 @@
 <script lang="ts">
 	import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
-	import image from '$lib/assets/branding/images/magnify_image.webp';
-	import { Button } from '$lib/components/ui/button';
-	import * as Card from '$lib/components/ui/card';
+  import shape_1 from '$lib/assets/abstract/shape_1.png';
+  import shape_2 from '$lib/assets/abstract/shape_2.png';
+  import shape_3 from '$lib/assets/abstract/shape_3.png';
+  import magnify_logo from '$lib/assets/branding/images/magnify_image.webp';
 	import type { PageData } from './$types';
-	import Menu from '$lib/custom_components/ui/menu/Menu.svelte';
 
   export let data: PageData;
 </script>
 
-<main class="flex-col h-auto">
+<main class="flex-col min-h-screen h-auto">
 
 	<Taskbar loggedIn={data.loggedIn}/>
 
+  <div class="flex justify-center items-center h-screen relative flex-col font-satoshi">
+    <h1 class="text-[9rem] font-bold max-sm:text-lg">Grant <span class=" text-teal-500">Service</span></h1>
 
-	<div class="flex justify-evenly items-center h-screen">
-		<div class="flex-col justify-center items-center w-auto">
-			<h1 class="text-6xl font-bold max-sm:text-lg">Grant Service</h1>
-			<p class="text-lg my-10 w-[550px] max-sm:text-sm ">
-				Empowering organizations to fulfill their missions through comprehensive grant support services, driving impactful change and sustainable growth in our communities.
-			</p>
+    <img src={shape_1} alt="abstract shape" class=" absolute z-[-1] left-0 opacity-[.8] top-0 h-[600px]">
+    <img src={shape_2} alt="abstract shape" class=" absolute z-[-1] right-0 opacity-[.8] top-0 h-[500px]">
+    
 
-			<div class="flex">
-				<Button class="mr-5" href="https://www.magnifyaccess.ai/contact-us">Contact Us</Button>
-			</div>
-		</div>
+      <p class=" w-[45%] font-bold italic text-[1.8rem] text-teal-600 ">
+        Empowering The Community 
+      </p>
+    <a href="#about" class=" absolute font-semibold bottom-[20%] text-teal-500 border-4 border-teal-500 text-[2rem] right-[25%] 
+    px-8 py-2 rounded-full hover:bg-teal-500 hover:text-white transition-all duration-300">Learn More</a>
+  </div>
 
-		<img class="hidden xl:inline" src={image} alt="Magnify Access Branding" />
-	</div>
+  <div class="flex justify-center items-center h-screen relative" id="about">
+    <img src={shape_3} alt="abstract shape" class=" absolute z-[-1] left-0 opacity-[.8] top-[-200px] h-[600px]">
+    <img src={shape_2} alt="abstract shape" class=" absolute z-[-1] right-0 opacity-[.8] bottom-[-150px] h-[600px]">
 
+    <div class="flex h-[80vh] w-[75vw] bg-teal-600 mt-12 rounded-xl relative overflow-hidden p-12 shadow-inset shadow-2xl cursor-default"> 
 
-    <div class="flex justify-evenly items-center h-screen max-sm:flex-col">
-        <Card.Root>
-            <Card.Header>
-              <Card.Title>
-                <p class="text-center">Feature #1</p>
-              </Card.Title>
-            </Card.Header>
-            <Card.Content>
-                <img src={image} class="w-[250px]" alt="" srcset="">
-            </Card.Content>
-            <Card.Footer>
-              <p class="w-[250px] text-center">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, modi.
-              </p>
-            </Card.Footer>
-        </Card.Root>
+      <div class="flex-col font-satoshi">
+          <h1 class=" text-white font-semibold text-[3.5rem] text-center ">Striving To Provide Equal Opportunities For All</h1>
+          <p class="w-[60%] text-white ml-24 mt-8 text-[1.5rem] leading-[3rem] z-[20] ">
+            We are dedicated to leveling the playing field for individuals with disabilities by providing comprehensive grant 
+            application services tailored to their unique needs. We understand the challenges that people with disabilities face 
+            in accessing resources and opportunities, and we are committed to empowering them to achieve their goals and 
+            aspirations
+          </p>
+          <p class="w-[60%] font-bold text-white ml-24 mt-16 text-[3rem] leading-[3rem] z-[20]">
+            Our Mission is Simple:
+          </p>
+          <p class="w-[40%]  text-white ml-32 mt-4 text-[1.5rem] leading-[3rem] z-[20] ">
+            To bridge the gap between individuals with disabilities and the funding they need to thrive.
+          </p>
 
-        <Card.Root>
-            <Card.Header>
-              <Card.Title>
-                <p class="text-center">Feature #2</p>
-              </Card.Title>
-            </Card.Header>
-            <Card.Content>
-                <img src={image} class="w-[250px]" alt="" srcset="">
-            </Card.Content>
-            <Card.Footer>
-              <p class="w-[250px] text-center">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, modi.
-              </p>
-            </Card.Footer>
-        </Card.Root>
+      </div>
 
-        <Card.Root>
-            <Card.Header>
-              <Card.Title>
-                <p class="text-center">Feature #3</p>
-              </Card.Title>
-            </Card.Header>
-            <Card.Content>
-                <img src={image} class="w-[250px]" alt="" srcset="">
-            </Card.Content>
-            <Card.Footer>
-              <p class="w-[250px] text-center">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, modi.
-              </p>
-            </Card.Footer>
-        </Card.Root>
-	</div>
+      <img src={magnify_logo} alt="" srcset="" class=" absolute bottom-[-200px] right-[-200px] z-0">
+    </div>
+  </div>
 
-
+<footer class="flex flex-col justify-center items-center mt-[5rem] bg-teal-800 h-[150px] text-white cursor-default">
+    <div class="flex text-lg">
+      In Association with MagnifyAccess
+    </div>
+    <div class="flex text-teal-950 font-bold italic">
+      Developed by Group 17
+    </div>
+</footer>
 
 </main>
+
