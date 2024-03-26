@@ -20,11 +20,11 @@
 
     <BaseHeader full={true}>
 
-        <div class="mr-4 hidden md:flex">
+        <div class="mr-4 hidden md:flex w-full">
             <a class="mr-6 flex items-center space-x-2" href="/">
                 <Branding />
             </a>
-                <nav class="flex items-center space-x-6 text-sm font-bold">
+                <nav class="flex grow items-center space-x-6 text-sm font-bold">
                     <MainNav />
                 </nav>
 

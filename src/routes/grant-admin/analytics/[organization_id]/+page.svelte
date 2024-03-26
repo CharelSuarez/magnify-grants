@@ -4,18 +4,23 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 	import { Separator } from '$lib/components/ui/separator';
+	import { t, locale, locales } from '$lib/i18n/i18n';
+	import { translations } from '$lib/i18n/translations';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 	let organization = data.organization;
 </script>
+
+
 
 <div>
 	<main>
 		<div class="container mx-auto py-10">
 			<div class="flex items-center justify-between space-y-2">
 				<div>
-					<h2 class="text-2xl font-bold tracking-tight">Analytics</h2>
-					<p class="text-muted-foreground">{organization?.name} </p>
+					<h2 class="text-2xl font-bold tracking-tight">{$t('analytics.title')}</h2>
+					<p class="text-muted-foreground">{$t('analytics.organization', { organizationName: organization?.name })}</p>
 				</div>
 			</div>
 			<Separator />
@@ -23,49 +28,49 @@
 				<div class="col-span-2 hover:drop-shadow-md">
 					<Card.Root>
 						<Card.Header>
-							<Card.Title class="text-3xl">Users</Card.Title>
-							<Card.Description>In the last month</Card.Description>
+							<Card.Title class="text-3xl">{$t('card.users.title')}</Card.Title>
+							<Card.Description>{$t('card.users.description')}</Card.Description>
 						</Card.Header>
 						<Card.Content>
-							<h1 class="text-7xl">50 applicants</h1>
+							<h1 class="text-7xl">{$t('card.users.content')}</h1>
 						</Card.Content>
 					</Card.Root>
 				</div>
 				<Card.Root class="hover:drop-shadow-md">
 					<Card.Header>
-						<Card.Title>Grants Posted</Card.Title>
-						<Card.Description>In the last month</Card.Description>
+						<Card.Title>{$t('card.grants.title')}</Card.Title>
+						<Card.Description>{$t('card.grants.description')}</Card.Description>
 					</Card.Header>
 					<Card.Content>
-						<h1 class="text-7xl">37</h1>
+						<h1 class="text-7xl">{$t('card.grants.content')}</h1>
 					</Card.Content>
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
 					<Card.Header>
-						<Card.Title>Funding</Card.Title>
-						<Card.Description>Allocated / Total</Card.Description>
+						<Card.Title>{$t('card.funding.title')}</Card.Title>
+						<Card.Description>{$t('card.funding.description')}</Card.Description>
 					</Card.Header>
 					<Card.Content>
-						<p class="text-3xl">$5,530 / $15,000</p>
+						<p class="text-3xl">{$t('card.funding.content')}</p>
 					</Card.Content>
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
 					<Card.Header>
-						<Card.Title>Grants per sector</Card.Title>
+						<Card.Title>{$t('card.sectors.title')}</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<p>Education: 27%</p>
-						<p>Research: 43%</p>
-						<p>Small business: 13%</p>
-						<p>Non-profit: 17%</p>
+						<p>{$t('card.sectors.education')}</p>
+						<p>{$t('card.sectors.research')}</p>
+						<p>{$t('card.sectors.smallBusiness')}</p>
+						<p>{$t('card.sectors.nonProfit')}</p>
 					</Card.Content>
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
 					<Card.Header>
-						<Card.Title>Acceptance rate</Card.Title>
+						<Card.Title>{$t('card.acceptanceRate.title')}</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<p class="text-7xl">93%</p>
+						<p class="text-7xl">{$t('card.acceptanceRate.content')}</p>
 					</Card.Content>
 				</Card.Root>
 			</div>
