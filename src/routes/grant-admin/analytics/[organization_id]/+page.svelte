@@ -70,7 +70,7 @@
 						{#each grantsPerSector as sector}
 							<p>{$t(`card.sectors.${sector.sector.replace("_", "").toLowerCase()}`)}: {sector._count.sector}</p>
 						{:else}
-							<p>No grants posted</p>
+							<p>{$t('card.grantsPerSector.empty')}</p>
 						{/each}
 					</Card.Content>
 				</Card.Root>
