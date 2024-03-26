@@ -1,6 +1,8 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button";
     import image from "$lib/assets/branding/images/magnify_logo.png";
+    import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
+    import { t } from '$lib/i18n/i18n';
 
     export let loggedIn: boolean;
 </script>
@@ -10,19 +12,24 @@
         <img src={image} alt="logo" class="h-12"/>
     </div>
     <div class="flex items-center font-satoshi">
-
         <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="https://www.magnifyaccess.ai/">
-            MaginfyAccess
+            {$t('nav.magnifyAccess')}
         </Button>
 
         {#if loggedIn}
             <form action="/logout" method="POST">
-                <Button type="submit" class="mr-5 bg-teal-700 hover:bg-teal-500">Log out</Button>
+                <Button type="submit" class="mr-5 bg-teal-700 hover:bg-teal-500">
+                    {$t('nav.logOut')}
+                </Button>
             </form>
         {:else}
-            <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/login">Login</Button>
-            <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/signup">Sign up</Button>
+            <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/login">
+                {$t('nav.login')}
+            </Button>
+            <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/signup">
+                {$t('nav.signUp')}
+            </Button>
         {/if}
-
+        <LocaleSelection />
     </div>
 </div>

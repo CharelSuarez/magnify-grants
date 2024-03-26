@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import { Trash2 } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
+	import { t } from '$lib/i18n/i18n';
 
 	const formAction = (route: string) => {
 		goto(`/grant-admin/grant-builder/${id}/${route}`);
@@ -26,17 +27,17 @@
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger asChild let:builder>
 			<Button builders={[builder]} class="relative h-8 w-8 p-0" size="icon" variant="ghost">
-				<span class="sr-only">Open menu</span>
+				<span class="sr-only">{$t('menu.open')}</span>
 				<MoreHorizontal class="h-4 w-4" />
 			</Button>
 		</DropdownMenu.Trigger>
 		<DropdownMenu.Content>
 			<DropdownMenu.Group>
-				<DropdownMenu.Label>Actions</DropdownMenu.Label>
+				<DropdownMenu.Label>{$t('menu.actions')}</DropdownMenu.Label>
 			</DropdownMenu.Group>
 			<DropdownMenu.Separator />
-			<DropdownMenu.Item on:click={() => formAction('view')}>View Document</DropdownMenu.Item>
-			<DropdownMenu.Item on:click={() => formAction('edit')}>Edit Document</DropdownMenu.Item>
+			<DropdownMenu.Item on:click={() => formAction('view')}>{$t('menu.viewDocument')}</DropdownMenu.Item>
+			<DropdownMenu.Item on:click={() => formAction('edit')}>{$t('menu.editDocument')}</DropdownMenu.Item>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 
@@ -48,15 +49,14 @@
 		</AlertDialog.Trigger>
 		<AlertDialog.Content>
 			<AlertDialog.Header>
-				<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+				<AlertDialog.Title>{$t('alert.title')}</AlertDialog.Title>
 				<AlertDialog.Description>
-					This action cannot be undone. This will permanently delete this form and remove its data
-					from our servers.
+					{$t('alert.description')}
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
-				<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-				<AlertDialog.Action on:click={deleteForm}>Delete</AlertDialog.Action>
+				<AlertDialog.Cancel>{$t('alert.cancel')}</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={deleteForm}>{$t('alert.delete')}</AlertDialog.Action>
 			</AlertDialog.Footer>
 		</AlertDialog.Content>
 	</AlertDialog.Root>

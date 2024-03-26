@@ -1,37 +1,38 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
+  import { t } from '$lib/i18n/i18n';
 
 </script>
 
 <div class="center">
     <Card.Root>
-        <Card.Header >
-          <Card.Title>Grant Title</Card.Title>
+        <Card.Header>
+            <Card.Title>{$t('card.grantTitle')}</Card.Title>
         </Card.Header>
-        <Card.Content >
-          <Card.Title>Organization</Card.Title>
-          <p>Organization Name</p>
+        <Card.Content>
+            <Card.Title>{$t('card.organization')}</Card.Title>
+            <p>{$t('card.organizationName')}</p>
         </Card.Content>
         <Card.Content>
-          <Card.Title>Short Answer</Card.Title>
-          <p>Question 1</p>
+            <Card.Title>{$t('card.shortAnswer')}</Card.Title>
+            <p>{$t('card.question1')}</p>
         </Card.Content>
         <Card.Content>
-          <Card.Title>Paragraph</Card.Title>
-          <p>Write anything</p>
+            <Card.Title>{$t('card.paragraph')}</Card.Title>
+            <p>{$t('card.writeAnything')}</p>
         </Card.Content>
         <Card.Content>
-          <Card.Title>Multiple Choice</Card.Title>
-          <p>Question 1</p>
-          <p>Question 2</p>
-          <p>Question 3</p>
+            <Card.Title>{$t('card.multipleChoice')}</Card.Title>
+            <p>{$t('card.question1')}</p>
+            <p>{$t('card.question2')}</p>
+            <p>{$t('card.question3')}</p>
         </Card.Content>
-    
+
         <Card.Footer class="flex justify-between">
-            <Button variant="outline">Go back</Button>
-            <Button>Edit</Button>
-          </Card.Footer>
+            <Button variant="outline">{$t('card.goBack')}</Button>
+            <Button>{$t('card.edit')}</Button>
+        </Card.Footer>
     </Card.Root>
 </div>
 

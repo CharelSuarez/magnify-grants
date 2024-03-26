@@ -7,6 +7,7 @@
 	import { Separator } from '$lib/components/ui/separator';
 
 	import image from '$lib/assets/branding/images/magnify_image.webp';
+	import { t } from '$lib/i18n/i18n';
 
 	export let data: PageData;
 	let orgs = data.organizations;
@@ -17,8 +18,8 @@
 		<div class="container mx-auto py-10">
 			<div class="flex items-center justify-between space-y-2">
 				<div>
-					<h2 class="text-2xl font-bold tracking-tight">Organizations</h2>
-					<p class="text-muted-foreground">View grants and apply today!</p>
+					<h2 class="text-2xl font-bold tracking-tight">{$t('organizations.title')}</h2>
+					<p class="text-muted-foreground">{$t('organizations.subtitle')}</p>
 				</div>
 			</div>
 			<Separator />
@@ -31,7 +32,7 @@
 							<Card.Description>{org.description}</Card.Description>
 						</Card.Header>
 						<Card.Footer class="flex justify-between">
-							<Button href={`/grants-user/${org.id}`}>View Grants</Button>
+							<Button href={`/grants-user/${org.id}`}>{$t('organizations.viewGrants')}</Button>
 						</Card.Footer>
 					</Card.Root>
 				{/each}

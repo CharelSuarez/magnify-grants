@@ -4,6 +4,8 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 	import { toShort } from '$lib/utils/url';
+	import { t } from '$lib/i18n/i18n';
+
 
 	export let data: PageData;
 	let grants = data.grants;
@@ -14,8 +16,8 @@
 		<div class="container mx-auto py-10">
 			<div class="flex items-center justify-between space-y-2">
 				<div>
-					<h2 class="text-2xl font-bold tracking-tight">Organizations</h2>
-					<p class="text-muted-foreground">View grants and apply today!</p>
+					<h2 class="text-2xl font-bold tracking-tight">{$t('organizations.title')}</h2>
+					<p class="text-muted-foreground">{$t('organizations.subtitle')}</p>
 				</div>
 			</div>
 			<div class="grid grid-cols-2 gap-4">
@@ -30,9 +32,9 @@
 							<Badge variant="secondary">{grant.expirationDate}</Badge>
 						</Card.Content>
 						<Card.Footer class="flex justify-between">
-							<Button variant="secondary">Favorite</Button>
+							<Button variant="secondary">{$t('button.favorite')}</Button>
 							<a href={`/grant/${toShort(grant.id)}`} target="_blank">
-								<Button>Apply</Button>
+								<Button>{$t('button.apply')}</Button>
 							</a>
 						</Card.Footer>
 					</Card.Root>

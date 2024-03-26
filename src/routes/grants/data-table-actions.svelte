@@ -3,6 +3,8 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { toShort } from '$lib/utils/url';
+	import { t } from '$lib/i18n/i18n';
+
 
 	export let id : string; 
 </script>
@@ -15,15 +17,18 @@
 			size="icon"
 			variant="ghost"
 		>
-			<span class="sr-only">Open menu</span>
+			<span class="sr-only">{$t('menu.open')}</span>
 			<MoreHorizontal class="h-4 w-4" />
 		</Button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
-			<DropdownMenu.Label>Actions</DropdownMenu.Label>
+			<DropdownMenu.Label>{$t('menu.actions')}</DropdownMenu.Label>
 			<DropdownMenu.Item on:click={() => {}}> <!-- TODO navigate to page -->
-				View applicants
+				{$t('menu.viewApplicants')}
+			</DropdownMenu.Item>
+			<DropdownMenu.Item on:click={() => window.open(`/grant/${toShort(id)}`, '_blank')}>
+				{$t('menu.openGrantPage')}
 			</DropdownMenu.Item>
 			<DropdownMenu.Item on:click={() => {
 				window.open(`/grant/${toShort(id)}`, '_blank');
@@ -32,9 +37,9 @@
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 		<DropdownMenu.Separator />
-		<DropdownMenu.Item>Delete grant</DropdownMenu.Item>
-		<DropdownMenu.Item>Edit grant</DropdownMenu.Item>
-		<DropdownMenu.Item>Publish grant</DropdownMenu.Item> <!-- TODO only show one of these depending on status -->
-		<DropdownMenu.Item>Un-publish grant</DropdownMenu.Item>
+		<DropdownMenu.Item>{$t('menu.deleteGrant')}</DropdownMenu.Item>
+		<DropdownMenu.Item>{$t('menu.editGrant')}</DropdownMenu.Item>
+		<DropdownMenu.Item>{$t('menu.publishGrant')}</DropdownMenu.Item>
+		<DropdownMenu.Item>{$t('menu.unpublishGrant')}</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

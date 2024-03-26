@@ -16,6 +16,8 @@
         superForm
     } from "sveltekit-superforms";
 
+    import { t } from '$lib/i18n/i18n';
+
     export let data: SuperValidated<Infer<LoginSchema>>;
 
     let isLoading = false;
@@ -34,7 +36,7 @@
     <Form.Field {form} name="email" class="grid">
         <Form.Control let:attrs>
             <Form.Label>
-                <p class="text-muted-foreground text-sm">Email</p>
+                <p class="text-muted-foreground text-sm">{$t('form.email')}</p>
             </Form.Label>
             <Input placeholder="janedoe@email.com" {...attrs} bind:value={$formData.email}/>
         </Form.Control>
@@ -43,7 +45,7 @@
     <Form.Field {form} name="password" class="grid">
         <Form.Control let:attrs>
             <Form.Label>
-                <p class="text-muted-foreground text-sm">Password</p>
+                <p class="text-muted-foreground text-sm">{$t('form.password')}</p>
             </Form.Label>
             <Input type="password" {...attrs} bind:value={$formData.password}/>
         </Form.Control>
@@ -53,6 +55,6 @@
         {#if isLoading}
             <Loader2 class="mr-2 h-4 w-4 animate-spin" />
         {/if}
-        Log in
+        {$t('form.login')}
     </Form.Button>
 </form>

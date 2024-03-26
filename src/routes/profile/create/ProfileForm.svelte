@@ -9,6 +9,7 @@
         superForm
     } from "sveltekit-superforms";
 	import { zodClient } from "sveltekit-superforms/adapters";
+  import { t } from '$lib/i18n/i18n';
 
     export let data: SuperValidated<Infer<ProfileSchema>>;
 
@@ -28,18 +29,18 @@
     <Form.Field {form} name="firstName" class="grid">
         <Form.Control let:attrs>
             <Form.Label>
-                <p class="text-muted-foreground text-sm">First name</p>
+                <p class="text-muted-foreground text-sm">{$t('form.firstName')}</p>
             </Form.Label>
-            <Input placeholder="Jane" {...attrs} bind:value={$formData.firstName}/>
+            <Input placeholder={$t('form.placeholder.firstName')} {...attrs} bind:value={$formData.firstName}/>
         </Form.Control>
         <Form.FieldErrors />
     </Form.Field>
     <Form.Field {form} name="lastName" class="grid">
         <Form.Control let:attrs>
             <Form.Label>
-                <p class="text-muted-foreground text-sm">Last name</p>
+                <p class="text-muted-foreground text-sm">{$t('form.lastName')}</p>
             </Form.Label>
-            <Input placeholder="Doe" {...attrs} bind:value={$formData.lastName}/>
+            <Input placeholder={$t('form.placeholder.lastName')} {...attrs} bind:value={$formData.lastName}/>
         </Form.Control>
         <Form.FieldErrors />
     </Form.Field>
@@ -47,6 +48,6 @@
         {#if isLoading}
             <Loader2 class="mr-2 h-4 w-4 animate-spin" />
         {/if}
-        Create profile
+        {$t('form.createProfile')}
     </Form.Button>
 </form>
