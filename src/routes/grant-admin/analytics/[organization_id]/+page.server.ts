@@ -98,6 +98,9 @@ export const load: PageServerLoad = async ({ params }) => {
 	}).format(totalFundsAwarded._sum.amountAwarded);
 
 	const grantsPerSector = await db.grant.groupBy({
+		where: {
+			organizationId: params.organization_id
+		},
 		by: ['sector'],
 		_count: {
 			sector: true
