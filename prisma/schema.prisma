@@ -144,7 +144,7 @@ model Application {
   status         ApplicationStatus  @default(IN_PROGRESS)
   entries        ApplicationEntry[]
   submissionDate DateTime?
-  amountAwarded  Int
+  amountAwarded  Int?
 
   @@unique([userId, formId, version])
   @@index([userId, formId])
