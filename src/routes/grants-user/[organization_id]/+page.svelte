@@ -3,6 +3,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
+	import { toShort } from '$lib/utils/url';
 
 	export let data: PageData;
 	let grants = data.grants;
@@ -30,7 +31,9 @@
 						</Card.Content>
 						<Card.Footer class="flex justify-between">
 							<Button variant="secondary">Favorite</Button>
-							<Button>Apply</Button>
+							<a href={`/grant/${toShort(grant.id)}`} target="_blank">
+								<Button>Apply</Button>
+							</a>
 						</Card.Footer>
 					</Card.Root>
 				{/each}

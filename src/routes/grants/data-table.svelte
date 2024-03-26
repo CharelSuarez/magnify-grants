@@ -117,7 +117,7 @@
 			accessor: ({ id }) => id,
 			header: '',
 			cell: ({ value }) => {
-				return createRender(DataTableActions);
+				return createRender(DataTableActions, { id: value });
 			}
 		})
 	]);

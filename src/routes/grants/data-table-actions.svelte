@@ -2,6 +2,9 @@
 	import MoreHorizontal from 'lucide-svelte/icons/more-horizontal';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
+	import { toShort } from '$lib/utils/url';
+
+	export let id : string; 
 </script>
 
 <DropdownMenu.Root>
@@ -21,6 +24,11 @@
 			<DropdownMenu.Label>Actions</DropdownMenu.Label>
 			<DropdownMenu.Item on:click={() => {}}> <!-- TODO navigate to page -->
 				View applicants
+			</DropdownMenu.Item>
+			<DropdownMenu.Item on:click={() => {
+				window.open(`/grant/${toShort(id)}`, '_blank');
+			}}>
+				Open grant page
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 		<DropdownMenu.Separator />
