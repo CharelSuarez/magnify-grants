@@ -1,41 +1,50 @@
 <script lang="ts">
-    import { Button } from "$lib/components/ui/button";
-    import image from "$lib/assets/branding/images/magnify_logo.png";
-    import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
-    import { t } from '$lib/i18n/i18n';
+	import { Button } from '$lib/components/ui/button';
+	import image from '$lib/assets/branding/images/magnify_logo.png';
+	import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
+	import { t } from '$lib/i18n/i18n';
 
-    export let loggedIn: boolean;
+	export let loggedIn: boolean;
+	export let admin: boolean = false;
 </script>
 
-<div class="top-0 sticky flex justify-between px-10 py-5 shadow-lg items-center fixed w-full z-[10] backdrop-blur-md bg-opacity-40">
-    <div class="flex items-center">
-        <a href="/">
-            <img src={image} alt="logo" class="h-12"/>
-        </a>
-    </div>
-    <div class="flex items-center font-satoshi">
-        <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="https://www.magnifyaccess.ai/">
-            {$t('nav.magnifyAccess')}
-        </Button>
+<div
+	class="top-0 flex justify-between px-10 py-5 shadow-lg items-center fixed w-full z-[10] backdrop-blur-md bg-opacity-40"
+>
+	<div class="flex items-center">
+		<a href="/">
+			<img src={image} alt="logo" class="h-12" />
+		</a>
+	</div>
+	<div class="flex items-center font-satoshi">
+		<Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="https://www.magnifyaccess.ai/">
+			{$t('nav.magnifyAccess')}
+		</Button>
 
-        {#if loggedIn}
-            <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/grant-user">
-                {$t('nav.view.grants')}
-            </Button>
+		{#if loggedIn}
+			{#if admin}
+				<Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/grant-admin">
+					{$t('nav.view.grant-admin')}
+				</Button>
+			{:else}
+				<Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/grant-user">
+					{$t('nav.view.grants')}
+				</Button>
+			{/if}
 
-            <form action="/logout" method="POST">
-                <Button type="submit" class="mr-5 bg-teal-700 hover:bg-teal-500">
-                    {$t('nav.logOut')}
-                </Button>
-            </form>
-        {:else}
-            <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/login">
-                {$t('nav.login')}
-            </Button>
-            <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/signup">
-                {$t('nav.signUp')}
-            </Button>
-        {/if}
-        <LocaleSelection />
-    </div>
+			<form action="/logout" method="POST">
+				<Button type="submit" class="mr-5 bg-teal-700 hover:bg-teal-500">
+					{$t('nav.logOut')}
+				</Button>
+			</form>
+		{:else}
+			<Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/login">
+				{$t('nav.login')}
+			</Button>
+			<Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/signup">
+				{$t('nav.signUp')}
+			</Button>
+		{/if}
+		<LocaleSelection />
+	</div>
 </div>
