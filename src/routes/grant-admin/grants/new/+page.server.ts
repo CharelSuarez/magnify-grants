@@ -46,7 +46,7 @@ export const actions: Actions = {
 		}
 
 		redirect(
-			200,
+			301,
 			'/grant-admin/grants',
 			{
 				type: 'success',
