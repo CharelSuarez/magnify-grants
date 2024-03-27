@@ -92,7 +92,7 @@ model Grant {
 
 model Organization {
   id          String       @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String       @default("")
+  name        String       @unique @default("")
   description String       @default("")
   admins      GrantAdmin[]
   grants      Grant[]

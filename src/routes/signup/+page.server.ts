@@ -1,87 +1,84 @@
-import { signupSchema } from "$lib/validation/auth_schema";
-import { message, setError, superValidate } from "sveltekit-superforms";
-import { zod } from "sveltekit-superforms/adapters";
-import type { PageServerLoad } from "./$types";
-import { fail, type Actions } from "@sveltejs/kit";
-import { Argon2id } from "oslo/password";
-import { db } from "$lib/server/db";
-import { lucia } from "$lib/server/auth";
-import { redirect } from "sveltekit-flash-message/server";
-import { generateId } from "lucia";
-import { generateEmailVerificationCode } from "$lib/utils/codes";
-import { sendEmail } from "$lib/server/email";
-import { setCookie } from "$lib/utils/cookies";
+import { signupSchema } from '$lib/validation/auth_schema';
+import { message, setError, superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import type { PageServerLoad } from './$types';
+import { fail, type Actions } from '@sveltejs/kit';
+import { Argon2id } from 'oslo/password';
+import { db } from '$lib/server/db';
+import { lucia } from '$lib/server/auth';
+import { redirect } from 'sveltekit-flash-message/server';
+import { generateId } from 'lucia';
+import { generateEmailVerificationCode } from '$lib/utils/codes';
+import { sendEmail } from '$lib/server/email';
+import { setCookie } from '$lib/utils/cookies';
 
 export const load: PageServerLoad = async (event) => {
+	const user = event.locals.user;
 
-    const user = event.locals.user;
+	if (user) {
+		if (user.emailVerified) {
+			redirect(303, '/');
+		}
+		redirect(303, '/email-verification');
+	}
 
-    if (user) {
-        if (user.emailVerified) {
-            redirect(303, "/");
-        }
-        redirect(303, "/email-verification");
-    }
-
-    return {
-        form: await superValidate(zod(signupSchema)),
-    };
+	return {
+		form: await superValidate(zod(signupSchema))
+	};
 };
 
 export const actions: Actions = {
+	default: async (event) => {
+		const form = await superValidate(event, zod(signupSchema));
 
-    default: async (event) => {
+		if (!form.valid) {
+			return fail(400, {
+				form
+			});
+		}
 
-        const form = await superValidate(event, zod(signupSchema));
+		const { email, password } = form.data;
 
-        if (!form.valid) {
-            return fail(400, {
-                form,
-            });
-        }
+		const hashedPassword = await new Argon2id().hash(password);
+		const userId = generateId(15);
 
-        const { email, password } = form.data;
+		try {
+			await db.user.create({
+				data: {
+					id: userId,
+					email: email,
+					hashedPassword: hashedPassword
+				}
+			});
 
-        const hashedPassword = await new Argon2id().hash(password);
-        const userId = generateId(15);
+			const session = await lucia.createSession(userId, {});
+			const sessionCookie = lucia.createSessionCookie(session.id);
 
-        try {
+			setCookie(sessionCookie, event);
+		} catch (err) {
+			const errMsg = 'A user with that email already exists';
+			setError(form, 'email', errMsg);
 
-            await db.user.create(({
-                data: {
-                    id: userId,
-                    email: email,
-                    hashedPassword: hashedPassword,
-                }
-            }));
+			return message(form, {
+				type: 'error',
+				text: errMsg
+			});
+		}
 
-            const session = await lucia.createSession(userId, {});
-            const sessionCookie = lucia.createSessionCookie(session.id);
+		const verificationCode = await generateEmailVerificationCode(userId);
 
-            setCookie(sessionCookie, event);
+		sendEmail(email, 'Confirm your email', `Your verification code is ${verificationCode}`);
 
-        } catch (err) {
-
-            const errMsg = "A user with that email already exists";
-            setError(form, "email", errMsg);
-
-            return message(form, {
-                type: "error",
-                text: errMsg
-            });
-
-        }
-
-        const verificationCode = await generateEmailVerificationCode(userId);
-
-        sendEmail(email, "Confirm your email", `Your verification code is ${verificationCode}`);
-
-        redirect(303, "/email-verification", {
-            type: "success",
-            richColors: true,
-            message: "A confirmation email has been sent to",
-            description: form.data.email
-        }, event);
-    },
-
+		redirect(
+			303,
+			'/email-verification',
+			{
+				type: 'success',
+				richColors: true,
+				message: 'A confirmation email has been sent to',
+				description: form.data.email
+			},
+			event
+		);
+	}
 };

@@ -15,7 +15,7 @@ DROP TYPE "FieldType_old";
 COMMIT;
 
 -- AlterTable
-ALTER TABLE "fields" ADD COLUMN     "values2" TEXT[];
+ALTER TABLE "fields" ADD COLUMN  IF NOT EXISTS    "values2" TEXT[];
 
 -- AlterTable
 ALTER TABLE "forms" ADD COLUMN     "organizationId" UUID NOT NULL;
