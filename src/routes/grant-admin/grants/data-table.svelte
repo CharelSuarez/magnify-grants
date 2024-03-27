@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createTable, Render, Subscribe, createRender } from 'svelte-headless-table';
+	import { createTable, Render, Subscribe, createRender, BodyRow } from 'svelte-headless-table';
 	import {
 		addPagination,
 		addSortBy,
@@ -21,6 +21,8 @@
 	import Cross2 from 'svelte-radix/Cross2.svelte';
 	import { trueFalseFilter } from './filter-types';
 	import { DataTableFacetedFilter } from './index';
+	import { goto } from '$app/navigation';
+	import { toShort } from '$lib/utils/url';
 
 	export let grants: Grant[];
 
@@ -179,6 +181,12 @@
 	const hidableCols = ['title', 'acceptingApplications', 'published', 'description', 'range'];
 
 	$: showReset = Object.values({ ...$filterValues, $filterValue }).some((v) => v.length > 0);
+
+	function gotoUser(row: BodyRow<any, any>) {
+        if (row.isData()) {
+            goto(`/grant-admin/grants/${toShort(row.original.id)}`);
+        }
+    }
 </script>
 
 <svelte:head>
@@ -262,7 +270,7 @@
 			<Table.Body {...$tableBodyAttrs}>
 				{#each $pageRows as row (row.id)}
 					<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-						<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'}>
+						<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'} class="hover:cursor-pointer" on:click={() => gotoUser(row)} {...rowAttrs}>
 							{#each row.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs>
 									<Table.Cell {...attrs}>
