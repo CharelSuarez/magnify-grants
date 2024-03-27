@@ -2,7 +2,7 @@
     import * as Tooltip from "$lib/components/ui/tooltip/index.js"
     import {getAge} from "$lib/utils/user"
 
-	export let value: Date | null | undefined;
+	  export let value: Date | null | undefined;
 </script>
 
 <div class="flex w-[100px] items-center">

@@ -24,11 +24,10 @@
 
 	let isLoading = false;
     let filterForm = superForm(data, {
+		resetForm: false,
 		dataType: 'json',
         validators: zodClient(filterSchema),
-		onSubmit: (e) => {
-			isLoading = true
-		},
+		onSubmit: () => { isLoading = true },
 		onResult: () => setTimeout(() => isLoading = false, 1000)
     });
 	

@@ -2,9 +2,19 @@
     import GrantTable from "$lib/custom_components/ui/application-table/AppTable.svelte";
     import GrantTableFilter from "./ApplicationFilter.svelte";
 	import type { PageData, ActionData } from "./$types";
+	import { writable, type Writable } from "svelte/store";
+	import type { Application } from "$lib/validation/app_schema";
 
     export let data: PageData;
     export let form: ActionData;
+
+    const applications : Writable<Application[]> = writable(data.applications);
+    const updateApplications = (form : ActionData) => {
+        if (form == null || form.applications == null) return;
+        $applications = form.applications;
+    }
+
+    $: updateApplications(form);
 </script>
 
 <div class="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -15,7 +25,7 @@
 		</div>
 	</div>
     <div class="flex flex-1 justify-between h-full w-full gap-10">
-        <GrantTable data={form != null ? form.applications : data.applications} class="w-4/5"/>
+        <GrantTable {applications} class="w-4/5"/>
         <GrantTableFilter data={data.filter} class="w-1/5 h-min items-center"/>
     </div>
 </div>

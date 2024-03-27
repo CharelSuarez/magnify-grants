@@ -2,8 +2,8 @@
     import { CompleteStatus } from "./app-complete-statuses";
 
 	export let value: boolean;
-	const status = value ? CompleteStatus.COMPLETE : CompleteStatus.INCOMPLETE;
-	const Icon = status?.icon;
+	$: status = value ? CompleteStatus.COMPLETE : CompleteStatus.INCOMPLETE;
+	$: Icon = status?.icon;
 </script>
 
 <div class="flex w-[100px] items-center">

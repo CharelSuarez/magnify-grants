@@ -2,8 +2,8 @@
     import { AcceptStatus } from "./app-acceptance-statuses";
 
 	export let value: string;
-	const status = AcceptStatus.fromString(value);
-	const Icon = status?.icon;
+	$: status = AcceptStatus.fromString(value);
+	$: Icon = status?.icon;
 </script>
 
 <div class="flex w-[100px] items-center">

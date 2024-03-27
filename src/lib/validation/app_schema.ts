@@ -1,18 +1,20 @@
 import type { ApplicationStatus } from "@prisma/client";
 import { z } from "zod";
 
+export type Application = {
+    id: string,
+    grantTitle: string | undefined,
+    version: number,
+    complete: boolean,
+    status: ApplicationStatus,
+    userId: string,
+    userProfileName: string,
+    userProfileEmail: string,
+    userProfileDateOfBirth?: Date | null
+};
+
 export type Applications = {
-    applications: {   
-        id: string,
-        grantTitle: string | undefined,
-        version: number,
-        complete: boolean,
-        status: ApplicationStatus,
-        userId: string,
-        userProfileName: string,
-        userProfileEmail: string,
-        userProfileDateOfBirth?: Date | null
-    }[]
+    applications: Application[]
 };
 
 export const filterSchema = z.object({

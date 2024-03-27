@@ -1,4 +1,4 @@
-import { filterSchema, type FilterSchema, type Applications} from "$lib/validation/app_schema";
+import { filterSchema, type FilterSchema, type Application} from "$lib/validation/app_schema";
 import { redirect, type Actions, fail } from "@sveltejs/kit";
 import { redirect as redirectFlash } from "sveltekit-flash-message/server";
 import { message, setError, superValidate, type Infer } from "sveltekit-superforms";
@@ -14,7 +14,7 @@ export const load: PageServerLoad = async (event) => {
     // }
 
     const filter = await superValidate(zod(filterSchema));
-    const applications : Applications = await getApplications(filter.data);
+    const applications : Application[] = await getApplications(filter.data);
     return { filter, applications };
 };
 
@@ -28,15 +28,13 @@ export const actions: Actions = {
 
         // TODO Authentication...
 
-        const applications : Applications = await getApplications(filter.data);
+        const applications : Application[] = await getApplications(filter.data);
         return { filter, applications };
     },
 
 };
 
-async function getApplications(form: Infer<FilterSchema>) : Promise<Applications> {
-    console.log(form);
-
+async function getApplications(form: Infer<FilterSchema>) : Promise<Application[]> {
     const accepted : ApplicationStatus[] = [];
     if (form.accepted) accepted.push(ApplicationStatus.ACCEPTED);
     if (form.pending) accepted.push(ApplicationStatus.IN_PROGRESS);
@@ -44,7 +42,7 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Applications
 
     /* If these filters are disabled then there aren't any results! */
     if ((!form.incomplete && !form.complete) || accepted.length === 0) {
-        return {applications: []};
+        return [];
     }
 
     let lastDob = undefined;
@@ -110,19 +108,17 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Applications
     });
 
     /* Flatten the resuls for the frontend. */
-    const flattened : Applications = {
-        applications: applications.map((app) => ({
-            id: app.id,
-            grantTitle: app.form.name,
-            version: app.version,
-            complete: app.complete,
-            status: app.status,
-            userId: app.user.id,
-            userProfileName: getApplicationName(app),
-            userProfileEmail: app.user.email,
-            userProfileDateOfBirth: app.user?.profile?.dateOfBirth,
-        }))
-    }
+    const flattened = applications.map((app) => ({
+        id: app.id,
+        grantTitle: app.form.name,
+        version: app.version,
+        complete: app.complete,
+        status: app.status,
+        userId: app.user.id,
+        userProfileName: getApplicationName(app),
+        userProfileEmail: app.user.email,
+        userProfileDateOfBirth: app.user?.profile?.dateOfBirth,
+    }));
     // console.log(flattened);
     return flattened
 }

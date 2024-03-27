@@ -1,39 +1,24 @@
 <script lang="ts">
 	import { createTable, Render, Subscribe, createRender } from 'svelte-headless-table';
 	import { addPagination, addTableFilter, addSelectedRows } from 'svelte-headless-table/plugins';
-	import { readable, writable } from 'svelte/store';
+	import { type Writable } from 'svelte/store';
 	import * as Table from '$lib/components/ui/table';
 	import GrantTableActions from './AppTableActions.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import GrantTableCheckbox from '../table/table-checkbox.svelte';
 	import GrantTableStatusCell from './AppTableAcceptCell.svelte';
 	import GrantTableCompleteStatus from './AppTableCompleteCell.svelte';
-	import type { Applications } from '$lib/validation/app_schema';
+	import type { Application } from '$lib/validation/app_schema';
 	import AppTableAge from './AppTableAgeCell.svelte';
 	import { t } from '$lib/i18n/i18n';
 
 	let className: string = '';
 	export { className as class };
 
-	export let data: Applications | undefined;
+	export let applications: Writable<Application[]>;
 
-	$: console.log("data", data);
-
-
-    /* Store table state in writable store and update it. */
-    let tableState = writable(data?.applications || []);
-    $: updateTable(data);
-
-	const updateTable = (data: Applications | undefined) => {
-		if (!data?.applications) {
-			return;
-		}
-		$tableState = data.applications;
-	}
-
-	const table = createTable(tableState, {
+	const table = createTable(applications, {
 		page: addPagination(),
 		filter: addTableFilter({
 			fn: ({ filterValue, value }) => value.toLowerCase().includes(filterValue.toLowerCase())
