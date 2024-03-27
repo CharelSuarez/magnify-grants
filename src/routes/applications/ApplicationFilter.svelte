@@ -31,7 +31,10 @@
 		onResult: () => setTimeout(() => isLoading = false, 1000)
     });
 	
-	const { form: formData, enhance } = filterForm;
+	const { form: formData, enhance, allErrors } = filterForm;
+
+	let errors = false;
+	allErrors.subscribe((value) => errors = value.length > 0);
 
 	/* Synchronize the age input fields with the slider and vice-versa. */
 	let ageSlider : [number, number] = [0, 150];
@@ -52,33 +55,36 @@
 		<Card.Description>{$t("applications.filter.description")}</Card.Description>
 	</Card.Header>
 	<form method="POST" use:enhance class="w-full">
-		<Card.Content class="grid gap-6">
+		<Card.Content class="flex flex-col space-y-2">
 			<div class="grid gap-2">
 				<Label>Age Range</Label>
 				<div class="flex gap-4">
 					<Form.Field form={filterForm} name="minAge" class="basis-1/4">
 						<Form.Control let:attrs>
-							<Input bind:value={$formData.minAge} {...attrs} type="number" min={0} max={150} id="min-age" placeholder="0" />
+							<Input bind:value={$formData.minAge} {...attrs} type="number" min={0} max={150} name="minAge" placeholder="0" />
 						</Form.Control>
-						<Form.FieldErrors />
 					</Form.Field>
 					<Slider class="basis-1/2" bind:value={ageSlider} min={0} step={1} max={150}></Slider>
 					<Form.Field form={filterForm} name="maxAge" class="basis-1/4">
 						<Form.Control let:attrs>
-							<Input bind:value={$formData.maxAge} {...attrs} type="number" min={0} max={150} id="max-age" placeholder="150" />
+							<Input bind:value={$formData.maxAge} {...attrs} type="number" min={0} max={150} name="maxAge" placeholder="150" />
 						</Form.Control>
-						<Form.FieldErrors />
 					</Form.Field>
 				</div>
+				<Form.Field form={filterForm} name="minAge" class="text-center">
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field form={filterForm} name="maxAge" class="text-center">
+					<Form.FieldErrors />
+				</Form.Field>
 			</div>
-			<div class="grid gap-2">
+			<div class="flex flex-col space-y-2">
 				<Label>Complete</Label>
 				<div class="grid grid-cols-2 gap-6">
 					<Form.Field form={filterForm} name="complete" class="h-full flex items-center gap-2">
 						<Form.Control let:attrs>
-							<input type="checkbox" bind:checked={$formData.complete} {...attrs} id="complete"/>
+							<input type="checkbox" bind:checked={$formData.complete} {...attrs} name="complete"/>
 						</Form.Control>
-						<Form.FieldErrors />
 						<div class="flex gap-0 h-full">
 							<CompleteIcon class="mr-1 h-4 w-4 text-muted-foreground {CompleteStatus.COMPLETE.color}"/>
 							<Label class="text-center" for="complete">{CompleteStatus.COMPLETE.name}</Label>
@@ -87,9 +93,8 @@
 					<Form.Field form={filterForm} name="incomplete">
 						<div class="h-full flex items-center gap-2">
 							<Form.Control let:attrs>
-								<input type="checkbox" bind:checked={$formData.incomplete} {...attrs} id="incomplete"/>
+								<input type="checkbox" bind:checked={$formData.incomplete} {...attrs} name="incomplete"/>
 							</Form.Control>
-							<Form.FieldErrors />
 							<div class="flex gap-0">
 								<IncompleteIcon class="mr-1 h-4 w-4 text-muted-foreground {CompleteStatus.INCOMPLETE.color}" />
 								<Label for="incomplete">{CompleteStatus.INCOMPLETE.name}</Label>
@@ -97,16 +102,21 @@
 						</div>
 					</Form.Field>
 				</div>
+				<Form.Field form={filterForm} name="complete" class="text-center">
+					<Form.FieldErrors/>
+				</Form.Field>
+				<Form.Field form={filterForm} name="incomplete" class="text-center">
+					<Form.FieldErrors/>
+				</Form.Field>
 			</div>
-			<div class="grid gap-2">
+			<div class="flex flex-col space-y-2">
 				<Label>Status</Label>
 				<div class="grid grid-cols-2 gap-6">
 					<Form.Field form={filterForm} name="accepted">
 						<div class="h-full flex items-center gap-2">
 							<Form.Control let:attrs>
-								<input type="checkbox" bind:checked={$formData.accepted} {...attrs} id="accepted"/>
+								<input type="checkbox" bind:checked={$formData.accepted} {...attrs} name="accepted"/>
 							</Form.Control>
-							<Form.FieldErrors />
 							<div class="flex gap-0">
 								<AcceptedIcon class="mr-1 h-4 w-4 text-muted-foreground {AcceptStatus.ACCEPTED.color}" />
 								<Label class="text-center" for="accepted">{AcceptStatus.ACCEPTED.name}</Label>
@@ -116,9 +126,8 @@
 					<Form.Field form={filterForm} name="pending">
 						<div class="h-full flex items-center gap-2">
 							<Form.Control let:attrs>
-								<input type="checkbox" bind:checked={$formData.pending} {...attrs} id="pending"/>
+								<input type="checkbox" bind:checked={$formData.pending} {...attrs} name="pending"/>
 							</Form.Control>
-							<Form.FieldErrors />
 							<div class="flex gap-0">
 								<PendingIcon class="mr-1 h-4 w-4 text-muted-foreground {AcceptStatus.IN_PROGRESS.color}" />
 								<Label class="text-center" for="pending">{AcceptStatus.IN_PROGRESS.name}</Label>
@@ -128,9 +137,8 @@
 					<Form.Field form={filterForm} name="rejected">
 						<div class="h-full flex items-center gap-2">
 							<Form.Control let:attrs>
-								<input type="checkbox" bind:checked={$formData.rejected} {...attrs} id="rejected"/>
+								<input type="checkbox" bind:checked={$formData.rejected} {...attrs} name="rejected"/>
 							</Form.Control>
-							<Form.FieldErrors />
 							<div class="flex gap-0">
 								<RejectedIcon class="mr-1 h-4 w-4 text-muted-foreground {AcceptStatus.REJECTED.color}" />
 								<Label class="text-center" for="rejected">{AcceptStatus.REJECTED.name}</Label>
@@ -138,10 +146,19 @@
 						</div>
 					</Form.Field>
 				</div>
+				<Form.Field form={filterForm} name="accepted" class="text-center">
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field form={filterForm} name="pending" class="text-center">
+					<Form.FieldErrors />
+				</Form.Field>
+				<Form.Field form={filterForm} name="rejected" class="text-center">
+					<Form.FieldErrors />
+				</Form.Field>
 			</div>
 		</Card.Content>
-		<Card.Footer class="justify-between space-x-2">
-			<Form.Button disabled={isLoading} class="w-full">
+		<Card.Footer>
+			<Form.Button disabled={isLoading || errors} class="w-full">
 				{#if isLoading}
 					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 				{/if}

@@ -63,7 +63,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'table.header.status': 'Status',
 		'search.placeholder': 'Search anything...',
 		'button.deleteAll': 'Delete All Selected',
-		'pagination.selectedCount': '{count} of {total} rows selected',
+		'pagination.selectedCount': '{{count}} of {{total}} rows selected',
 		'pagination.previous': 'Previous',
 		'pagination.next': 'Next',
 		'table.header.title': 'Title',
