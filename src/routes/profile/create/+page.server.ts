@@ -4,7 +4,6 @@ import type { PageServerLoad } from './$types';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { profileSchema } from '$lib/validation/profile_schema';
-import { fromDate, getLocalTimeZone } from '@internationalized/date';
 
 export const load: PageServerLoad = async (event) => {
 	if (!event.locals.user) {

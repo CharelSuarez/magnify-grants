@@ -12,12 +12,11 @@
 	import * as Table from '$lib/components/ui/table';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
-	import type { Profile } from '@prisma/client';
 	import { t } from '$lib/i18n/i18n';
 	import { goto } from '$app/navigation';
 	import { toShort } from '$lib/utils/url';
 
-	export let profiles: Profile[];
+	export let profiles: { id: string; firstName: string; lastName: string; dateOfBirth: Date }[];
 
 	const data = writable(profiles);
 
