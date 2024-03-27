@@ -1,6 +1,7 @@
 import { lucia } from '$lib/server/auth';
 import { setCookie } from '$lib/utils/cookies';
-import { getProfile } from '$lib/utils/user';
+import { getGrantAdmin, getProfile } from '$lib/utils/user';
+import { Role } from '@prisma/client';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
@@ -29,7 +30,6 @@ const alwaysAllowed = [
 	'/reset-password',
 	'/applications',
 	'/grant-preview',
-	'/grant-admin',
 ];
 
 // inherits from alwaysAllowed
@@ -40,6 +40,8 @@ const verifiedAllowed = ['/profile/create'];
 
 // inherits from verifiedAllowed
 const hasProfileAllowed = ['/grant-user'];
+
+const adminAllowed = ['/grant-admin'];
 
 const verifySession: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
@@ -82,7 +84,7 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 
 	const allowed = visited(alwaysAllowed);
 
-	if (allowed || event.url.pathname == '/') {
+	if (allowed || event.url.pathname === '/') {
 		return resolve(event);
 	}
 
@@ -111,6 +113,24 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 		}
 	}
 
+	// i know this code sucks i will make it better if we have time
+	if (user) {
+		const visitedAdminAllowed = visited(adminAllowed);
+		if (user.role === Role.GRANT_ADMIN && visitedAdminAllowed) {
+			const gaInstance = await getGrantAdmin(user.id);
+
+			if (gaInstance) {
+				return resolve(event);
+			}
+
+			if (event.url.pathname.startsWith('/grant-admin/not-registered')) {
+				return resolve(event);
+			}
+
+			return redirect(303, '/grant-admin/not-registered');
+		}
+	}
+
 	// if we reached here they tried to access a bad route
 	redirect(303, '/');
 };
@@ -122,6 +142,14 @@ const addFunctionHooks: Handle = async ({ event, resolve }) => {
 		}
 
 		return await getProfile(event.locals.user.id);
+	};
+
+	event.locals.getGrantAdmin = async () => {
+		if (!event.locals.user) {
+			return null;
+		}
+
+		return await getGrantAdmin(event.locals.user.id);
 	};
 
 	return resolve(event);

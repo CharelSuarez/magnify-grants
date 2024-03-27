@@ -107,8 +107,6 @@
 	export let fields: { type: FieldType; index: number; prompt?: string; options: string[] }[] = [];
 </script>
 
-<svelte:window on:beforeunload|preventDefault />
-
 <container class="container flex w-screen flex-col space-y-5 items-center my-20">
 	<FormElement type="header">
 		<Input bind:value={formName} placeholder={$t('form.placeholder.name')} />

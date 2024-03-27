@@ -1,73 +1,75 @@
-import { redirect, type Actions, fail } from "@sveltejs/kit";
-import { redirect as redirectFlash } from "sveltekit-flash-message/server";
-import type { PageServerLoad } from "./$types";
-import { superValidate } from "sveltekit-superforms";
-import { zod } from "sveltekit-superforms/adapters";
-import { profileSchema } from "$lib/validation/profile_schema";
+import { redirect, type Actions, fail } from '@sveltejs/kit';
+import { redirect as redirectFlash } from 'sveltekit-flash-message/server';
+import type { PageServerLoad } from './$types';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import { profileSchema } from '$lib/validation/profile_schema';
+import { fromDate, getLocalTimeZone } from '@internationalized/date';
 
 export const load: PageServerLoad = async (event) => {
+	if (!event.locals.user) {
+		redirect(303, '/');
+	}
 
-    if (!event.locals.user) {
-        redirect(303, "/");
-    }
+	if (await event.locals.getUserProfile()) {
+		redirect(303, '/');
+	}
 
-    if (await event.locals.getUserProfile()) {
-        redirect(303, "/");
-    }
-
-    return {
-        form: await superValidate(zod(profileSchema)),
-    };
+	return {
+		form: await superValidate(zod(profileSchema))
+	};
 };
 
 export const actions: Actions = {
+	default: async (event) => {
+		// should not be able to submit this form but just in case these checks
 
-    default: async (event) => {
+		const user = event.locals.user;
 
-        // should not be able to submit this form but just in case these checks
+		if (!user) {
+			return fail(401);
+		}
 
-        const user = event.locals.user;
+		if (!user.emailVerified) {
+			return fail(401);
+		}
 
-        if (!user) {
-            return fail(401);
-        }
+		if (await event.locals.getUserProfile()) {
+			return fail(401);
+		}
 
-        if (!user.emailVerified) {
-            return fail(401);
-        }
+		const form = await superValidate(event, zod(profileSchema));
 
-        if (await event.locals.getUserProfile()) {
-            return fail(401);
-        }
+		if (!form.valid) {
+			return fail(400, {
+				form
+			});
+		}
 
-        const form = await superValidate(event, zod(profileSchema));
+		await db.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				profile: {
+					create: {
+						firstName: form.data.firstName,
+						lastName: form.data.lastName,
+						dateOfBirth: new Date(form.data.dateOfBirth)
+					}
+				}
+			}
+		});
 
-        if (!form.valid) {
-            return fail(400, {
-                form,
-            });
-        }
-
-        await db.user.update({
-            where: {
-                id: user.id
-            },
-            data: {
-                profile: {
-                    create: {
-                        firstName: form.data.firstName,
-                        lastName: form.data.lastName
-                    }
-                }
-            }
-        });
-
-        redirectFlash(303, "/", {
-            type: "success",
-            richColors: true,
-            message: "Your profile has been created",
-        }, event);
-
-    },
-
+		redirectFlash(
+			303,
+			'/',
+			{
+				type: 'success',
+				richColors: true,
+				message: 'Your profile has been created'
+			},
+			event
+		);
+	}
 };

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@internationalized/date':
+    specifier: 3.0.0-nightly.2967
+    version: 3.0.0-nightly.2967
   '@lucia-auth/adapter-prisma':
     specifier: ^4.0.0
     version: 4.0.0(@prisma/client@5.10.2)(lucia@3.0.1)
@@ -697,6 +700,12 @@ packages:
   /@humanwhocodes/object-schema@2.0.2:
     resolution: {integrity: sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==}
     dev: true
+
+  /@internationalized/date@3.0.0-nightly.2967:
+    resolution: {integrity: sha512-f+8Udypsc95TJsrfkK/ZDXM2aaMFMmh7iUz1JOPwqd0LSNDcmMttedw+PZpQUCYBntEPRg4S9S5JvgHGMyyU+A==}
+    dependencies:
+      '@babel/runtime': 7.24.0
+    dev: false
 
   /@internationalized/date@3.5.2:
     resolution: {integrity: sha512-vo1yOMUt2hzp63IutEaTUxROdvQg1qlMRsbCvbay2AK2Gai7wIgCyK5weEX3nHkiLgo4qCXHijFNC/ILhlRpOQ==}
@@ -4963,6 +4972,23 @@ packages:
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
       svelte: 3.x || 4.x || >=5.0.0-next.51
+    peerDependenciesMeta:
+      '@sinclair/typebox':
+        optional: true
+      '@vinejs/vine':
+        optional: true
+      arktype:
+        optional: true
+      joi:
+        optional: true
+      superstruct:
+        optional: true
+      valibot:
+        optional: true
+      yup:
+        optional: true
+      zod:
+        optional: true
     dependencies:
       '@sveltejs/kit': 2.5.2(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.1.4)
       devalue: 4.3.2

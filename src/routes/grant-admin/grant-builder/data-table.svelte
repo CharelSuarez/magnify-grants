@@ -18,8 +18,7 @@
 	import { updateFlash } from 'sveltekit-flash-message';
 	import { page } from '$app/stores';
 	import { PlusCircle } from 'lucide-svelte';
-	import { locale, t } from '$lib/i18n/i18n';
-	import { onMount } from 'svelte';
+	import { t } from '$lib/i18n/i18n';
 
 	export let forms: Form[];
 
@@ -116,7 +115,7 @@
 				}
 			})
 		]);
-	}
+	};
 
 	const columns = createColumns();
 
@@ -143,7 +142,7 @@
 		<Input
 			bind:value={$filterValue}
 			class="max-w-sm"
-			placeholder="{$t('table.searchPlaceholder')}"
+			placeholder={$t('table.searchPlaceholder')}
 			type="text"
 		/>
 	</div>
@@ -194,7 +193,10 @@
 	</div>
 	<div class="flex items-center justify-end space-x-4 py-4">
 		<div class="flex-1 text-sm text-muted-foreground">
-			{$t('table.pagination.selectedCount', { count: Object.keys($selectedDataIds).length, total: $rows.length })}
+			{$t('table.pagination.selectedCount', {
+				count: Object.keys($selectedDataIds).length,
+				total: $rows.length
+			})}
 		</div>
 		<Button
 			disabled={!$hasPreviousPage}

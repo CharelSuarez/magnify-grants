@@ -43,6 +43,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@internationalized/date": "3.0.0-nightly.2967",
     "@lucia-auth/adapter-prisma": "^4.0.0",
     "@prisma/client": "^5.10.2",
     "@supabase/supabase-js": "^2.39.7",

@@ -14,11 +14,24 @@ model User {
   emailVerified    Boolean                @default(false)
   hashedPassword   String
   verificationCode EmailVerificationCode?
-  profile          Profile? // TODO Make this non-optional?
+  profile          Profile?
+  role             Role                   @default(GRANT_USER)
   sessions         Session[]
   applications     Application[]
 
+  gAdminInstance GrantAdmin?
+
   @@map("users")
+}
+
+model GrantAdmin {
+  id             String       @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String       @unique
+  organizationId String       @db.Uuid
+  user           User         @relation(references: [id], fields: [userId], onDelete: Cascade)
+  organization   Organization @relation(references: [id], fields: [organizationId], onDelete: Cascade)
+
+  @@map("grant_admins")
 }
 
 model EmailVerificationCode {
@@ -40,13 +53,12 @@ model PasswordResetToken {
 }
 
 model Profile {
-  id          String    @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String    @unique
+  id          String   @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId      String   @unique
   firstName   String
   lastName    String
-  dateOfBirth DateTime? // TODO Make this non-optional?
-  role        Role      @default(GRANT_USER)
-  user        User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+  dateOfBirth DateTime @db.Date
+  user        User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("profiles")
 }
@@ -79,23 +91,24 @@ model Grant {
 }
 
 model Organization {
-  id          String  @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String  @default("")
-  description String  @default("")
+  id          String       @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String       @default("")
+  description String       @default("")
+  admins      GrantAdmin[]
   grants      Grant[]
 
   @@map("organizations")
 }
 
 model Form {
-  id                         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  description                String
-  name                       String
-  createdAt                  DateTime @default(now())
-  fields                     Field[]  // TODO: Make grant required!
-  grant                      Grant?   @relation(fields: [grantId], references: [id], onDelete: Cascade)
-  grantId                    String?  @unique @db.Uuid
-  applications Application[]
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  description    String
+  name           String
+  createdAt      DateTime      @default(now())
+  fields         Field[] // TODO: Make grant required!
+  grant          Grant?        @relation(fields: [grantId], references: [id], onDelete: Cascade)
+  grantId        String?       @unique @db.Uuid
+  applications   Application[]
 
   @@map("forms")
 }
