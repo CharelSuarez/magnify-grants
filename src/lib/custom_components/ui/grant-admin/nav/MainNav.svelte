@@ -8,6 +8,7 @@
 	const navButtons = {
 		Overview: '/grant-admin',
 		Grants: '/grant-admin/grants',
+		Applications: '/grant-admin/applications',
 		'Grant Builder': '/grant-admin/grant-builder',
 		Users: '/grant-admin/users',
 		Analytics: '/grant-admin/analytics'

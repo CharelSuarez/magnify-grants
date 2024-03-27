@@ -3,6 +3,9 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { t } from '$lib/i18n/i18n';
+	import { toShort } from '$lib/utils/url';
+
+	export let id : string;
 </script>
 
 <DropdownMenu.Root>
@@ -20,6 +23,9 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
 			<DropdownMenu.Label>{$t('menu.actions')}</DropdownMenu.Label>
+			<a href={`/grant-user/grant/${toShort(id)}`} target="_blank">
+				<DropdownMenu.Item class="cursor-pointer">{$t('menu.openGrantPage')}</DropdownMenu.Item>
+			</a>
 			<DropdownMenu.Item on:click={() => {}}>
 				{$t('menu.viewApplicants')}
 			</DropdownMenu.Item>
