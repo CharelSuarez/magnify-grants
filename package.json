@@ -49,6 +49,7 @@
     "@types/nodemailer": "^6.4.14",
     "bits-ui": "^0.18.4",
     "clsx": "^2.1.0",
+    "cmdk-sv": "^0.0.16",
     "date.js": "^0.3.3",
     "formsnap": "^0.5.1",
     "lucia": "^3.0.1",

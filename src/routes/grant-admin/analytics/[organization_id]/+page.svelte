@@ -19,6 +19,9 @@
 	let grantsPerSector = data.grantsPerSector;
 </script>
 
+<svelte:head>
+	<title>Organization Analytics</title>
+</svelte:head>
 
 <div>
 	<main>
@@ -39,13 +42,12 @@
 						</Card.Header>
 						<Card.Content>
 							<h1 class="text-7xl">{totalApplications} {$t('card.users.content')}</h1>
-
 						</Card.Content>
 					</Card.Root>
 				</div>
 				<Card.Root class="hover:drop-shadow-md">
 					<Card.Header>
-						<Card.Title>{$t('card.grants.title')}</Card.Title>
+						<Card.Title class="text-3xl">{$t('card.grants.title')}</Card.Title>
 						<Card.Description>{$t('card.grants.description')}</Card.Description>
 					</Card.Header>
 					<Card.Content>
@@ -55,7 +57,7 @@
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
 					<Card.Header>
-						<Card.Title>{$t('card.funding.title')}</Card.Title>
+						<Card.Title class="text-3xl">{$t('card.funding.title')}</Card.Title>
 						<Card.Description>{$t('card.funding.description')}</Card.Description>
 					</Card.Header>
 					<Card.Content>
@@ -64,7 +66,7 @@
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
 					<Card.Header>
-						<Card.Title>{$t('card.sectors.title')}</Card.Title>
+						<Card.Title class="text-3xl">{$t('card.sectors.title')}</Card.Title>
 					</Card.Header>
 					<Card.Content>
 						{#each grantsPerSector as sector}
@@ -76,7 +78,7 @@
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
 					<Card.Header>
-						<Card.Title>{$t('card.acceptanceRate.title')}</Card.Title>
+						<Card.Title class="text-3xl">{$t('card.acceptanceRate.title')}</Card.Title>
 					</Card.Header>
 					<Card.Content>
 						<p class="text-7xl">{acceptanceRate}%</p>

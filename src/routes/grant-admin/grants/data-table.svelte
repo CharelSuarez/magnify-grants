@@ -5,9 +5,10 @@
 		addSortBy,
 		addTableFilter,
 		addHiddenColumns,
-		addSelectedRows
+		addSelectedRows,
+		addColumnFilters
 	} from 'svelte-headless-table/plugins';
-	import { readable } from 'svelte/store';
+	import { get, readable, type Writable } from 'svelte/store';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import * as Table from '$lib/components/ui/table';
@@ -17,6 +18,9 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
   	import DataTableCheckbox from '$lib/custom_components/ui/table/table-checkbox.svelte'
 	import type { Grant } from '@prisma/client';
+	import Cross2 from 'svelte-radix/Cross2.svelte';
+	import { trueFalseFilter } from './filter-types';
+	import { DataTableFacetedFilter } from './index.js';
 
 	export let grants: Grant[];
 
@@ -30,7 +34,8 @@
 				value.toLowerCase().includes(filterValue.toLowerCase())
 		}),
 		hide: addHiddenColumns(),
-		select: addSelectedRows()
+		select: addSelectedRows(),
+		colFilter: addColumnFilters()
 	});
 
 	const columns = table.createColumns([
@@ -39,14 +44,16 @@
 			header: (_, { pluginStates }) => {
 				const { allPageRowsSelected } = pluginStates.select;
 				return createRender(DataTableCheckbox, {
-					checked: allPageRowsSelected
+					checked: allPageRowsSelected,
+					ariaLabel: 'Select all rows'
 				});
 			},
 			cell: ({ row }, { pluginStates }) => {
 				const { getRowState } = pluginStates.select;
 				const { isSelected } = getRowState(row);
 				return createRender(DataTableCheckbox, {
-					checked: isSelected
+					checked: isSelected,
+					ariaLabel: 'Select row'
 				});
 			},
 			plugins: {
@@ -76,6 +83,21 @@
 			plugins: {
 				filter: {
 					exclude: true
+				},
+				colFilter: {
+					fn: ({ filterValue, value }) => {
+						if (filterValue.length === 0) return true;
+						console.log(filterValue, typeof value);
+						if (!Array.isArray(filterValue) || typeof value.toString() !== 'string') return true;
+
+						return filterValue.some((filter) => {
+							return value.toString().includes(filter);
+						});
+					},
+					initialFilterValue: [],
+					render: ({ filterValue }) => {
+						return get(filterValue);
+					}
 				}
 			}
 		}),
@@ -85,12 +107,28 @@
 			plugins: {
 				filter: {
 					exclude: true
+				},
+				colFilter: {
+					fn: ({ filterValue, value }) => {
+						if (filterValue.length === 0) return true;
+						console.log(filterValue, typeof value);
+						if (!Array.isArray(filterValue) || typeof value.toString() !== 'string') return true;
+
+						return filterValue.some((filter) => {
+							return value.toString().includes(filter);
+						});
+					},
+					initialFilterValue: [],
+					render: ({ filterValue }) => {
+						return get(filterValue);
+					}
 				}
 			}
 		}),
 		table.column({
 			accessor: item => item,
 			header: 'Range',
+			id: 'range',
 			cell: ({ value: { rangeLow, rangeHigh } }) => {
 				const rangeLowFormatted = new Intl.NumberFormat('en-US', {
 					style: 'currency',
@@ -101,6 +139,14 @@
 					currency: 'CAD'
 				}).format(rangeHigh);
 				return `${rangeLowFormatted} to ${rangeHighFormatted}`;
+			},
+			plugins: {
+				sort: {
+					getSortValue: ({ value }) => {
+						console.log(value);
+						return value;
+					}
+				}
 			}
 		}),
 		table.column({
@@ -119,14 +165,28 @@
 	const { filterValue } = pluginStates.filter;
 	const { hiddenColumnIds } = pluginStates.hide;
 	const { selectedDataIds } = pluginStates.select;
+	const {
+		filterValues
+	}: {
+		filterValues: Writable<{
+			acceptingApplications: string[];
+			published: string[];
+		}>;
+	} = pluginStates.colFilter;
 
 	const ids = flatColumns.map((col) => col.id);
 	let hideForId = Object.fromEntries(ids.map((id) => [id, true]));
 	$: $hiddenColumnIds = Object.entries(hideForId)
 		.filter(([, hide]) => !hide)
 		.map(([id]) => id);
-	const hidableCols = ['title', 'acceptingApplications', 'published', 'description'];
+	const hidableCols = ['title', 'acceptingApplications', 'published', 'description', 'range'];
+
+	$: showReset = Object.values({ ...$filterValues, $filterValue }).some((v) => v.length > 0);
 </script>
+
+<svelte:head>
+	<title>All grants</title>
+</svelte:head>
 
 <div>
 	<div class="flex items-center py-4">
@@ -136,6 +196,30 @@
 			placeholder="Search titles or descriptions"
 			type="text"
 		/>
+		<DataTableFacetedFilter
+			bind:filterValues={$filterValues.acceptingApplications}
+			options={trueFalseFilter}
+			title="Accepting Applications"
+		/>
+		<DataTableFacetedFilter
+			bind:filterValues={$filterValues.published}
+			options={trueFalseFilter}
+			title="Published"
+		/>
+		{#if showReset}
+			<Button
+				on:click={() => {
+					$filterValue = "";
+					$filterValues.acceptingApplications= [];
+					$filterValues.published = [];
+				}}
+				variant="ghost"
+				class="h-8 px-2 lg:px-3"
+			>
+				Reset
+				<Cross2 class="ml-2 h-4 w-4" />
+			</Button>
+		{/if}
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<Button builders={[builder]} class="ml-auto" variant="outline">
@@ -163,11 +247,7 @@
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
 									<Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
-										{#if cell.id === "amount"}
-											<div class="text-right">
-												<Render of={cell.render()} />
-											</div>
-										{:else if cell.id === "title"}
+										{#if cell.id === "range"}
 											<Button variant="ghost" on:click={props.sort.toggle}>
 												<Render of={cell.render()} />
 												<ArrowUpDown class={"ml-2 h-4 w-4"} />

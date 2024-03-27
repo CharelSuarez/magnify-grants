@@ -13,6 +13,10 @@
 	let orgs = data.organizations;
 </script>
 
+<svelte:head>
+	<title>Available Granting Organizations</title>
+</svelte:head>
+
 <div>
 	<main>
 		<div class="container mx-auto py-10">
@@ -26,7 +30,7 @@
 			<div class="py-2 grid grid-cols-3 gap-4">
 				{#each orgs as org (org.id)}
 					<Card.Root>
-						<img class="h-auto max-w-full" src="{image}">
+						<img class="h-auto max-w-full" src="{image}" alt="Organization Logo">
 						<Card.Header>
 							<Card.Title>{org.name}</Card.Title>
 							<Card.Description>{org.description}</Card.Description>

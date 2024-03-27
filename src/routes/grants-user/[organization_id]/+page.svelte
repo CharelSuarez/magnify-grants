@@ -6,18 +6,27 @@
 	import { toShort } from '$lib/utils/url';
 	import { t } from '$lib/i18n/i18n';
 
-
 	export let data: PageData;
 	let grants = data.grants;
 </script>
+
+<svelte:head>
+	<title>Posted Grants</title>
+</svelte:head>
 
 <div>
 	<main>
 		<div class="container mx-auto py-10">
 			<div class="flex items-center justify-between space-y-2">
 				<div>
-					<h2 class="text-2xl font-bold tracking-tight">{$t('organizations.title')}</h2>
-					<p class="text-muted-foreground">{$t('organizations.subtitle')}</p>
+					{#if grants.length === 0}
+						<h2 class="text-2xl font-bold tracking-tight">{$t('organizations.noGrantsFoundTitle')}</h2>
+						<p class="text-muted-foreground">{$t('organizations.noGrantsFoundDesc')}</p>
+					{:else}
+						<h2 class="text-2xl font-bold tracking-tight">{grants[0].organization.name}'s
+							$t('organizations.grants')</h2>
+						<p class="text-muted-foreground">{$t('organizations.applyToday')}</p>
+					{/if}
 				</div>
 			</div>
 			<div class="grid grid-cols-2 gap-4">
@@ -29,7 +38,9 @@
 						</Card.Header>
 						<Card.Content>
 							<p>{grant.description}</p>
-							<Badge variant="secondary">{grant.expirationDate}</Badge>
+							<Badge variant="secondary">Apply by: {grant.expirationDate}</Badge>
+							<Badge
+								variant="secondary">{$t(`card.sectors.${grant.sector.replace("_", "").toLowerCase()}`)}</Badge>
 						</Card.Content>
 						<Card.Footer class="flex justify-between">
 							<Button variant="secondary">{$t('button.favorite')}</Button>
