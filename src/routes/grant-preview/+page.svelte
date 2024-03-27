@@ -30,9 +30,11 @@
         </Card.Content>
 
         <Card.Footer class="flex justify-between">
-            <Button variant="outline">{$t('card.goBack')}</Button>
-            <Button>{$t('card.edit')}</Button>
-        </Card.Footer>
+
+            <Button variant="outline" href="/grants">Go back</Button>
+            <Button href="/grant-builder">Edit</Button>
+          </Card.Footer>
+
     </Card.Root>
 </div>
 
