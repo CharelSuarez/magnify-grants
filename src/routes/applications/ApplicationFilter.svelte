@@ -3,8 +3,8 @@
 	import { Input } from "$lib/components/ui/input";
 	import { Label } from "$lib/components/ui/label";
 	import { Slider } from "$lib/components/ui/slider"
-	import { AcceptStatus } from "$lib/custom_components/ui/application-table/app-acceptance-statuses"
-	import { CompleteStatus } from "$lib/custom_components/ui/application-table/app-complete-statuses"
+	import { AcceptStatus } from "./application-table/app-acceptance-statuses"
+	import { CompleteStatus } from "./application-table/app-complete-statuses"
 	import { zodClient } from "sveltekit-superforms/adapters";
 	import { type SuperValidated, type Infer, superForm } from "sveltekit-superforms";
 	import { filterSchema, type FilterSchema } from "$lib/validation/app_schema";

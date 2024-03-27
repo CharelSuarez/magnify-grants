@@ -6,7 +6,7 @@
 	import GrantTableActions from './AppTableActions.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
-	import GrantTableCheckbox from '../table/table-checkbox.svelte';
+	import GrantTableCheckbox from '../../../lib/custom_components/ui/table/table-checkbox.svelte';
 	import GrantTableStatusCell from './AppTableAcceptCell.svelte';
 	import GrantTableCompleteStatus from './AppTableCompleteCell.svelte';
 	import type { Application } from '$lib/validation/app_schema';

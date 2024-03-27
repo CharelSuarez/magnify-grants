@@ -1,5 +1,5 @@
 <script lang="ts">
-    import GrantTable from "$lib/custom_components/ui/application-table/AppTable.svelte";
+    import GrantTable from "./application-table/AppTable.svelte";
     import GrantTableFilter from "./ApplicationFilter.svelte";
 	import type { PageData, ActionData } from "./$types";
 	import { writable, type Writable } from "svelte/store";

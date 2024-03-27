@@ -152,7 +152,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"applications.filter": "Filter",
 		"application.status.inProgress": "In Progress",
 		"application.status.accepted": "Accepted",
-		"application.status.rejectd": "Rejected"
+		"application.status.rejected": "Rejected",
 	},
 	'fr': {
 		'homepage.title': '¡Hola Mundo!',
@@ -300,8 +300,13 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"alert.title": "Êtes-vous absolument sûr ?",
 		"alert.description": "Cette action est irréversible. Cela supprimera définitivement ce formulaire et retirera ses données de nos serveurs.",
 		"alert.cancel": "Annuler",
-		"alert.delete": "Supprimer"
-
+		"alert.delete": "Supprimer",
+		"applications.filter.title": "Filtrer les candidatures",
+		"applications.filter.description": "Remplissez le tableau avec les candidats qui correspondent aux critères donnés.",
+		"applications.filter": "Filtrer",
+		"application.status.inProgress": "En cours",
+		"application.status.accepted": "Accepté",
+		"application.status.rejected": "Rejeté",
 	}
 };
 
