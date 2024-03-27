@@ -3,20 +3,27 @@
 	import * as Card from "$lib/components/ui/card";
 	import image from '$lib/assets/branding/images/rbc-grant-template.jpg';
     import icon from '$lib/assets/branding/images/rbc-icon-template.png';
-	import Badge from "$lib/components/ui/badge/badge.svelte";
+	import Badge from "../../../../lib/components/ui/badge/badge.svelte";
 	import { Head } from "$lib/components/ui/table";
-	import Button from "$lib/components/ui/button/button.svelte";
+	import Button from "../../../../lib/components/ui/button/button.svelte";
 	import { toShort } from "$lib/utils/url";
-	import Separator from "$lib/components/ui/separator/separator.svelte";
+	import Separator from "../../../../lib/components/ui/separator/separator.svelte";
 	import Paperclip from "lucide-svelte/icons/paperclip";
     import File from "lucide-svelte/icons/file-text";
     import CircleAlert from "lucide-svelte/icons/alert-circle";
 	import GrantForm from './GrantForm.svelte';
+  import logo from '$lib/assets/branding/images/magnify_logo.png';
+  import { t } from '$lib/i18n/i18n';
+  import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
+  import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
 
     export let data: PageData;
 </script>
 
+<Taskbar loggedIn={data.loggedIn}/>
+
 <div class="min-h-screen flex-1 flex-col p-20 md:flex items-center">
+
 	<div class="flex justify-start h-full items-center space-y-2 gap-10 mt-8 mb-8">
         <Card.Root class="basis-1/4">
             <Card.Content class={"h-60 w-96 p-0 rounded-inherit"}>
@@ -63,7 +70,7 @@
                     sapiente accusantium modi repudiandae commodi rerum maiores 
                     error voluptatum, voluptatem.
                 </Card.Description>
-                <a href={`/grants-user/${toShort(data.grant.organization.id)}`} target="_blank">
+                <a href={`/grant-user/organization/${toShort(data.grant.organization.id)}`} target="_blank">
                     <Button class="w-full">View All Grants</Button>
                 </a>
             </Card.Content>

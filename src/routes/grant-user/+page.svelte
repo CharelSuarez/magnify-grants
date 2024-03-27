@@ -7,6 +7,7 @@
 	import logo from '$lib/assets/branding/images/magnify_logo.png';
 	import Orgs from '$lib/custom_components/ui/grant-user/Orgs.svelte';
 	import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
+	import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
 
 	export let data: PageData;
 	let grants = data.grants;
@@ -17,17 +18,7 @@
 </script>
 
 <main class="flex-col min-h-screen h-auto font-satoshi">
-	<div
-		class="flex fixed top-0 h-fit w-full shadow-lg backdrop-blur-md z-40 p-8 px-16 justify-between"
-	>
-        
-		<img src={logo} alt="logo" class="h-10" />
-		<div class="flex font-medium text-teal-600 items-center gap-4">
-			<a href="/">MagnifyAccess</a>
-			<a href="/">{$t('nav.home')}</a>
-            <LocaleSelection />
-		</div>
-	</div>
+	<Taskbar loggedIn={data.loggedIn}/>
 
 	<div class="flex p-[3rem] text-[5rem] font-bold mt-[100px]">{$t('body.organization')}</div>
 	<div class="flex mb-8 w-full px-[3rem] flex-col relative min-h-[300px]">
@@ -46,7 +37,7 @@
 				<p>{$t('body.organizations.notfound')}</p>
 			{/if}
 			{#each orgs as org (org.id)}
-				<Orgs name={org.name} description={org.description} endpoint={`/grants-user/${org.id}`} />
+				<Orgs name={org.name} description={org.description} endpoint={`/grant-user/organization/${toShort(org.id)}`} />
 			{/each}
 		</div>
 	</div>
@@ -69,7 +60,7 @@
 				<Orgs
 					name={grant.title}
 					description={grant.description}
-					endpoint={`/grant/${toShort(grant.id)}`}
+					endpoint={`/grant-user/grant/${toShort(grant.id)}`}
 				/>
 			{/each}
 		</div>

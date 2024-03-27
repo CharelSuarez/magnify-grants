@@ -28,7 +28,7 @@ const alwaysAllowed = [
 	'/signup',
 	'/reset-password',
 	'/applications',
-	'/grants-user',
+	'/grant-user',
 	'/grants',
 	'/grant-builder',
 	'/grant-preview',

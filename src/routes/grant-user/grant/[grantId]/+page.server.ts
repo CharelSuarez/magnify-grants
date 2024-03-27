@@ -26,7 +26,7 @@ export const load: PageServerLoad = async (event) => {
 		if (!grant) {
 			redirect(
 				307,
-				`/grants-user/ce191ebf-ace0-4224-8c78-5b0ad38a7c66`, // TODO Change to the grant exploration page!
+				`/grant-user`, // TODO Change to the grant exploration page!
 				{
 					richColors: true,
 					type: 'error',
@@ -50,7 +50,7 @@ export const load: PageServerLoad = async (event) => {
 	} catch (err) {
 		redirect(
 			307,
-			'/grants-user/ce191ebf-ace0-4224-8c78-5b0ad38a7c66', // TODO Change to the grant exploration page!
+			'/grant-user', // TODO Change to the grant exploration page!
 			{
 				richColors: true,
 				type: 'error',

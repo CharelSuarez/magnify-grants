@@ -7,7 +7,7 @@
     export let loggedIn: boolean;
 </script>
 
-<div class="flex justify-between px-10 py-5 shadow-lg items-center fixed w-full z-[10] backdrop-blur-md bg-opacity-40">
+<div class="top-0 sticky flex justify-between px-10 py-5 shadow-lg items-center fixed w-full z-[10] backdrop-blur-md bg-opacity-40">
     <div class="flex items-center">
         <img src={image} alt="logo" class="h-12"/>
     </div>
