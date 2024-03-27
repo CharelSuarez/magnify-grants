@@ -1,0 +1,11 @@
+<script lang="ts">
+	import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+</script>
+
+<Taskbar loggedIn={data.loggedIn}/>
+
+<slot />

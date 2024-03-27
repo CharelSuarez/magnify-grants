@@ -18,7 +18,6 @@
 </script>
 
 <main class="flex-col min-h-screen h-auto font-satoshi">
-	<Taskbar loggedIn={data.loggedIn}/>
 
 	<div class="flex p-[3rem] text-[5rem] font-bold mt-[100px]">{$t('body.organization')}</div>
 	<div class="flex mb-8 w-full px-[3rem] flex-col relative min-h-[300px]">

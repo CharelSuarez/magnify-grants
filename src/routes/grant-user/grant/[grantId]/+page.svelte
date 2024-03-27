@@ -3,11 +3,11 @@
 	import * as Card from "$lib/components/ui/card";
 	import image from '$lib/assets/branding/images/rbc-grant-template.jpg';
     import icon from '$lib/assets/branding/images/rbc-icon-template.png';
-	import Badge from "../../../../lib/components/ui/badge/badge.svelte";
+	import Badge from "$lib/components/ui/badge/badge.svelte";
 	import { Head } from "$lib/components/ui/table";
-	import Button from "../../../../lib/components/ui/button/button.svelte";
+	import Button from "$lib/components/ui/button/button.svelte";
 	import { toShort } from "$lib/utils/url";
-	import Separator from "../../../../lib/components/ui/separator/separator.svelte";
+	import Separator from "$lib/components/ui/separator/separator.svelte";
 	import Paperclip from "lucide-svelte/icons/paperclip";
     import File from "lucide-svelte/icons/file-text";
     import CircleAlert from "lucide-svelte/icons/alert-circle";
@@ -20,7 +20,6 @@
     export let data: PageData;
 </script>
 
-<Taskbar loggedIn={data.loggedIn}/>
 
 <div class="min-h-screen flex-1 flex-col p-20 md:flex items-center">
 

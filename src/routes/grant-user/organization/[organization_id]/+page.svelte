@@ -19,7 +19,6 @@
 
 <div>
 	<main class="flex-col min-h-screen h-auto">
-		<Taskbar loggedIn={data.loggedIn}/>
 
 		<div class="container mx-auto py-10">
 
