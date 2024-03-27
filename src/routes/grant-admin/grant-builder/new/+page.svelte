@@ -45,8 +45,8 @@
 
 <svelte:window on:beforeunload|preventDefault />
 
-<EditableForm bind:fields bind:formName bind:formDescription {errors}>
-	<Button disabled={isLoading} variant="outline" on:click={submitForm}>
+<EditableForm bind:fields bind:formDescription bind:formName {errors}>
+	<Button disabled={isLoading} on:click={submitForm} variant="outline">
 		{#if isLoading}
 			<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 		{/if}

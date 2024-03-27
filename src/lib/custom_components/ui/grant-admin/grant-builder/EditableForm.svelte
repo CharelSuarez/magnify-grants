@@ -111,8 +111,8 @@
 
 <container class="container flex w-screen flex-col space-y-5 items-center my-20">
 	<FormElement type="header">
-		<Input placeholder={$t('form.placeholder.name')} bind:value={formName} />
-		<Input placeholder={$t('form.placeholder.description')} bind:value={formDescription} />
+		<Input bind:value={formName} placeholder={$t('form.placeholder.name')} />
+		<Input bind:value={formDescription} placeholder={$t('form.placeholder.description')} />
 	</FormElement>
 	{#if 'name' in errors}
 		<FormElement type="error">
@@ -165,5 +165,6 @@
 	<div class="flex flex-row w-full space-x-2">
 		<!-- Placeholder for other buttons or elements -->
 		<FormDropdown on:addfield={(e) => addFieldHandler(e, null)} variant="outline" />
+		<slot />
 	</div>
 </container>

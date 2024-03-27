@@ -16,7 +16,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-  	import DataTableCheckbox from '$lib/custom_components/ui/table/table-checkbox.svelte'
+	import DataTableCheckbox from '$lib/custom_components/ui/table/table-checkbox.svelte';
 	import type { Grant } from '@prisma/client';
 	import Cross2 from 'svelte-radix/Cross2.svelte';
 	import { trueFalseFilter } from './filter-types';
@@ -152,8 +152,8 @@
 		table.column({
 			accessor: ({ id }) => id,
 			header: '',
-			cell: ({ value }) => {
-				return createRender(DataTableActions, { id: value });
+			cell: () => {
+				return createRender(DataTableActions);
 			}
 		})
 	]);
