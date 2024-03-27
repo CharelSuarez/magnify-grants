@@ -29,7 +29,7 @@
                 <img
 					class={"h-full w-full object-cover transition-all hover:scale-105 rounded-inherit"}
 					src={image}
-					alt={"Grant cover image."}
+					alt={$t('grant.coverImageAlt')}
                 /> <!-- TODO Grant image alt text! -->
             </Card.Content>
         </Card.Root>
@@ -57,7 +57,7 @@
                     <img
                         class={"h-10 object-cover transition-all hover:scale-105 rounded-inherit"}
                         src={icon}
-                        alt={"Grant cover image."}
+                        alt={$t('grant.coverImageAlt')}
                     /> <!-- TODO Grant image alt text! -->
                     <Card.Title class="text-3xl">{data.grant.organization.name}</Card.Title>
                 </div>
@@ -70,24 +70,24 @@
                     error voluptatum, voluptatem.
                 </Card.Description>
                 <a href={`/grant-user/organization/${toShort(data.grant.organization.id)}`} target="_blank">
-                    <Button class="w-full">View All Grants</Button>
+                    <Button class="w-full">{$t('grant.viewAllGrants')}</Button>
                 </a>
             </Card.Content>
         </Card.Root>
 	</div>
     <Separator class="mb-8" />
     <Card.Root class="bg-secondary w-min p-6 rounded-lg">
-        <h2 class="text-3xl font-bold tracking-tight text-center mb-2">Apply</h2>
-        <p class="tracking-tight text-center mb-8 text-muted-foreground">Complete all required forms and upload all required files in order to apply to this grant.</p>
+        <h2 class="text-3xl font-bold tracking-tight text-center mb-2">{$t('apply.header')}</h2>
+        <p class="tracking-tight text-center mb-8 text-muted-foreground">{$t('apply.instructions')}</p>
         <div class="flex justify-center w-full gap-10 items-center">
             {#each data.forms as form}
                 <GrantForm form={form}></GrantForm>
             {/each}
             <Button disabled class="gap-4">
-                <p>Submit Application</p>
+                <p>{$t('apply.submitApplication')}</p>
                 <Badge variant="destructive" class="pl-1 pr-2 gap-1">
                     <CircleAlert></CircleAlert>
-                    One More Form Required
+                    {$t('apply.oneMoreFormRequired')}
                 </Badge>
             </Button>
         </div>

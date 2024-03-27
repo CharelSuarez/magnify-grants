@@ -72,6 +72,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'table.header.published': 'Published',
 		'table.header.range': 'Range',
 		'nav.home': 'Home',
+		'nav.view.grants': 'View Grants',
 		'body.organization': 'Organization',
 		'body.grants': 'Grants',
 		'body.search.grants': 'Search for Grants',
@@ -157,7 +158,16 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'applications.filter': 'Filter',
 		'application.status.inProgress': 'In Progress',
 		'application.status.accepted': 'Accepted',
-		'application.status.rejected': 'Rejected'
+		'application.status.rejected': 'Rejected',
+		"label.description": "Description",
+		"grant.coverImageAlt": "Grant cover image.",
+		"grant.viewAllGrants": "View All Grants",
+		"apply.header": "Apply",
+		"apply.instructions": "Complete all required forms and upload all required files in order to apply to this grant.",
+		"apply.submitApplication": "Submit Application",
+		"apply.oneMoreFormRequired": "One More Form Required",
+		"page.title.postedGrants": "Posted Grants",
+		"applyBy": "Apply by: ",
 	},
 	'fr': {
 		'homepage.title': '¡Hola Mundo!',
@@ -242,6 +252,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'nav.logOut': 'Déconnexion',
 		'nav.login': 'Connexion',
 		'nav.signUp': 'Inscription',
+		'nav.view.grants': 'Voir les subventions',
 		'home.title.first': 'Service de',
 		'home.title.second': 'Subvention',
 		'home.subtitle': 'Valoriser la Communauté',
@@ -315,7 +326,16 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'applications.filter': 'Filtrer',
 		'application.status.inProgress': 'En cours',
 		'application.status.accepted': 'Accepté',
-		'application.status.rejected': 'Rejeté'
+		'application.status.rejected': 'Rejeté',
+		"label.description": "Description",
+		"grant.coverImageAlt": "Image de couverture de la subvention.",
+		"grant.viewAllGrants": "Voir toutes les subventions",
+		"apply.header": "Postuler",
+		"apply.instructions": "Complétez tous les formulaires requis et téléchargez tous les fichiers nécessaires pour postuler à cette subvention.",
+		"apply.submitApplication": "Soumettre la candidature",
+		"apply.oneMoreFormRequired": "Un formulaire de plus requis",
+		"page.title.postedGrants": "Subventions publiées",
+		"applyBy": "Postuler avant: "
 	}
 };
 

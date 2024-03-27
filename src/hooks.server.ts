@@ -28,14 +28,8 @@ const alwaysAllowed = [
 	'/signup',
 	'/reset-password',
 	'/applications',
-	'/grant-user',
-	'/grants',
-	'/grant-builder',
 	'/grant-preview',
-	'/grant-admin', // temp
-	'/analytics',
-	'/organizations-user',
-	'/grant'
+	'/grant-admin',
 ];
 
 // inherits from alwaysAllowed
@@ -45,7 +39,7 @@ const userAllowed = ['/logout', '/email-verification'];
 const verifiedAllowed = ['/profile/create'];
 
 // inherits from verifiedAllowed
-const hasProfileAllowed: string[] = [];
+const hasProfileAllowed = ['/grant-user'];
 
 const verifySession: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(lucia.sessionCookieName);

@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-	<title>Posted Grants</title>
+	<title>{$t('page.title.postedGrants')}</title>
 </svelte:head>
 
 <div>
@@ -44,7 +44,7 @@
 						</Card.Header>
 						<Card.Content>
 							<p>{grant.description}</p>
-							<Badge variant="secondary">Apply by: {grant.expirationDate}</Badge>
+							<Badge variant="secondary">{$t('applyBy')}{grant.expirationDate}</Badge>
 							<Badge
 								variant="secondary">{$t(`card.sectors.${grant.sector.replace("_", "").toLowerCase()}`)}</Badge>
 						</Card.Content>

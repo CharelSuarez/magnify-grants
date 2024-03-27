@@ -9,7 +9,9 @@
 
 <div class="top-0 sticky flex justify-between px-10 py-5 shadow-lg items-center fixed w-full z-[10] backdrop-blur-md bg-opacity-40">
     <div class="flex items-center">
-        <img src={image} alt="logo" class="h-12"/>
+        <a href="/">
+            <img src={image} alt="logo" class="h-12"/>
+        </a>
     </div>
     <div class="flex items-center font-satoshi">
         <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="https://www.magnifyaccess.ai/">
@@ -17,6 +19,10 @@
         </Button>
 
         {#if loggedIn}
+            <Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/grant-user">
+                {$t('nav.view.grants')}
+            </Button>
+
             <form action="/logout" method="POST">
                 <Button type="submit" class="mr-5 bg-teal-700 hover:bg-teal-500">
                     {$t('nav.logOut')}
