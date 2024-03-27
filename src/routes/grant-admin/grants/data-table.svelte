@@ -152,8 +152,8 @@
 		table.column({
 			accessor: ({ id }) => id,
 			header: '',
-			cell: () => {
-				return createRender(DataTableActions);
+			cell: ({value}) => {
+				return createRender(DataTableActions, { id: value });
 			}
 		})
 	]);

@@ -28,7 +28,7 @@
 		dataType: 'json',
         validators: zodClient(filterSchema),
 		onSubmit: () => { isLoading = true },
-		onResult: () => setTimeout(() => isLoading = false, 1000)
+		onResult: () => setTimeout(() => isLoading = false, 250)
     });
 	
 	const { form: formData, enhance, allErrors } = filterForm;
