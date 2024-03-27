@@ -1,7 +1,8 @@
+import { formSchema } from '$lib/validation/new_grant_schema.js';
 import type { PageServerLoad, Actions } from './$types.js';
 import { fail } from '@sveltejs/kit';
+import { redirect } from 'sveltekit-flash-message/server';
 import { superValidate } from 'sveltekit-superforms';
-import { formSchema } from './schema';
 import { zod } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async () => {
@@ -12,28 +13,47 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	default: async (event) => {
-		const form = await superValidate(event, zod(formSchema));
-		if (!form.valid) {
-			return fail(400, {
-				form
-			});
+		const grantAdmin = await event.locals.getGrantAdmin();
+
+		if (!grantAdmin) {
+			fail(401);
 		}
 
-		const grant = await db.grant.create({
-			data: {
-				title: form.data.grantName,
-				description: form.data.grantDescription,
-				acceptingApplications: form.data.acceptingApplications,
-				rangeLow: form.data.rangeLow,
-				rangeHigh: form.data.rangeHigh,
-				expirationDate: new Date(form.data.expirationDate),
-				sector: form.data.sector,
-				organizationId: '81f57db4-ca65-4223-a722-a44298195838' // TODO - get organization from user profile?
-			}
-		});
+		try {
+			const form = await superValidate(event, zod(formSchema));
 
-		return {
-			form
-		};
+			if (!form.valid) {
+				fail(400, {
+					form
+				});
+			}
+
+			await db.grant.create({
+				data: {
+					title: form.data.grantName,
+					description: form.data.grantDescription,
+					acceptingApplications: form.data.acceptingApplications,
+					rangeLow: form.data.rangeLow,
+					rangeHigh: form.data.rangeHigh,
+					expirationDate: new Date(form.data.expirationDate),
+					sector: form.data.sector,
+					organizationId: grantAdmin.organizationId
+				}
+			});
+		} catch (err) {
+			console.log(err);
+			return fail(500);
+		}
+
+		redirect(
+			200,
+			'/grant-admin/grants',
+			{
+				type: 'success',
+				richColors: true,
+				message: 'Successfully created grant'
+			},
+			event
+		);
 	}
 };

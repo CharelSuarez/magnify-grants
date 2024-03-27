@@ -20,7 +20,7 @@
 	import type { Grant } from '@prisma/client';
 	import Cross2 from 'svelte-radix/Cross2.svelte';
 	import { trueFalseFilter } from './filter-types';
-	import { DataTableFacetedFilter } from './index.js';
+	import { DataTableFacetedFilter } from './index';
 
 	export let grants: Grant[];
 
@@ -30,8 +30,7 @@
 			toggleOrder: ['asc', 'desc']
 		}),
 		filter: addTableFilter({
-			fn: ({ filterValue, value }) =>
-				value.toLowerCase().includes(filterValue.toLowerCase())
+			fn: ({ filterValue, value }) => value.toLowerCase().includes(filterValue.toLowerCase())
 		}),
 		hide: addHiddenColumns(),
 		select: addSelectedRows(),
@@ -70,10 +69,8 @@
 			accessor: 'description',
 			header: 'Description',
 			cell: ({ value }) => {
-				if (value.length == 0)
-					return 'None';
-				else if (value.length < 25)
-					return value;
+				if (value.length == 0) return 'None';
+				else if (value.length < 25) return value;
 				return value.substring(0, 25) + '...';
 			}
 		}),
@@ -126,7 +123,7 @@
 			}
 		}),
 		table.column({
-			accessor: item => item,
+			accessor: (item) => item,
 			header: 'Range',
 			id: 'range',
 			cell: ({ value: { rangeLow, rangeHigh } }) => {
@@ -209,8 +206,8 @@
 		{#if showReset}
 			<Button
 				on:click={() => {
-					$filterValue = "";
-					$filterValues.acceptingApplications= [];
+					$filterValue = '';
+					$filterValues.acceptingApplications = [];
 					$filterValues.published = [];
 				}}
 				variant="ghost"
@@ -247,10 +244,10 @@
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
 									<Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
-										{#if cell.id === "range"}
+										{#if cell.id === 'range'}
 											<Button variant="ghost" on:click={props.sort.toggle}>
 												<Render of={cell.render()} />
-												<ArrowUpDown class={"ml-2 h-4 w-4"} />
+												<ArrowUpDown class={'ml-2 h-4 w-4'} />
 											</Button>
 										{:else}
 											<Render of={cell.render()} />
@@ -265,10 +262,7 @@
 			<Table.Body {...$tableBodyAttrs}>
 				{#each $pageRows as row (row.id)}
 					<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-						<Table.Row
-							{...rowAttrs}
-							data-state={$selectedDataIds[row.id] && "selected"}
-						>
+						<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'}>
 							{#each row.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs>
 									<Table.Cell {...attrs}>
@@ -284,22 +278,22 @@
 	</div>
 	<div class="flex items-center justify-end space-x-4 py-4">
 		<div class="flex-1 text-sm text-muted-foreground">
-			{Object.keys($selectedDataIds).length} of{" "}
+			{Object.keys($selectedDataIds).length} of{' '}
 			{$rows.length} row(s) selected.
 		</div>
 		<Button
 			disabled={!$hasPreviousPage}
 			on:click={() => ($pageIndex = $pageIndex - 1)}
 			size="sm"
-			variant="outline">Previous
-		</Button
-		>
+			variant="outline"
+			>Previous
+		</Button>
 		<Button
 			disabled={!$hasNextPage}
 			on:click={() => ($pageIndex = $pageIndex + 1)}
 			size="sm"
-			variant="outline">Next
-		</Button
-		>
+			variant="outline"
+			>Next
+		</Button>
 	</div>
 </div>

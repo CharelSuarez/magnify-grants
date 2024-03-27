@@ -2,20 +2,18 @@ import { db } from '$lib/server/db';
 import { ApplicationStatus } from '@prisma/client';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async (event) => {
+	const grantAdmin = await event.locals.getGrantAdmin();
+
+	if (!grantAdmin) {
+		return;
+	}
+
+	const organizationId = grantAdmin.organizationId;
+
 	const organization = await db.organization.findUnique({
 		where: {
-			id: params.organization_id
-		}
-	});
-
-
-	const numGrants = await db.grant.count({
-		where: {
-			postedDate: {
-				gte: new Date(new Date().setMonth(new Date().getMonth() - 1))
-			},
-			organizationId: params.organization_id
+			id: grantAdmin.organizationId
 		}
 	});
 
@@ -24,7 +22,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			rangeHigh: true
 		},
 		where: {
-			organizationId: params.organization_id
+			organizationId: organizationId
 		}
 	});
 
@@ -32,12 +30,12 @@ export const load: PageServerLoad = async ({ params }) => {
 		style: 'currency',
 		currency: 'CAD',
 		currencyDisplay: 'narrowSymbol'
-	}).format(totalFundsAllocated._sum.rangeHigh);
+	}).format(totalFundsAllocated._sum.rangeHigh || 0);
 
 	// sum the total number of grants in the table
 	const totalGrants = await db.grant.count({
 		where: {
-			organizationId: params.organization_id
+			organizationId: organizationId
 		}
 	});
 
@@ -48,7 +46,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			},
 			form: {
 				grant: {
-					organizationId: params.organization_id
+					organizationId: organizationId
 				}
 			}
 		}
@@ -59,7 +57,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			status: ApplicationStatus.IN_PROGRESS,
 			form: {
 				grant: {
-					organizationId: params.organization_id
+					organizationId: organizationId
 				}
 			}
 		}
@@ -70,13 +68,16 @@ export const load: PageServerLoad = async ({ params }) => {
 			status: ApplicationStatus.ACCEPTED,
 			form: {
 				grant: {
-					organizationId: params.organization_id
+					organizationId: organizationId
 				}
 			}
 		}
 	});
 
-	const acceptanceRate = totalApplications == 0 ? 0 : (acceptedApplications / (totalApplications - inProgressApplications) * 100);
+	const acceptanceRate =
+		totalApplications == 0
+			? 0
+			: (acceptedApplications / (totalApplications - inProgressApplications)) * 100;
 
 	// sum the amountAwarded field where the form is associated with a grant that has the organizationId organization_id
 	const totalFundsAwarded = await db.application.aggregate({
@@ -86,7 +87,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		where: {
 			form: {
 				grant: {
-					organizationId: params.organization_id
+					organizationId: organizationId
 				}
 			}
 		}
@@ -96,11 +97,11 @@ export const load: PageServerLoad = async ({ params }) => {
 		style: 'currency',
 		currency: 'CAD',
 		currencyDisplay: 'narrowSymbol'
-	}).format(totalFundsAwarded._sum.amountAwarded);
+	}).format(totalFundsAwarded._sum.amountAwarded || 0);
 
 	const grantsPerSector = await db.grant.groupBy({
 		where: {
-			organizationId: params.organization_id
+			organizationId: organizationId
 		},
 		by: ['sector'],
 		_count: {
