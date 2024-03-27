@@ -65,14 +65,16 @@
 				header: (_, { pluginStates }) => {
 					const { allPageRowsSelected } = pluginStates.select;
 					return createRender(DataTableCheckbox, {
-						checked: allPageRowsSelected
+						checked: allPageRowsSelected,
+						ariaLabel: 'Select all forms'
 					});
 				},
 				cell: ({ row }, { pluginStates }) => {
 					const { getRowState } = pluginStates.select;
 					const { isSelected } = getRowState(row);
 					return createRender(DataTableCheckbox, {
-						checked: isSelected
+						checked: isSelected,
+						ariaLabel: 'Select form'
 					});
 				},
 				plugins: {
