@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { completeStatuses } from "./grant-complete-statuses";
+    import { AcceptStatus } from "./app-acceptance-statuses";
 
-	export let value: boolean;
-	const status = completeStatuses[value ? "COMPLETE" : "INCOMPLETE"];
-	const Icon = status?.icon;
+	export let value: string;
+	$: status = AcceptStatus.fromString(value);
+	$: Icon = status?.icon;
 </script>
 
 <div class="flex w-[100px] items-center">

@@ -63,7 +63,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'table.header.status': 'Status',
 		'search.placeholder': 'Search anything...',
 		'button.deleteAll': 'Delete All Selected',
-		'pagination.selectedCount': '{count} of {total} rows selected',
+		'pagination.selectedCount': '{{count}} of {{total}} rows selected',
 		'pagination.previous': 'Previous',
 		'pagination.next': 'Next',
 		'table.header.title': 'Title',
@@ -146,9 +146,13 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"alert.title": "Are you absolutely sure?",
 		"alert.description": "This action cannot be undone. This will permanently delete this form and remove its data from our servers.",
 		"alert.cancel": "Cancel",
-		"alert.delete": "Delete"
-
-
+		"alert.delete": "Delete",
+		"applications.filter.title": "Filter Applications",
+		"applications.filter.description": "Populate the table with applicants that match the given criteria.",
+		"applications.filter": "Filter",
+		"application.status.inProgress": "In Progress",
+		"application.status.accepted": "Accepted",
+		"application.status.rejected": "Rejected",
 	},
 	'fr': {
 		'homepage.title': '¡Hola Mundo!',
@@ -296,8 +300,13 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"alert.title": "Êtes-vous absolument sûr ?",
 		"alert.description": "Cette action est irréversible. Cela supprimera définitivement ce formulaire et retirera ses données de nos serveurs.",
 		"alert.cancel": "Annuler",
-		"alert.delete": "Supprimer"
-
+		"alert.delete": "Supprimer",
+		"applications.filter.title": "Filtrer les candidatures",
+		"applications.filter.description": "Remplissez le tableau avec les candidats qui correspondent aux critères donnés.",
+		"applications.filter": "Filtrer",
+		"application.status.inProgress": "En cours",
+		"application.status.accepted": "Accepté",
+		"application.status.rejected": "Rejeté",
 	}
 };
 
