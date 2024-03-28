@@ -6,7 +6,7 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		nodePolyfills({
-			include: ["stream"],
+			include: ["stream", "crypto"],
 		}),
 	],
 	optimizeDeps: {
