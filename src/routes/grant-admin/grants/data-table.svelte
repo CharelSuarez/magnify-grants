@@ -158,7 +158,10 @@
 			accessor: ({ id }) => id,
 			header: '',
 			cell: ({ value }) => {
-				return createRender(DataTableActions, { id: value }).on('delete', (e) => deleteGrant(e.detail.id)).on('publish', (e) => publishGrant(e.detail.id)).on('unpublish', (e) => unpublishGrant(e.detail.id));
+				return createRender(DataTableActions, { id: value })
+				.on('delete', (e) => deleteGrant(e.detail.id))
+				.on('publish', (e) => publishGrant(e.detail.id))
+				.on('unpublish', (e) => unpublishGrant(e.detail.id));
 			}
 		})
 	]);
@@ -338,7 +341,7 @@
 			<Table.Body {...$tableBodyAttrs}>
 				{#each $pageRows as row (row.id)}
 					<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-						<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'} class="hover:cursor-pointer" on:click={() => gotoUser(row)} {...rowAttrs}>
+						<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'}>
 							{#each row.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs>
 									<Table.Cell {...attrs}>
