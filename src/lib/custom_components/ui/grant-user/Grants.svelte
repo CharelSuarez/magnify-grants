@@ -6,6 +6,7 @@
 	export let name: string;
 	export let description: string;
 	export let endpoint: string;
+	export let expirationDate: Date | null;
 
 	const handleClick = () => {
 		goto(endpoint);
@@ -20,4 +21,6 @@
 	<h1 class="flex text-[2rem] font-medium w-full">{name}</h1>
 	<p class="w-full text-left">{$t('label.description')}:</p>
 	<p class="flex w-full h-full justify-center items-center p-4">{description}</p>
+	<p class="w-full text-left">
+		{$t('grant.expirationDate')} {expirationDate ? expirationDate.toLocaleDateString() : "None"}</p>
 </Button>

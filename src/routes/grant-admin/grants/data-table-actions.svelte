@@ -5,6 +5,7 @@
 	import { t } from '$lib/i18n/i18n';
 	import { toShort } from '$lib/utils/url';
 	import { createEventDispatcher } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	const dispatch = createEventDispatcher();
 
@@ -50,5 +51,7 @@
 		<DropdownMenu.Item on:click={deleteGrant}>{$t('menu.deleteGrant')}</DropdownMenu.Item>
 		<DropdownMenu.Item on:click={publishGrant}>{$t('menu.publishGrant')}</DropdownMenu.Item>
 		<DropdownMenu.Item on:click={unpublishGrant}>{$t('menu.unpublishGrant')}</DropdownMenu.Item>
+		<DropdownMenu.Item
+			on:click={goto(`/grant-admin/grants/statistics/${toShort(id)}`)}>{$t('menu.viewStatistics')}</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

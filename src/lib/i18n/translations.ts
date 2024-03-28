@@ -3,7 +3,8 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'homepage.title': 'Hello, World!',
 		'homepage.welcome': 'Hi <strong>{{name}}</strong>, how are you?',
 		'homepage.time': 'The current time is: {{time}}',
-		'analytics.title': 'Analytics',
+		'analytics.title': 'Organization Analytics',
+		'analytics.grant.title': 'Grant Statistics',
 		'analytics.organization': '{{organizationName}}',
 		'card.users.title': 'Users',
 		'card.users.description': 'In the last month',
@@ -175,13 +176,16 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'apply.submitApplication': 'Submit Application',
 		'apply.oneMoreFormRequired': 'One More Form Required',
 		'page.title.postedGrants': 'Posted Grants',
-		applyBy: 'Apply by: '
+		applyBy: 'Apply by: ',
+		'grant.expirationDate': 'Expiration Date:',
+		'menu.viewStatistics': 'View statistics'
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
 		'homepage.welcome': 'Hola, <strong>{{name}}</strong>, ¿cómo estás?',
 		'homepage.time': 'La hora actual es: {{time}}',
-		'analytics.title': 'Analytique',
+		'analytics.grant.title': 'Statistiques sur les subventions',
+		'analytics.title': "Analytique d'Organisation",
 		'analytics.organization': '{{organizationName}}',
 		'card.users.title': 'Utilisateurs',
 		'card.users.description': 'Le mois dernier',
@@ -352,6 +356,8 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'apply.submitApplication': 'Soumettre la candidature',
 		'apply.oneMoreFormRequired': 'Un formulaire de plus requis',
 		'page.title.postedGrants': 'Subventions publiées',
-		applyBy: 'Postuler avant: '
+		applyBy: 'Postuler avant: ',
+		'grant.expirationDate': "Date d'expiration:",
+		'menu.viewStatistics': 'Voir les statistiques'
 	}
 };

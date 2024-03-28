@@ -5,6 +5,7 @@
 	import { t } from '$lib/i18n/i18n';
 
 	import Orgs from '$lib/custom_components/ui/grant-user/Orgs.svelte';
+	import Grants from '$lib/custom_components/ui/grant-user/Grants.svelte';
 
 	export let data: PageData;
 	let grants = data.grants;
@@ -20,10 +21,10 @@
 		<div class="flex">
 			<h1 class="text-teal-600 font-bold text-3xl ml-8">{$t('body.organization')}</h1>
 			<input
-				type="text"
-				placeholder={$t('body.search.organizations')}
-				class=" px-2 w-fit ml-4 border-2 border-neutral-600 rounded-md font-bold"
 				bind:value={search}
+				class=" px-2 w-fit ml-4 border-2 border-neutral-600 rounded-md font-bold"
+				placeholder={$t('body.search.organizations')}
+				type="text"
 			/>
 		</div>
 		<div class="flex ml-12 mt-8 gap-8 text-[3rem] font-medium italic text-teal-600">
@@ -44,9 +45,9 @@
 		<div class="flex w-full">
 			<h1 class="text-teal-600 font-bold text-3xl ml-8">{$t('body.grants')}</h1>
 			<input
-				type="text"
-				placeholder={$t('body.search.grants')}
 				class=" px-2 w-fit ml-4 border-2 border-neutral-600 rounded-md font-bold"
+				placeholder={$t('body.search.grants')}
+				type="text"
 			/>
 		</div>
 		<div class="grid grid-cols-6 grid-rows-auto ml-12 mt-8 w-[80%]">
@@ -55,9 +56,10 @@
 			{/if}
 
 			{#each grants as grant (grant.id)}
-				<Orgs
+				<Grants
 					name={grant.title}
 					description={grant.description}
+					expirationDate="{grant.expirationDate}"
 					endpoint={`/grant-user/grant/${toShort(grant.id)}`}
 				/>
 			{/each}
