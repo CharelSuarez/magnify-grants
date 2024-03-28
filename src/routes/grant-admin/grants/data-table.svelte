@@ -8,7 +8,7 @@
 		addSelectedRows,
 		addColumnFilters
 	} from 'svelte-headless-table/plugins';
-	import { get, readable, type Writable } from 'svelte/store';
+	import { get, readable, writable, type Writable } from 'svelte/store';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import * as Table from '$lib/components/ui/table';
@@ -22,10 +22,14 @@
 	import { trueFalseFilter } from './filter-types';
 	import { DataTableFacetedFilter } from './index';
 	import { PlusCircle } from 'lucide-svelte';
+	import { updateFlash } from 'sveltekit-flash-message';
+	import { page } from '$app/stores';
 
 	export let grants: Grant[];
 
-	const table = createTable(readable(grants), {
+	const data = writable(grants);
+
+	const table = createTable(data, {
 		page: addPagination(),
 		sort: addSortBy({
 			toggleOrder: ['asc', 'desc']
@@ -151,7 +155,7 @@
 			accessor: ({ id }) => id,
 			header: '',
 			cell: ({ value }) => {
-				return createRender(DataTableActions, { id: value });
+				return createRender(DataTableActions, { id: value }).on('delete', (e) => deleteGrant(e.detail.id)).on('publish', (e) => publishGrant(e.detail.id)).on('unpublish', (e) => unpublishGrant(e.detail.id));
 			}
 		})
 	]);
@@ -180,6 +184,63 @@
 	const hidableCols = ['title', 'acceptingApplications', 'published', 'description', 'range'];
 
 	$: showReset = Object.values({ ...$filterValues, $filterValue }).some((v) => v.length > 0);
+
+	const deleteGrant = async (id: string) => {
+		const res = await fetch('/grant-admin/grants/delete', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: id
+			})
+		});
+
+		if (res.status === 200) {
+			await updateFlash(page);
+		}
+		const index = grants.map((g) => g.id).indexOf(id);
+		grants.splice(index, 1);
+		$data = $data;
+	};
+
+	const publishGrant = async (id: string) => {
+		const res = await fetch('/grant-admin/grants/publish', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: id
+			})
+		});
+
+		if (res.status === 200) {
+			await updateFlash(page);
+		}
+		const index = grants.map((g) => g.id).indexOf(id);
+		grants[index].published = true;
+		$data = $data;
+	};
+
+	const unpublishGrant = async (id: string) => {
+		const res = await fetch('/grant-admin/grants/unpublish', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				id: id
+			})
+		});
+
+		if (res.status === 200) {
+			await updateFlash(page);
+		}
+		const index = grants.map((g) => g.id).indexOf(id);
+		grants[index].published = false;
+		$data = $data;
+	};
 </script>
 
 <svelte:head>
@@ -291,14 +352,14 @@
 			on:click={() => ($pageIndex = $pageIndex - 1)}
 			size="sm"
 			variant="outline"
-			>Previous
+		>Previous
 		</Button>
 		<Button
 			disabled={!$hasNextPage}
 			on:click={() => ($pageIndex = $pageIndex + 1)}
 			size="sm"
 			variant="outline"
-			>Next
+		>Next
 		</Button>
 	</div>
 </div>

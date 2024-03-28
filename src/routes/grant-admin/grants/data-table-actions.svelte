@@ -4,8 +4,32 @@
 	import { Button } from '$lib/components/ui/button';
 	import { t } from '$lib/i18n/i18n';
 	import { toShort } from '$lib/utils/url';
+	import { createEventDispatcher } from 'svelte';
+	import { updateFlash } from 'sveltekit-flash-message';
+	import { page } from '$app/stores';
 
 	export let id: string;
+
+	const dispatch = createEventDispatcher();
+
+	const deleteGrant = () => {
+		dispatch('delete', {
+			id: id
+		});
+	};
+
+	const publishGrant = () => {
+		dispatch('publish', {
+			id: id
+		});
+	};
+
+	const unpublishGrant = () => {
+		dispatch('unpublish', {
+			id: id
+		});
+	};
+
 </script>
 
 <DropdownMenu.Root>
@@ -26,9 +50,8 @@
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 		<DropdownMenu.Separator />
-		<DropdownMenu.Item>{$t('menu.deleteGrant')}</DropdownMenu.Item>
-		<DropdownMenu.Item>{$t('menu.editGrant')}</DropdownMenu.Item>
-		<DropdownMenu.Item>{$t('menu.publishGrant')}</DropdownMenu.Item>
-		<DropdownMenu.Item>{$t('menu.unpublishGrant')}</DropdownMenu.Item>
+		<DropdownMenu.Item on:click={deleteGrant}>{$t('menu.deleteGrant')}</DropdownMenu.Item>
+		<DropdownMenu.Item on:click={publishGrant}>{$t('menu.publishGrant')}</DropdownMenu.Item>
+		<DropdownMenu.Item on:click={unpublishGrant}>{$t('menu.unpublishGrant')}</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

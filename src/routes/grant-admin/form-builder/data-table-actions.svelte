@@ -37,17 +37,17 @@
 			</DropdownMenu.Group>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item on:click={() => formAction('view')}
-				>{$t('menu.viewDocument')}</DropdownMenu.Item
+			>{$t('menu.viewDocument')}</DropdownMenu.Item
 			>
 			<DropdownMenu.Item on:click={() => formAction('edit')}
-				>{$t('menu.editDocument')}</DropdownMenu.Item
+			>{$t('menu.editDocument')}</DropdownMenu.Item
 			>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 
 	<AlertDialog.Root>
 		<AlertDialog.Trigger>
-			<Button variant="ghost" size="icon">
+			<Button size="icon" variant="ghost">
 				<Trash2 />
 			</Button>
 		</AlertDialog.Trigger>

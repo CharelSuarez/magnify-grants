@@ -111,7 +111,7 @@
 				accessor: ({ id }) => id,
 				header: '',
 				cell: ({ value }) => {
-					return createRender(DataTableActions, { id: value }).on($t('action.delete'), (e) =>
+					return createRender(DataTableActions, { id: value }).on('delete', (e) =>
 						deleteForm(e.detail.id)
 					);
 				}
