@@ -15,7 +15,7 @@
 </script>
 
 <main class="flex-col min-h-screen h-auto font-satoshi">
-	<div class="flex p-[3rem] text-[5rem] font-bold mt-[100px]">{$t('body.organization')}</div>
+	<div class="flex p-[3rem] text-[5rem] font-bold ">{$t('body.organization')}</div>
 	<div class="flex mb-8 w-full px-[3rem] flex-col relative min-h-[300px]">
 		<div class="flex w-[95%] h-2 bg-black absolute bottom-[40%] rounded-full -z-10"></div>
 		<div class="flex">
@@ -50,7 +50,7 @@
 				type="text"
 			/>
 		</div>
-		<div class="grid grid-cols-6 grid-rows-auto ml-12 mt-8 w-[80%]">
+		<div class="grid grid-cols-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 grid-rows-auto ml-12 mt-8 w-[80%] gap-4 overflow-hidden">
 			{#if orgs.length === 0}
 				<p>{$t('body.grants.notfound')}</p>
 			{/if}
