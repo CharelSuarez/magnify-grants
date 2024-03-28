@@ -1,22 +1,26 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import { FieldType } from '@prisma/client';
 	import { Loader2 } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import { updateFlash } from 'sveltekit-flash-message';
 	import { goto } from '$app/navigation';
 	import EditableForm from '$lib/custom_components/ui/grant-admin/grant-builder/EditableForm.svelte';
-	import type { PageData } from './$types';
 	import { t } from '$lib/i18n/i18n';
 
 	let errors: { [key: string | number]: { field: string; message: string } } = {};
 
-	const editForm = async () => {
+	let formName = '';
+	let formDescription = '';
+
+	const submitForm = async () => {
 		isLoading = true;
-		const res = await fetch('/grant-admin/grant-builder/submit/', {
+		const res = await fetch('/grant-admin/form-builder/submit/', {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
+			headers: {
+				'Content-Type': 'application/json'
+			},
 			body: JSON.stringify({
-				id: form.id,
 				name: formName,
 				description: formDescription,
 				fields: fields
@@ -36,22 +40,16 @@
 
 	let isLoading = false;
 
-	export let data: PageData;
-
-	const form = data.form;
-
-	let formName = form.name;
-	let formDescription = form.description;
-	let fields = form && form.fields ? form.fields.sort((i, j) => i.index - j.index) : [];
+	let fields: { type: FieldType; index: number; prompt?: string; options: string[] }[] = [];
 </script>
 
 <svelte:window on:beforeunload|preventDefault />
 
-<EditableForm bind:fields bind:formName bind:formDescription {errors}>
-	<Button disabled={isLoading} variant="outline" on:click={editForm}>
+<EditableForm bind:fields bind:formDescription bind:formName {errors}>
+	<Button disabled={isLoading} on:click={submitForm} variant="outline">
 		{#if isLoading}
 			<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 		{/if}
-		{$t('form.saveButton')}
+		{$t('form.createButton')}
 	</Button>
 </EditableForm>

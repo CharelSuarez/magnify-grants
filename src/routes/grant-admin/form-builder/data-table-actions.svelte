@@ -9,7 +9,7 @@
 	import { t } from '$lib/i18n/i18n';
 
 	const formAction = (route: string) => {
-		goto(`/grant-admin/grant-builder/${id}/${route}`);
+		goto(`/grant-admin/form-builder/${id}/${route}`);
 	};
 
 	const dispatch = createEventDispatcher();
@@ -36,8 +36,12 @@
 				<DropdownMenu.Label>{$t('menu.actions')}</DropdownMenu.Label>
 			</DropdownMenu.Group>
 			<DropdownMenu.Separator />
-			<DropdownMenu.Item on:click={() => formAction('view')}>{$t('menu.viewDocument')}</DropdownMenu.Item>
-			<DropdownMenu.Item on:click={() => formAction('edit')}>{$t('menu.editDocument')}</DropdownMenu.Item>
+			<DropdownMenu.Item on:click={() => formAction('view')}
+				>{$t('menu.viewDocument')}</DropdownMenu.Item
+			>
+			<DropdownMenu.Item on:click={() => formAction('edit')}
+				>{$t('menu.editDocument')}</DropdownMenu.Item
+			>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 

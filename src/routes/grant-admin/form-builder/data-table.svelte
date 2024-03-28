@@ -25,7 +25,7 @@
 	const data = writable(forms);
 
 	const deleteForm = async (id: string) => {
-		const res = await fetch('/grant-admin/grant-builder/delete/', {
+		const res = await fetch('/grant-admin/form-builder/delete/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -138,7 +138,7 @@
 
 <div>
 	<div class="flex flex-row items-center py-4 space-x-2">
-		<Button href="/grant-admin/grant-builder/new" variant="outline">
+		<Button href="/grant-admin/form-builder/new" variant="outline">
 			<PlusCircle class="mr-2" />
 			New form
 		</Button>

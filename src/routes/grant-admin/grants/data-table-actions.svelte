@@ -5,17 +5,12 @@
 	import { t } from '$lib/i18n/i18n';
 	import { toShort } from '$lib/utils/url';
 
-	export let id : string;
+	export let id: string;
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button
-			builders={[builder]}
-			class="relative h-8 w-8 p-0"
-			size="icon"
-			variant="ghost"
-		>
+		<Button builders={[builder]} class="relative h-8 w-8 p-0" size="icon" variant="ghost">
 			<span class="sr-only">{$t('menu.open')}</span>
 			<MoreHorizontal class="h-4 w-4" />
 		</Button>

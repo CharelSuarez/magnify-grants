@@ -89,7 +89,7 @@ export const POST: RequestHandler = async (event) => {
 	}
 
 	redirect(
-		`/grant-admin/grant-builder/${id}/view`,
+		`/grant-admin/form-builder/${id}/view`,
 		{
 			type: 'success',
 			richColors: true,

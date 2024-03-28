@@ -35,7 +35,9 @@
 			{/each}
 		{/if}
 		<div class="flex flex-row w-full h-full justify-items-start">
-			<Button variant="outline" href="/grant-admin/grant-builder/{form.id}/edit">{$t('form.editButton')}</Button>
+			<Button variant="outline" href="/grant-admin/form-builder/{form.id}/edit"
+				>{$t('form.editButton')}</Button
+			>
 		</div>
 	</container>
 {/if}

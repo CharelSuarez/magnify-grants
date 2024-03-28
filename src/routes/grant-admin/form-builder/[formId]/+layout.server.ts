@@ -19,7 +19,7 @@ export const load: LayoutServerLoad = async (event) => {
 		if (!form) {
 			redirect(
 				500,
-				'/grant-admin/grant-builder/',
+				'/grant-admin/form-builder/',
 				{
 					richColors: true,
 					type: 'error',
@@ -35,7 +35,7 @@ export const load: LayoutServerLoad = async (event) => {
 	} catch (err) {
 		redirect(
 			500,
-			'/grant-admin/grant-builder/',
+			'/grant-admin/form-builder/',
 			{
 				richColors: true,
 				type: 'error',
