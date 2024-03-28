@@ -1,14 +1,21 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { formSchema } from '$lib/validation/form_schema';
 import { redirect } from 'sveltekit-flash-message/server';
+import { toShort } from '$lib/utils/url';
 
 export const POST: RequestHandler = async (event) => {
-	// verify user
-
+  
 	let id;
 	let message;
 
 	try {
+
+		const grantAdmin = await event.locals.getGrantAdmin();
+
+		if (!grantAdmin) {
+			return new Response('Server error', { status: 500 });
+		}
+
 		// validate the payload
 		const parsed = formSchema.safeParse(await event.request.json());
 
@@ -39,17 +46,9 @@ export const POST: RequestHandler = async (event) => {
 		const data = {
 			name: body.name,
 			description: body.description,
-			grant: {
-				connectOrCreate: {
-					where: {
-						id: '69696969-6969-6969-6969-696969696969' // TODO Use real grant...
-					},
-					create: {
-						id: '69696969-6969-6969-6969-696969696969',
-						organizationId: 'b972df40-15bf-48c7-a7cf-0c20a0d1669b', // TODO Use real grant/organization...
-						title: body.name,
-						description: body.description
-					}
+			organization: {
+				connect: {
+					id: grantAdmin.organizationId
 				}
 			},
 			fields: {}
@@ -89,7 +88,7 @@ export const POST: RequestHandler = async (event) => {
 	}
 
 	redirect(
-		`/grant-admin/grant-builder/${id}/view`,
+		`/grant-admin/form-builder/${toShort(id)}/view`,
 		{
 			type: 'success',
 			richColors: true,

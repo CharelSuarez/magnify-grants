@@ -25,7 +25,7 @@
 	const data = writable(forms);
 
 	const deleteForm = async (id: string) => {
-		const res = await fetch('/grant-admin/grant-builder/delete/', {
+		const res = await fetch('/grant-admin/form-builder/delete/', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -65,14 +65,16 @@
 				header: (_, { pluginStates }) => {
 					const { allPageRowsSelected } = pluginStates.select;
 					return createRender(DataTableCheckbox, {
-						checked: allPageRowsSelected
+						checked: allPageRowsSelected,
+						ariaLabel: 'Select all forms'
 					});
 				},
 				cell: ({ row }, { pluginStates }) => {
 					const { getRowState } = pluginStates.select;
 					const { isSelected } = getRowState(row);
 					return createRender(DataTableCheckbox, {
-						checked: isSelected
+						checked: isSelected,
+						ariaLabel: 'Select form'
 					});
 				},
 				plugins: {
@@ -109,7 +111,7 @@
 				accessor: ({ id }) => id,
 				header: '',
 				cell: ({ value }) => {
-					return createRender(DataTableActions, { id: value }).on($t('action.delete'), (e) =>
+					return createRender(DataTableActions, { id: value }).on('delete', (e) =>
 						deleteForm(e.detail.id)
 					);
 				}
@@ -135,9 +137,10 @@
 </script>
 
 <div>
-	<div class="flex flex-row items-center py-4">
-		<Button href="/grant-admin/grant-builder/new" size="icon" variant="outline">
-			<PlusCircle />
+	<div class="flex flex-row items-center py-4 space-x-2">
+		<Button href="/grant-admin/form-builder/new" variant="outline">
+			<PlusCircle class="mr-2" />
+			New form
 		</Button>
 		<Input
 			bind:value={$filterValue}

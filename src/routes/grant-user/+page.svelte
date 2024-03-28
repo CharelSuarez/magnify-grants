@@ -1,24 +1,19 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-    import { toShort } from '$lib/utils/url';
+	import { toShort } from '$lib/utils/url';
 
-    import { t, locale, locales } from "$lib/i18n/i18n";
+	import { t } from '$lib/i18n/i18n';
 
-	import logo from '$lib/assets/branding/images/magnify_logo.png';
 	import Orgs from '$lib/custom_components/ui/grant-user/Orgs.svelte';
-	import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
-	import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
 
 	export let data: PageData;
 	let grants = data.grants;
 	let orgs = data.organizations;
 
 	let search: string | undefined;
-
 </script>
 
 <main class="flex-col min-h-screen h-auto font-satoshi">
-
 	<div class="flex p-[3rem] text-[5rem] font-bold mt-[100px]">{$t('body.organization')}</div>
 	<div class="flex mb-8 w-full px-[3rem] flex-col relative min-h-[300px]">
 		<div class="flex w-[95%] h-2 bg-black absolute bottom-[40%] rounded-full -z-10"></div>
@@ -31,12 +26,16 @@
 				bind:value={search}
 			/>
 		</div>
-		<div class="flex ml-12 mt-8 gap-8  text-[3rem] font-medium italic text-teal-600">
+		<div class="flex ml-12 mt-8 gap-8 text-[3rem] font-medium italic text-teal-600">
 			{#if orgs.length === 0}
 				<p>{$t('body.organizations.notfound')}</p>
 			{/if}
 			{#each orgs as org (org.id)}
-				<Orgs name={org.name} description={org.description} endpoint={`/grant-user/organization/${toShort(org.id)}`} />
+				<Orgs
+					name={org.name}
+					description={org.description}
+					endpoint={`/grant-user/organization/${toShort(org.id)}`}
+				/>
 			{/each}
 		</div>
 	</div>

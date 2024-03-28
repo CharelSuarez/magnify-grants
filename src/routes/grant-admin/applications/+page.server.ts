@@ -3,7 +3,7 @@ import { redirect, type Actions, fail } from "@sveltejs/kit";
 import { redirect as redirectFlash } from "sveltekit-flash-message/server";
 import { message, setError, superValidate, type Infer } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
-import type { PageServerLoad } from "./$types";
+import type { PageServerLoad } from "../../applications/$types";
 import { lucia } from "$lib/server/auth";
 import { ApplicationStatus } from "@prisma/client";
 
@@ -70,12 +70,10 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Application[
                     OR: [
                         {profile: null}, // TODO Make this fields non-optional!
                         {profile: {
-                            OR: [{dateOfBirth: null},
-                                 {dateOfBirth: {
-                                    gte: firstDob,
-                                    lte: lastDob
-                                 }}
-                            ]
+                            dateOfBirth: {
+                                gte: firstDob,
+                                lte: lastDob
+                            }
                         }}
                     ]
                 }

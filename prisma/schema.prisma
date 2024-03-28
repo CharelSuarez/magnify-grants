@@ -73,21 +73,31 @@ model Session {
 }
 
 model Grant {
-  id                    String       @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title                 String       @default("")
-  description           String       @default("")
-  acceptingApplications Boolean      @default(false)
-  rangeLow              Int          @default(0)
-  rangeHigh             Int          @default(0)
-  published             Boolean      @default(false)
+  id                    String          @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                 String          @default("")
+  description           String          @default("")
+  acceptingApplications Boolean         @default(false)
+  rangeLow              Int             @default(0)
+  rangeHigh             Int             @default(0)
+  published             Boolean         @default(false)
   expirationDate        DateTime?
-  organization          Organization @relation(fields: [organizationId], references: [id])
-  organizationId        String       @db.Uuid
-  form                  Form?
-  sector                Sector       @default(OTHER)
-  postedDate            DateTime     @default(now())
+  organization          Organization    @relation(fields: [organizationId], references: [id])
+  organizationId        String          @db.Uuid
+  sector                Sector          @default(OTHER)
+  postedDate            DateTime        @default(now())
+  formsOnGrants         FormsOnGrants[]
 
   @@map("grants")
+}
+
+model FormsOnGrants {
+  grant   Grant  @relation(fields: [grantId], references: [id])
+  grantId String @db.Uuid
+  form    Form   @relation(fields: [formId], references: [id])
+  formId  String @db.Uuid
+
+  @@id(name: "formOnGrantId", [grantId, formId])
+  @@map("forms_on_grants")
 }
 
 model Organization {
@@ -96,19 +106,21 @@ model Organization {
   description String       @default("")
   admins      GrantAdmin[]
   grants      Grant[]
+  forms       Form[]
 
   @@map("organizations")
 }
 
 model Form {
-  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   description    String
   name           String
-  createdAt      DateTime      @default(now())
-  fields         Field[] // TODO: Make grant required!
-  grant          Grant?        @relation(fields: [grantId], references: [id], onDelete: Cascade)
-  grantId        String?       @unique @db.Uuid
+  createdAt      DateTime        @default(now())
+  fields         Field[]
+  organization   Organization    @relation(fields: [organizationId], references: [id])
   applications   Application[]
+  organizationId String          @db.Uuid
+  formsOnGrants  FormsOnGrants[]
 
   @@map("forms")
 }

@@ -3,9 +3,8 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-
 </script>
 
-<Taskbar loggedIn={data.loggedIn}/>
+<Taskbar admin={data.admin} loggedIn={data.loggedIn} />
 
 <slot />

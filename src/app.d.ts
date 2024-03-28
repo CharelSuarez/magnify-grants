@@ -20,6 +20,7 @@ declare global {
 			session: lucia.Session | null;
 			getUserProfile(): Promise<Profile | null>;
 			getGrantAdmin(): Promise<GrantAdmin | null>;
+			supabase: SupabaseClient;
 		}
 	}
 	// eslint-disable-next-line no-var

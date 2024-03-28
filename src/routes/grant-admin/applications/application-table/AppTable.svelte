@@ -6,7 +6,7 @@
 	import GrantTableActions from './AppTableActions.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
-	import GrantTableCheckbox from '../../../lib/custom_components/ui/table/table-checkbox.svelte';
+	import GrantTableCheckbox from '$lib/custom_components/ui/table/table-checkbox.svelte';
 	import GrantTableStatusCell from './AppTableAcceptCell.svelte';
 	import GrantTableCompleteStatus from './AppTableCompleteCell.svelte';
 	import type { Application } from '$lib/validation/app_schema';
@@ -105,7 +105,7 @@
 	const { selectedDataIds } = pluginStates.select;
 </script>
 
-<div class={className}>
+<div class="{className} bg-white rounded-md border p-4">
 	<div class="flex items-center py-4 gap-6">
 		<Input
 			class="max-w-sm"

@@ -45,8 +45,12 @@ export const load: PageServerLoad = async (event) => {
 				gte: new Date(new Date().setMonth(new Date().getMonth() - 1))
 			},
 			form: {
-				grant: {
-					organizationId: organizationId
+				formsOnGrants: {
+					some: {
+						grant: {
+							organizationId: organizationId
+						}
+					}
 				}
 			}
 		}
@@ -56,8 +60,12 @@ export const load: PageServerLoad = async (event) => {
 		where: {
 			status: ApplicationStatus.IN_PROGRESS,
 			form: {
-				grant: {
-					organizationId: organizationId
+				formsOnGrants: {
+					some: {
+						grant: {
+							organizationId: organizationId
+						}
+					}
 				}
 			}
 		}
@@ -67,8 +75,12 @@ export const load: PageServerLoad = async (event) => {
 		where: {
 			status: ApplicationStatus.ACCEPTED,
 			form: {
-				grant: {
-					organizationId: organizationId
+				formsOnGrants: {
+					some: {
+						grant: {
+							organizationId: organizationId
+						}
+					}
 				}
 			}
 		}
@@ -86,8 +98,12 @@ export const load: PageServerLoad = async (event) => {
 		},
 		where: {
 			form: {
-				grant: {
-					organizationId: organizationId
+				formsOnGrants: {
+					some: {
+						grant: {
+							organizationId: organizationId
+						}
+					}
 				}
 			}
 		}

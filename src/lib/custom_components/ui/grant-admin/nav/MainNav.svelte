@@ -8,9 +8,9 @@
 	const navButtons = {
 		Overview: '/grant-admin',
 		Grants: '/grant-admin/grants',
-		'Grant Builder': '/grant-admin/grant-builder',
-		Users: '/grant-admin/users',
-		Analytics: '/grant-admin/analytics'
+		Applications: '/grant-admin/applications',
+		'Form Builder': '/grant-admin/form-builder',
+		Users: '/grant-admin/users'
 	};
 
 	let selected: Selected<string>;
