@@ -14,6 +14,8 @@
       SheetTitle
   } from "$lib/components/ui/sheet";
 
+  let colourClass: string;
+
 </script>
 
 <div class="flex flex-col h-screen">
@@ -25,7 +27,7 @@
                 <Branding />
             </a>
                 <nav class="flex grow items-center space-x-6 text-sm font-bold">
-                    <MainNav />
+                    <MainNav bind:colourClass />
                 </nav>
 
         </div>
@@ -48,7 +50,7 @@
                     <SheetDescription>
                         <div class="my-4 h-[calc(100vh-8rem)] pb-10 p1-6 overflow-auto">
                             <div class="flex flex-col space-y-3 items-start">
-                                <MainNav />
+                                <MainNav bind:colourClass />
                             </div>
                         </div>
                     </SheetDescription>
@@ -61,7 +63,7 @@
 
     </BaseHeader>
 
-    <div class="h-full">
+    <div class={`h-full ${colourClass}`}>
       <slot />
     </div>
 

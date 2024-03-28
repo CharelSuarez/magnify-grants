@@ -7,9 +7,28 @@
     contrast: number;
   }
 
-	export let colour: Colour;
+  let colour : Colour = {
+		saturation: 100,
+		contrast: 100
+	};
 
+	export let colourClass: string = 'saturate-100 contrast-100';
 
+  const mapSat: any = {
+		0: 'saturate-0',
+		50: 'saturate-50',
+		100: 'saturate-100',
+		150: 'saturate-150',
+		200: 'saturate-200'
+	};
+
+	const mapCon: any = {
+		100: 'contrast-100',
+		150: 'contrast-150',
+		200: 'contrast-200'
+	};
+
+  $: colourClass = `${mapSat[colour.saturation]} ${mapCon[colour.contrast]}`;
 </script>
 
 <DropdownMenu.Root>
