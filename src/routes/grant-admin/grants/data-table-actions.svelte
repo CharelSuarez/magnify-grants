@@ -5,10 +5,6 @@
 	import { t } from '$lib/i18n/i18n';
 	import { toShort } from '$lib/utils/url';
 	import { createEventDispatcher } from 'svelte';
-	import { updateFlash } from 'sveltekit-flash-message';
-	import { page } from '$app/stores';
-
-	export let id: string;
 
 	const dispatch = createEventDispatcher();
 
