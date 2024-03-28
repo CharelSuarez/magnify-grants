@@ -10,8 +10,7 @@
 		Grants: '/grant-admin/grants',
 		Applications: '/grant-admin/applications',
 		'Form Builder': '/grant-admin/form-builder',
-		Users: '/grant-admin/users',
-		Analytics: '/grant-admin/analytics'
+		Users: '/grant-admin/users'
 	};
 
 	let selected: Selected<string>;
