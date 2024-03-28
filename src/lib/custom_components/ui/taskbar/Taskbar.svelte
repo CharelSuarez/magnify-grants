@@ -10,14 +10,31 @@
 	export let admin: boolean = false;
 
 	interface Colour {
-		saturation: number[];
-		contrast: number[];
+		saturation: number;
+		contrast: number;
 		saturationString: string;
+		constrastString: string;
 	}
+
+	const mapSat: any = {
+		0: 'saturate-0',
+		50: 'saturate-50',
+		100: 'saturate-100',
+		150: 'saturate-150',
+		200: 'saturate-200'
+	};
+
+	const mapCon: any = {
+		100: 'contrast-100',
+		150: 'contrast-150',
+		200: 'contrast-200'
+	};
 
 	export let colour : Colour;
 
-	$: colour.saturationString = `saturate-[${colour.saturation[0]/100}]`;
+	$: colour.saturationString = mapSat[colour.saturation]
+	$: colour.constrastString = mapCon[colour.contrast];
+
 
 </script>
 
