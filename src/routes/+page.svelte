@@ -8,15 +8,22 @@
 
 	import { t } from '$lib/i18n/i18n';
 
+	let colour = {
+		saturation: 100,
+		contrast: 100,
+		saturationString: `saturate-100`,
+		constrastString: `contrast-100`
+	};
+
 	export let data: PageData;
+
 </script>
 
-<main class="flex-col min-h-screen h-auto">
-	<Taskbar admin={data.admin} loggedIn={data.loggedIn} />
-
+<Taskbar admin={data.admin} loggedIn={data.loggedIn} bind:colour={colour}/>
+<main class={`flex-col min-h-screen h-auto ${colour.saturationString} ${colour.constrastString}`}>
 	<div class="flex justify-center items-center h-screen relative flex-col font-satoshi">
 		<h1 class="text-[9rem] font-bold max-sm:text-lg">
-			{$t('home.title.first')} <span class="text-teal-500">{$t('home.title.second')}</span>
+			{$t('home.title.first')}<span class="text-teal-500">{$t('home.title.second')} </span>
 		</h1>
 
 		<img
