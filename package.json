@@ -7,7 +7,7 @@
 	"private": true,
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
-		"postinstall": "path-exists ./supabase/config.toml || supabase init",
+		"postinstall": "prisma generate && path-exists ./supabase/config.toml || supabase init",
 		"dev": "supabase start && vite dev",
 		"dev-nodb": "vite dev",
 		"build": "vite build",
