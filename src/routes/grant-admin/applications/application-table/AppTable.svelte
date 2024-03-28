@@ -105,7 +105,7 @@
 	const { selectedDataIds } = pluginStates.select;
 </script>
 
-<div class={className}>
+<div class="{className} bg-white rounded-md border p-4">
 	<div class="flex items-center py-4 gap-6">
 		<Input
 			class="max-w-sm"

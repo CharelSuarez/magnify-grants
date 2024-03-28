@@ -21,6 +21,7 @@
 	import Cross2 from 'svelte-radix/Cross2.svelte';
 	import { trueFalseFilter } from './filter-types';
 	import { DataTableFacetedFilter } from './index';
+	import { PlusCircle } from 'lucide-svelte';
 
 	export let grants: Grant[];
 
@@ -149,7 +150,7 @@
 		table.column({
 			accessor: ({ id }) => id,
 			header: '',
-			cell: ({value}) => {
+			cell: ({ value }) => {
 				return createRender(DataTableActions, { id: value });
 			}
 		})
@@ -186,7 +187,11 @@
 </svelte:head>
 
 <div>
-	<div class="flex items-center py-4">
+	<div class="flex items-center py-4 space-x-2">
+		<Button href="/grant-admin/grants/new/" variant="outline">
+			<PlusCircle class="mr-3" />
+			New grant
+		</Button>
 		<Input
 			bind:value={$filterValue}
 			class="max-w-sm"

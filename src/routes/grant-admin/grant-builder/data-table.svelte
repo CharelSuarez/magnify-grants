@@ -137,9 +137,10 @@
 </script>
 
 <div>
-	<div class="flex flex-row items-center py-4">
-		<Button href="/grant-admin/grant-builder/new" size="icon" variant="outline">
-			<PlusCircle />
+	<div class="flex flex-row items-center py-4 space-x-2">
+		<Button href="/grant-admin/grant-builder/new" variant="outline">
+			<PlusCircle class="mr-2" />
+			New form
 		</Button>
 		<Input
 			bind:value={$filterValue}
