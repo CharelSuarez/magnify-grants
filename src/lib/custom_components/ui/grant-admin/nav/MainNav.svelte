@@ -4,6 +4,9 @@
 	import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
 	import { locale } from '../../../../i18n/i18n';
 	import type { Selected } from 'bits-ui';
+	import ColourSelection from '../../colour-selection/Colour-Selection.svelte';
+
+	export let colourClass: string;
 
 	const navButtons = {
 		Overview: '/grant-admin',
@@ -30,3 +33,5 @@
 <div class="w-full" />
 
 <LocaleSelection />
+<ColourSelection bind:colourClass />
+

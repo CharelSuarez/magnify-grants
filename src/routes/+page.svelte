@@ -8,19 +8,13 @@
 
 	import { t } from '$lib/i18n/i18n';
 
-	let colour = {
-		saturation: 100,
-		contrast: 100,
-		saturationString: `saturate-100`,
-		constrastString: `contrast-100`
-	};
-
+	let colourClass: string;
 	export let data: PageData;
 
 </script>
 
-<Taskbar admin={data.admin} loggedIn={data.loggedIn} bind:colour={colour}/>
-<main class={`flex-col min-h-screen h-auto ${colour.saturationString} ${colour.constrastString}`}>
+<Taskbar admin={data.admin} loggedIn={data.loggedIn} bind:colourClass />
+<main class={`flex-col min-h-screen h-auto ${colourClass}`}>
 	<div class="flex justify-center items-center h-screen relative flex-col font-satoshi">
 		<h1 class="text-[9rem] font-bold max-sm:text-lg">
 			{$t('home.title.first')}<span class="text-teal-500">{$t('home.title.second')} </span>
