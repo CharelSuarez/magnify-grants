@@ -10,7 +10,7 @@
 </script>
 
 <Taskbar admin={data.admin} loggedIn={data.loggedIn} bind:colourClass/>
-<div class={`${colourClass}`}>
+<div class={`${colourClass} pt-[88px]`}>
 	<slot/>
 </div>
 
