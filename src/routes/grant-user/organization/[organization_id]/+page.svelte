@@ -5,9 +5,6 @@
 	import { Badge } from '$lib/components/ui/badge';
 	import { toShort } from '$lib/utils/url';
 	import { t } from '$lib/i18n/i18n';
-	import logo from '$lib/assets/branding/images/magnify_logo.png';
-	import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
-	import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
 
 	export let data: PageData;
 	let grants = data.grants;
@@ -19,18 +16,19 @@
 
 <div>
 	<main class="flex-col min-h-screen h-auto">
-
 		<div class="container mx-auto py-10">
-
-
 			<div class="flex items-center justify-between space-y-2">
 				<div>
 					{#if grants.length === 0}
-						<h2 class="text-2xl font-bold tracking-tight">{$t('organizations.noGrantsFoundTitle')}</h2>
+						<h2 class="text-2xl font-bold tracking-tight">
+							{$t('organizations.noGrantsFoundTitle')}
+						</h2>
 						<p class="text-muted-foreground">{$t('organizations.noGrantsFoundDesc')}</p>
 					{:else}
-						<h2 class="text-2xl font-bold tracking-tight">{grants[0].organization.name}'s
-							{$t('organizations.grants')}</h2>
+						<h2 class="text-2xl font-bold tracking-tight">
+							{grants[0].organization.name}'s
+							{$t('organizations.grants')}
+						</h2>
 						<p class="text-muted-foreground">{$t('organizations.applyToday')}</p>
 					{/if}
 				</div>
@@ -45,12 +43,13 @@
 						<Card.Content>
 							<p>{grant.description}</p>
 							<Badge variant="secondary">{$t('applyBy')}{grant.expirationDate}</Badge>
-							<Badge
-								variant="secondary">{$t(`card.sectors.${grant.sector.replace("_", "").toLowerCase()}`)}</Badge>
+							<Badge variant="secondary"
+								>{$t(`card.sectors.${grant.sector.replace('_', '').toLowerCase()}`)}</Badge
+							>
 						</Card.Content>
 						<Card.Footer class="flex justify-between">
 							<Button variant="secondary">{$t('button.favorite')}</Button>
-							<a href={`/grant/${toShort(grant.id)}`} target="_blank">
+							<a href={`/grant-user/grant/${toShort(grant.id)}`} target="_blank">
 								<Button>{$t('button.apply')}</Button>
 							</a>
 						</Card.Footer>

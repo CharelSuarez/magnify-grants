@@ -36,25 +36,30 @@ export const load: PageServerLoad = async (event) => {
 			);
 		}
 
-		const forms = await db.form.findMany({
+		const forms = await db.formsOnGrants.findMany({
 			where: {
 				grantId: grant.id
 			},
 			select: {
-				id: true,
-				name: true
+				form: {
+					select: {
+						id: true,
+						name: true
+					}
+				}
 			}
 		});
 
 		return { grant, forms };
 	} catch (err) {
+		console.log(err);
 		redirect(
 			307,
 			'/grant-user', // TODO Change to the grant exploration page!
 			{
 				richColors: true,
 				type: 'error',
-				message: 'Server error occurred!'
+				message: 'Server error occurred'
 			},
 			event
 		);
