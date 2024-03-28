@@ -4,8 +4,21 @@
 	import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
 	import { t } from '$lib/i18n/i18n';
 
+	import ColourSelection from '$lib/custom_components/ui/colour-selection/Colour-Selection.svelte';
+
 	export let loggedIn: boolean;
 	export let admin: boolean = false;
+
+	interface Colour {
+		saturation: number[];
+		contrast: number[];
+		saturationString: string;
+	}
+
+	export let colour : Colour;
+
+	$: colour.saturationString = `saturate-[${colour.saturation[0]/100}]`;
+
 </script>
 
 <div
@@ -46,5 +59,6 @@
 			</Button>
 		{/if}
 		<LocaleSelection />
+		<ColourSelection bind:colour={colour} />
 	</div>
 </div>
