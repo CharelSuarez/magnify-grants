@@ -7,9 +7,10 @@
 	import { Trash2 } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { t } from '$lib/i18n/i18n';
+	import { toShort } from '$lib/utils/url';
 
 	const formAction = (route: string) => {
-		goto(`/grant-admin/form-builder/${id}/${route}`);
+		goto(`/grant-admin/form-builder/${toShort(id)}/${route}`);
 	};
 
 	const dispatch = createEventDispatcher();
@@ -37,17 +38,17 @@
 			</DropdownMenu.Group>
 			<DropdownMenu.Separator />
 			<DropdownMenu.Item on:click={() => formAction('view')}
-			>{$t('menu.viewDocument')}</DropdownMenu.Item
+				>{$t('menu.viewDocument')}</DropdownMenu.Item
 			>
 			<DropdownMenu.Item on:click={() => formAction('edit')}
-			>{$t('menu.editDocument')}</DropdownMenu.Item
+				>{$t('menu.editDocument')}</DropdownMenu.Item
 			>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>
 
 	<AlertDialog.Root>
 		<AlertDialog.Trigger>
-			<Button size="icon" variant="ghost">
+			<Button variant="ghost" size="icon">
 				<Trash2 />
 			</Button>
 		</AlertDialog.Trigger>

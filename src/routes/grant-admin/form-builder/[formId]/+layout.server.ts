@@ -1,6 +1,7 @@
 import { db } from '$lib/server/db';
 import { redirect } from 'sveltekit-flash-message/server';
 import type { LayoutServerLoad } from './$types';
+import { fromShort } from '$lib/utils/url';
 
 /** @type {import('./$types').PageServerLoad} */
 export const load: LayoutServerLoad = async (event) => {
@@ -9,7 +10,7 @@ export const load: LayoutServerLoad = async (event) => {
 	try {
 		const form = await db.form.findFirst({
 			where: {
-				id: event.params.formId
+				id: fromShort(event.params.formId)
 			},
 			include: {
 				fields: true

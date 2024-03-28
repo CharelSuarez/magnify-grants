@@ -6,5 +6,5 @@
 </script>
 
 <div class="container mx-auto py-10">
-	<SettingsForm data={data.form} />
+	<SettingsForm forms={data.forms} data={data.form} />
 </div>

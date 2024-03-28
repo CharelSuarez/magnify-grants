@@ -1,3 +1,5 @@
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public';
+import { createServerClient } from '@supabase/ssr';
 import { lucia } from '$lib/server/auth';
 import { setCookie } from '$lib/utils/cookies';
 import { getGrantAdmin, getProfile } from '$lib/utils/user';
@@ -24,13 +26,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 // 	}
 // }
 
-const alwaysAllowed = [
-	'/login',
-	'/signup',
-	'/reset-password',
-	'/applications',
-	'/grant-preview',
-];
+const alwaysAllowed = ['/login', '/signup', '/reset-password', '/applications', '/grant-preview'];
 
 // inherits from alwaysAllowed
 const userAllowed = ['/logout', '/email-verification'];
@@ -136,6 +132,24 @@ const authenticateRoute: Handle = async ({ event, resolve }) => {
 };
 
 const addFunctionHooks: Handle = async ({ event, resolve }) => {
+	event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+		cookies: {
+			get: (key) => event.cookies.get(key),
+			set: (key, value, options) => {
+				event.cookies.set(key, value, {
+					...options,
+					path: '/'
+				});
+			},
+			remove: (key, options) => {
+				event.cookies.delete(key, {
+					...options,
+					path: '/'
+				});
+			}
+		}
+	});
+
 	event.locals.getUserProfile = async () => {
 		if (!event.locals.user) {
 			return null;

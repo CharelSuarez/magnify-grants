@@ -3,6 +3,14 @@ import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async (event) => {
 	try {
+		const grantAdmin = event.locals.getGrantAdmin();
+
+		if (!grantAdmin) {
+			return new Response('Unauthorized', {
+				status: 401
+			});
+		}
+
 		// verify user
 		const data = await event.request.json();
 
