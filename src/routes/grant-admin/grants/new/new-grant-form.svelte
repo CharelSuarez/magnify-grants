@@ -30,6 +30,7 @@
 
 	const removeBanner = () => {
 		$formData.banner = undefined;
+		$formData.bannerAlt = undefined;
 	};
 
 	const handleDocumentUpload = (e: { detail: { acceptedFiles: [file: File] } }) => {
@@ -259,6 +260,17 @@
 		</Form.Control>
 		<Form.FieldErrors />
 	</Form.Field>
+
+	{#if $formData.banner}
+		<Form.Field {form} name="bannerAlt">
+			<Form.Control let:attrs>
+				<Form.Label>Banner alt text</Form.Label>
+				<Input {...attrs} bind:value={$formData.bannerAlt} />
+			</Form.Control>
+			<Form.Description>Please provide alt text for the banner image</Form.Description>
+			<Form.FieldErrors />
+		</Form.Field>
+	{/if}
 
 	<Form.Field {form} name="documents">
 		<Form.Legend>Upload documents you want the user to view (optional)</Form.Legend>

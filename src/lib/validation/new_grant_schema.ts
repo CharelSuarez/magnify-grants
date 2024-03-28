@@ -15,6 +15,7 @@ export const formSchema = z.object({
 		.instanceof(File)
 		.optional()
 		.refine((f) => !f || f.size < 10_000_000, 'Max 10 mB upload size'),
+	bannerAlt: z.string().min(1).max(25).optional(),
 	documents: z.array(
 		z.instanceof(File).refine((f) => !f || f.size < 10_000_000, 'Max 10 mB upload size')
 	)

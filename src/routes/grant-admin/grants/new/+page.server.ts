@@ -71,6 +71,7 @@ export const actions: Actions = {
 					expirationDate: new Date(form.data.expirationDate),
 					sector: form.data.sector,
 					organizationId: grantAdmin.organizationId,
+					bannerAlt: form.data.bannerAlt || null,
 					formsOnGrants: {
 						create: createFormsOnGrants
 					}

@@ -86,6 +86,7 @@ model Grant {
   sector                Sector          @default(OTHER)
   postedDate            DateTime        @default(now())
   formsOnGrants         FormsOnGrants[]
+  bannerAlt             String?         
 
   @@map("grants")
 }
