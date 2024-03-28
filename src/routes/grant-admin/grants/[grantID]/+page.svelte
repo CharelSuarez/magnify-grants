@@ -11,7 +11,7 @@
 <div class="center">
     <Card.Root>
         <Card.Header>
-            <h2 class="text-4xl font-bold tracking-tight">{data.grant.title}</h2>
+            <h2 class="text-4xl font-bold tracking-tight">data.grant.title</h2>
         </Card.Header>
         <Card.Content>
             <Card.Title>{$t('card.organization')}</Card.Title>

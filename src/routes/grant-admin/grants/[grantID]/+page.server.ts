@@ -21,7 +21,7 @@ export const load: PageServerLoad = async (event) => {
 			}
 		});
 
-		const forms = await db.form.findMany({
+		const forms = await db.formsOnGrants.findMany({
 			where: {
 				grantId: grant.id
 			},
