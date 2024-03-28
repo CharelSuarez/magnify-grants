@@ -3,7 +3,6 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 	import { toShort } from '$lib/utils/url';
-	import Paperclip from 'lucide-svelte/icons/paperclip';
 	import File from 'lucide-svelte/icons/file-text';
 	import CircleAlert from 'lucide-svelte/icons/alert-circle';
 
