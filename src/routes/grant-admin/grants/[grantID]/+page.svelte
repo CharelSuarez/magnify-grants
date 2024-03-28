@@ -1,14 +1,17 @@
 <script lang="ts">
+  import type { PageData } from './$types';
   import { Button } from "$lib/components/ui/button";
   import * as Card from "$lib/components/ui/card";
   import { t } from '$lib/i18n/i18n';
 
+
+  export let data: PageData;
 </script>
 
 <div class="center">
     <Card.Root>
         <Card.Header>
-            <Card.Title>{$t('card.grantTitle')}</Card.Title>
+            <h2 class="text-4xl font-bold tracking-tight">{data.grant.title}</h2>
         </Card.Header>
         <Card.Content>
             <Card.Title>{$t('card.organization')}</Card.Title>
@@ -31,7 +34,7 @@
 
         <Card.Footer class="flex justify-between">
 
-            <Button variant="outline" href="/grants">Go back</Button>
+            <Button variant="outline" href="./">Go back</Button>
             <Button href="/grant-builder">Edit</Button>
           </Card.Footer>
 
@@ -42,7 +45,7 @@
 <style>
     .center {
         position: absolute;
-        top: 50%;
+        top: 40%;
         left: 50%;
         transform: translate(-50%, -50%);
         padding: 10px;
