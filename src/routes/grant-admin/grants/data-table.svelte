@@ -191,12 +191,6 @@
 
 	$: showReset = Object.values({ ...$filterValues, $filterValue }).some((v) => v.length > 0);
 
-
-	function gotoUser(row: BodyRow<any, any>) {
-        if (row.isData()) {
-            goto(`/grant-admin/grants/${toShort(row.original.id)}`);
-        }
-    }
 	const deleteGrant = async (id: string) => {
 		const res = await fetch('/grant-admin/grants/delete', {
 			method: 'POST',
