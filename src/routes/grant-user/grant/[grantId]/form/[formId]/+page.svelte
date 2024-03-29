@@ -17,6 +17,7 @@
 	import Save from 'lucide-svelte/icons/save';
 	import ExternalLink from 'lucide-svelte/icons/external-link';
 	import { goto } from '$app/navigation';
+	import * as Form from '$lib/components/ui/form';
 
 	export let data: PageData;
 
@@ -38,14 +39,18 @@
 			isLoading = true;
 		},
 		onResult: () => {
-			options.validators = zodClient(formSchema);
-			setTimeout(() => (isLoading = false), 250);
-			toast.success('The form has been saved!');
+			if (data.editable) {
+				options.validators = zodClient(formSchema);
+				setTimeout(() => (isLoading = false), 250);
+				toast.success('The form has been saved!');
+			}
 		},
 		onError: (error) => {
-			options.validators = zodClient(formSchema);
-			toast.error(`Failed to save form: ${error.result.error.message}!`);
-			setTimeout(() => (isLoading = false), 250);
+			if (data.editable) {
+				options.validators = zodClient(formSchema);
+				toast.error(`Failed to save form: ${error.result.error.message}!`);
+				setTimeout(() => (isLoading = false), 250);
+			}
 		}
 	});
 
@@ -117,23 +122,25 @@
 				</Card.Content>
 			</Card.Root>
 		{/if}
-		<Button
-			size="lg"
-			class="break-all w-full text-md gap-2"
-			disabled={!grant}
-			on:click={() => submitForm()}
-		>
-			{#if isLoading}
-				<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-			{/if}
-			<Save class="h-4 w-4"></Save>
-			<span>{'Save Form'}</span>
-			{#if lastSaved}
-				<Badge class="text-md pt-1 pb-1"
-					>Saved at {lastSaved.getHours()}:{lastSaved.getMinutes()}</Badge
-				>
-			{/if}
-		</Button>
+		{#if data.editable}
+			<Button
+				size="lg"
+				class="break-all w-full text-md gap-2"
+				disabled={!grant}
+				on:click={() => submitForm()}
+			>
+				{#if isLoading}
+					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+				{/if}
+				<Save class="h-4 w-4"></Save>
+				<span>{'Save Form'}</span>
+				{#if lastSaved}
+					<Badge class="text-md pt-1 pb-1"
+						>Saved at {lastSaved.getHours()}:{lastSaved.getMinutes()}</Badge
+					>
+				{/if}
+			</Button>
+		{/if}
 		<a
 			class="w-full"
 			href={`/grant-user/grant/${!grant ? '' : toShort(grant.id)}`}
@@ -161,7 +168,7 @@
 		</div>
 		<form method="POST" use:enhance class="w-full flex flex-col gap-10">
 			{#each form.fields as field}
-				<FormField {field} {filterForm}></FormField>
+				<FormField editable={data.editable} {field} {filterForm}></FormField>
 			{/each}
 		</form>
 	</div>

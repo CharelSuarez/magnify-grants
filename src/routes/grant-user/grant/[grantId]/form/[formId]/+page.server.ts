@@ -56,6 +56,13 @@ export const load: PageServerLoad = async (event) => {
 			}
 		});
 
+		const appCount = await db.submission.count({
+			where: {
+				userId: event.locals.user?.id,
+				grantId: grantId
+			}
+		});
+
 		if (!formOnGrants) {
 			console.log('error 1');
 			redirect(
@@ -115,7 +122,9 @@ export const load: PageServerLoad = async (event) => {
 			// Use the draft schema for the first load, since this could be a draft.
 			const formSchema = getFormDraftSchema(formOnGrants.form.fields);
 			const superform = await superValidate(formData, zod(formSchema));
+
 			return {
+				editable: appCount === 0,
 				formOnGrants,
 				superform,
 				banner: bannerData ? bannerData.signedUrl : null
@@ -127,6 +136,7 @@ export const load: PageServerLoad = async (event) => {
 
 		console.log(formOnGrants);
 		return {
+			editable: appCount === 0,
 			formOnGrants,
 			superform,
 			banner: bannerData ? bannerData.signedUrl : null
@@ -158,6 +168,13 @@ export const actions: Actions = {
 		const formId = fromShort(event.params.formId);
 		const grantId = fromShort(event.params.grantId);
 
+		const appCount = await db.submission.count({
+			where: {
+				userId: event.locals.user?.id,
+				grantId: grantId
+			}
+		});
+
 		const form = await db.form.findFirst({
 			where: {
 				id: formId
@@ -173,6 +190,12 @@ export const actions: Actions = {
 
 		if (!form) {
 			return fail(400, {});
+		}
+
+		if (appCount !== 0) {
+			return fail(500, {
+				form
+			});
 		}
 
 		// Check if the form matches the form's schema.
