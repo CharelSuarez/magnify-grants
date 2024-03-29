@@ -8,7 +8,6 @@
 	import { Input } from '$lib/components/ui/input';
 	import GrantTableCheckbox from '$lib/custom_components/ui/table/table-checkbox.svelte';
 	import GrantTableStatusCell from './AppTableAcceptCell.svelte';
-	import GrantTableCompleteStatus from './AppTableCompleteCell.svelte';
 	import type { Application } from '$lib/validation/app_schema';
 	import AppTableAge from './AppTableAgeCell.svelte';
 	import { t } from '$lib/i18n/i18n';
@@ -73,12 +72,10 @@
 			header: $t('table.header.email')
 		}),
 		table.column({
-			accessor: 'complete',
-			header: $t('table.header.complete'),
+			accessor: 'submissionDate',
+			header: $t("table.header.dateSubmitted"),
 			cell: ({ value }) => {
-				return createRender(GrantTableCompleteStatus, {
-					value
-				});
+				return value.toDateString();
 			}
 		}),
 		table.column({

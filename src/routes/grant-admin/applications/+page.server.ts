@@ -6,44 +6,82 @@ import { zod } from "sveltekit-superforms/adapters";
 import type { PageServerLoad } from "./$types";
 import { lucia } from "$lib/server/auth";
 import { ApplicationStatus } from "@prisma/client";
+import { fromShort } from "$lib/utils/url";
 
 export const load: PageServerLoad = async (event) => {
-    // TODO Authentication...
-    // if (!event.locals.user) {
-    //     redirect(303, "/");
-    // }
+    if (!event.locals.user) {
+        redirectFlash(303, "/", {
+            type: "error",
+            richColors: true,
+            message: "Forbidden, please log in!"
+        }, event);
+    }
 
-    const filter = await superValidate(zod(filterSchema));
-    const applications : Application[] = await getApplications(filter.data);
-    return { filter, applications };
+    const grantAdmin = await event.locals.getGrantAdmin()
+    if (!grantAdmin) {
+        redirectFlash(303, "/", {
+            type: "error",
+            richColors: true,
+            message: "Forbidden, no admin role!"
+        }, event);
+    }
+
+    const grantIdLong = event.url.searchParams.get("grant");
+    const grantId = grantIdLong ? fromShort(grantIdLong) : undefined;
+
+    const grantFilter = { grant: grantId };
+    const filter = await superValidate(grantFilter, zod(filterSchema));
+    const applications : Application[] = await getApplications(filter.data, grantAdmin.organizationId);
+
+    const grants = await db.grant.findMany({
+        where: {
+            organizationId: grantAdmin.organizationId
+        },
+        select: {
+            id: true,
+            title: true
+        }
+    });
+
+    return { filter, applications, grants };
 };
 
 export const actions: Actions = {
 
     default: async (event) => {
+        if (!event.locals.user) {
+            redirectFlash(303, "/", {
+                type: "error",
+                richColors: true,
+                message: "Forbidden, please log in!"
+            }, event);
+        }
+    
+        const grantAdmin = await event.locals.getGrantAdmin()
+        if (!grantAdmin) {
+            redirectFlash(303, "/", {
+                type: "error",
+                richColors: true,
+                message: "Forbidden, no admin role!"
+            }, event);
+        }
+
         const filter = await superValidate(event, zod(filterSchema));
         if (!filter.valid) {
             return fail(400, { filter });
         }
 
-        // TODO Authentication...
-
-        const applications : Application[] = await getApplications(filter.data);
+        const applications : Application[] = await getApplications(filter.data, grantAdmin.organizationId);
         return { filter, applications };
     },
 
 };
 
-async function getApplications(form: Infer<FilterSchema>) : Promise<Application[]> {
+async function getApplications(form: Infer<FilterSchema>, organizationId: string) : Promise<Application[]> {
     const accepted : ApplicationStatus[] = [];
     if (form.accepted) accepted.push(ApplicationStatus.ACCEPTED);
     if (form.pending) accepted.push(ApplicationStatus.IN_PROGRESS);
     if (form.rejected) accepted.push(ApplicationStatus.REJECTED);
-
-    /* If these filters are disabled then there aren't any results! */
-    if ((!form.incomplete && !form.complete) || accepted.length === 0) {
-        return [];
-    }
 
     let lastDob = undefined;
     if (form.minAge !== undefined) {
@@ -56,19 +94,20 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Application[
         firstDob.setFullYear(firstDob.getFullYear() - form.maxAge);
     }
 
-    const applications = await db.application.findMany({
+    const applications = await db.submission.findMany({
         where: {
-            // form: form.data.grant, // TODO Add grant/organization filter!
+            grant: {
+                id: form.grant,
+                organizationId: organizationId,
+            },
             status: {
                 in: accepted,
             },
-            complete: (form.incomplete && form.complete) ? 
-                      undefined : (form.complete && !form.incomplete),
             user: {
                 is: {
                     // User either has no profile, or matches DOB filter.
                     OR: [
-                        {profile: null}, // TODO Make this fields non-optional!
+                        {profile: null}, // TODO Make this field non-optional!
                         {profile: {
                             dateOfBirth: {
                                 gte: firstDob,
@@ -77,18 +116,17 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Application[
                         }}
                     ]
                 }
-            }
+            },
         },
         select: {
             id: true,
-            form: {
+            submissionDate: true,
+            status: true,
+            grant: {
                 select: {
-                    name: true
+                    title: true
                 }
             },
-            updated: true,
-            complete: true,
-            status: true,
             user: {
                 select: {
                     id: true,
@@ -108,9 +146,8 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Application[
     /* Flatten the resuls for the frontend. */
     const flattened = applications.map((app) => ({
         id: app.id,
-        grantTitle: app.form.name,
-        updated: app.updated,
-        complete: app.complete,
+        grantTitle: app.grant.title,
+        submissionDate: app.submissionDate,
         status: app.status,
         userId: app.user.id,
         userProfileName: getApplicationName(app),

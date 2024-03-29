@@ -181,6 +181,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.form.return': 'Return to Grant',
 		'application.table.selectAllRows': 'Select all rows',
 		'application.table.selectRow': 'Select row',
+		'table.header.dateSubmitted': 'Date Submitted',
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
@@ -363,5 +364,6 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.form.return': 'Return to Grant',
 		'application.table.selectAllRows': 'Select all rows',
 		'application.table.selectRow': 'Select row',
+		'table.header.dateSubmitted': 'Date Submitted',
 	}
 };

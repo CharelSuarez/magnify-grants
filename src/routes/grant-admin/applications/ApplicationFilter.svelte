@@ -4,16 +4,14 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Slider } from '$lib/components/ui/slider';
 	import { AcceptStatus } from './application-table/app-acceptance-statuses';
-	import { CompleteStatus } from './application-table/app-complete-statuses';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { filterSchema, type FilterSchema } from '$lib/validation/app_schema';
 	import { Loader2 } from 'lucide-svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { t } from '$lib/i18n/i18n';
+	import Button from '$lib/components/ui/button/button.svelte';
 
-	let CompleteIcon = CompleteStatus.COMPLETE.icon;
-	let IncompleteIcon = CompleteStatus.INCOMPLETE.icon;
 	let PendingIcon = AcceptStatus.IN_PROGRESS.icon;
 	let AcceptedIcon = AcceptStatus.ACCEPTED.icon;
 	let RejectedIcon = AcceptStatus.REJECTED.icon;
@@ -21,6 +19,7 @@
 	let className: string = '';
 	export { className as class };
 	export let data: SuperValidated<Infer<FilterSchema>>;
+	export let grants : { id: string, title: string }[];
 
 	let isLoading = false;
 	let filterForm = superForm(data, {
@@ -61,6 +60,36 @@
 	<form method="POST" use:enhance class="w-full">
 		<Card.Content class="flex flex-col space-y-2">
 			<div class="grid gap-2">
+				<Label>Grants</Label>
+				<div class="flex gap-4">
+					{#each grants as grant}
+						<Form.Field form={filterForm} name="grant">
+							<Form.Control let:attrs>
+								<Button
+									size="sm"
+									{...attrs}
+									type="button"
+									name="grant"
+									id={grant.id}
+									on:click={() => {
+										formData.update((fields) => {
+											// fields.grant = fields.grant || [];
+											// if (fields.grant.includes(grant.id)) {
+											// 	fields.grant = fields.grant.filter((selected) => selected !== grant.id);
+											// } else {
+											// 	fields.grant.push(grant.id);
+											// }
+											fields.grant = grant.id;
+											return fields;
+										});
+									}}
+								>{grant.title}</Button>
+							</Form.Control>
+						</Form.Field>
+					{/each}
+				</div>
+			</div>
+			<div class="grid gap-2">
 				<Label>Age Range</Label>
 				<div class="flex gap-4">
 					<Form.Field form={filterForm} name="minAge" class="basis-1/4">
@@ -95,46 +124,6 @@
 					<Form.FieldErrors />
 				</Form.Field>
 				<Form.Field form={filterForm} name="maxAge" class="text-center">
-					<Form.FieldErrors />
-				</Form.Field>
-			</div>
-			<div class="flex flex-col space-y-2">
-				<Label>Complete</Label>
-				<div class="grid grid-cols-2 gap-6">
-					<Form.Field form={filterForm} name="complete" class="h-full flex items-center gap-2">
-						<Form.Control let:attrs>
-							<input type="checkbox" bind:checked={$formData.complete} {...attrs} name="complete" />
-						</Form.Control>
-						<div class="flex gap-0 h-full">
-							<CompleteIcon
-								class="mr-1 h-4 w-4 text-muted-foreground {CompleteStatus.COMPLETE.color}"
-							/>
-							<Label class="text-center" for="complete">{CompleteStatus.COMPLETE.name}</Label>
-						</div>
-					</Form.Field>
-					<Form.Field form={filterForm} name="incomplete">
-						<div class="h-full flex items-center gap-2">
-							<Form.Control let:attrs>
-								<input
-									type="checkbox"
-									bind:checked={$formData.incomplete}
-									{...attrs}
-									name="incomplete"
-								/>
-							</Form.Control>
-							<div class="flex gap-0">
-								<IncompleteIcon
-									class="mr-1 h-4 w-4 text-muted-foreground {CompleteStatus.INCOMPLETE.color}"
-								/>
-								<Label for="incomplete">{CompleteStatus.INCOMPLETE.name}</Label>
-							</div>
-						</div>
-					</Form.Field>
-				</div>
-				<Form.Field form={filterForm} name="complete" class="text-center">
-					<Form.FieldErrors />
-				</Form.Field>
-				<Form.Field form={filterForm} name="incomplete" class="text-center">
 					<Form.FieldErrors />
 				</Form.Field>
 			</div>

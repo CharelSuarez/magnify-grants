@@ -26,6 +26,6 @@
 	</div>
     <div class="flex flex-1 justify-between h-full w-full gap-10">
         <GrantTable {applications} class="w-4/5"/>
-        <GrantTableFilter data={data.filter} class="w-1/5 h-min items-center"/>
+        <GrantTableFilter data={data.filter} grants={data.grants} class="w-1/5 h-min items-center"/>
     </div>
 </div>
