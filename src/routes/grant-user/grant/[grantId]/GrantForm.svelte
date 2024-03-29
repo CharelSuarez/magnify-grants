@@ -6,6 +6,7 @@
 	import File from 'lucide-svelte/icons/file-text';
 	import CircleAlert from 'lucide-svelte/icons/alert-circle';
 	import CheckCircle from 'lucide-svelte/icons/check-circle';
+	import Eye from 'lucide-svelte/icons/eye';
 
 	import { goto } from '$app/navigation';
 
@@ -15,9 +16,12 @@
 		id: string;
 		name: string;
 		application?: {
+			id: string,
 			complete: boolean;
 		};
 	};
+
+	$: appId = form.application?.id || "";
 </script>
 
 <Card.Root class="flex flex-col justify-start h-min w-48 p-4 space-y-2">
@@ -45,7 +49,7 @@
 	<Card.Content class="w-full p-0">
 		<File class="w-full h-12"></File>
 	</Card.Content>
-	<Card.Footer class="w-full p-0">
+	<Card.Footer class="flex justify-between w-full p-0 gap-2">
 		<a
 			class="w-full"
 			href={`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`}
@@ -54,9 +58,28 @@
 		>
 			<Button
 				class="w-full"
-				on:click={() => goto(`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`)}
-				>Open Form</Button
+				on:click={() => goto(`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`)}>
+				{#if form.application}
+					<span>Edit Form</span>
+				{:else}
+					<span>Open Form</span>
+				{/if}
+			</Button
 			>
 		</a>
+		{#if form.application}
+			<a
+				class="w-fit"
+				href={`/grant-user/application/${toShort(appId)}/form/${toShort(form.id)}`}
+				target="_blank"
+				on:click={(e) => e.preventDefault()}
+			>
+				<Button
+					class="w-10 p-0"
+					on:click={() => goto(`/grant-user/application/${toShort(appId)}/form/${toShort(form.id)}`)}>
+					<Eye></Eye>
+				</Button>
+			</a>
+		{/if}
 	</Card.Footer>
 </Card.Root>

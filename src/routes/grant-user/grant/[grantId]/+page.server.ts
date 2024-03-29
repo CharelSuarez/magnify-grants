@@ -52,6 +52,7 @@ export const load: PageServerLoad = async (event) => {
 						name: true,
 						applications: {
 							select: {
+								id: true,
 								updated: true,
 								complete: true
 							},
@@ -69,10 +70,12 @@ export const load: PageServerLoad = async (event) => {
 			name: string;
 			id: string;
 			applications: {
+				id: string;
 				complete: boolean;
 				updated: Date;
 			}[];
 			application?: {
+				id: string;
 				complete: boolean;
 			};
 		}[] = forms.map((form) => form.form);

@@ -46,16 +46,11 @@
 		});
 	};
 
-	const isInitialCheckboxOption = (fieldId: string, option: string) => {
-		const fields = get(formData);
-		return fields[fieldId] && fields[fieldId] instanceof Array && fields[fieldId].includes(option);
-	};
-
-	const getInitial = (fieldId: string) => {
-		const fields = get(formData);
-		console.log(fields[fieldId]);
-		return fields[fieldId];
-	};
+    const isInitialCheckboxOption = (fieldId: string, option: string) => {
+        const fields = get(formData);
+        return fields[fieldId] && fields[fieldId] instanceof Array 
+            && fields[fieldId].includes(option);
+    }
 </script>
 
 <Card.Root class="w-full p-8 bg-secondary">
