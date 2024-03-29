@@ -8,10 +8,6 @@
 
 	export let loggedIn: boolean;
 	export let admin: boolean = false;
-
-
-	export let colourClass: string;	
-
 </script>
 
 <div
@@ -52,6 +48,6 @@
 			</Button>
 		{/if}
 		<LocaleSelection />
-		<ColourSelection bind:colourClass />
+		<ColourSelection />
 	</div>
 </div>
