@@ -34,6 +34,9 @@ export const load: PageServerLoad = async (event) => {
                     expirationDate:true,
                 }
             }
+        },
+        orderBy: {
+            submissionDate: 'desc'
         }
 	});
 
