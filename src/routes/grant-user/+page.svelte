@@ -11,25 +11,41 @@
 	let grants = data.grants;
 	let orgs = data.organizations;
 
-	let search: string | undefined;
+	let search: string;
+	let searchGrant: string;
+
+
+	$: if (search) {
+		orgs = orgs.filter((org) => org.name.toLowerCase().includes(search.toLowerCase()));
+	}else{
+		orgs = data.organizations;
+	}
+
+	$: if (searchGrant) {
+		grants = grants.filter((grant) => grant.title.toLowerCase().includes(searchGrant.toLowerCase()));
+	}else{
+		grants = data.grants;
+	}
+
+
 </script>
 
 <main class="flex-col min-h-screen h-auto font-satoshi">
 	<div class="flex p-[3rem] text-[5rem] font-bold ">{$t('body.organization')}</div>
 	<div class="flex mb-8 w-full px-[3rem] flex-col relative min-h-[300px]">
-		<div class="flex w-[95%] h-2 bg-black absolute bottom-[40%] rounded-full -z-10"></div>
 		<div class="flex">
 			<h1 class="text-teal-600 font-bold text-3xl ml-8">{$t('body.organization')}</h1>
-			<input
+				<input
 				bind:value={search}
 				class=" px-2 w-fit ml-4 border-2 border-neutral-600 rounded-md font-bold"
 				placeholder={$t('body.search.organizations')}
 				type="text"
 			/>
 		</div>
-		<div class="flex ml-12 mt-8 gap-8 text-[3rem] font-medium italic text-teal-600">
+		<div class="grid grid-cols-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 grid-rows-auto 
+		 gap-4 mt-8 text-[3rem] font-medium italic text-teal-600">
 			{#if orgs.length === 0}
-				<p>{$t('body.organizations.notfound')}</p>
+				<p class="w-[800px] ml-36">{$t('body.organizations.notfound')}</p>
 			{/if}
 			{#each orgs as org (org.id)}
 				<Orgs
@@ -48,11 +64,12 @@
 				class=" px-2 w-fit ml-4 border-2 border-neutral-600 rounded-md font-bold"
 				placeholder={$t('body.search.grants')}
 				type="text"
+				bind:value={searchGrant}
 			/>
 		</div>
 		<div class="grid grid-cols-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 grid-rows-auto ml-12 mt-8 w-[80%] gap-4 overflow-hidden">
 			{#if grants.length === 0}
-				<p>{$t('body.grants.notfound')}</p>
+				<p class="mt-4 text-[3rem] font-medium italic text-teal-600">{$t('body.grants.notfound')}</p>
 			{/if}
 
 			{#each grants as grant (grant.id)}
