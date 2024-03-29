@@ -113,11 +113,7 @@ export const load: PageServerLoad = async (event) => {
 			},
 			select: {
 				id: true,
-				submission: {
-					select: {
-						status: true
-					}
-				}
+				complete: true
 			}
 		});
 
@@ -164,7 +160,6 @@ export const load: PageServerLoad = async (event) => {
 		const { data: bannerData } = await getBannerURL(grant.id, event.locals.supabase);
 
 		return {
-			submission: app.submission,
 			form,
 			grant,
 			formData,

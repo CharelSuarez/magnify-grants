@@ -11,6 +11,8 @@
 	import ExternalLink from 'lucide-svelte/icons/external-link';
 	import { goto } from '$app/navigation';
 	import Eye from 'lucide-svelte/icons/eye';
+	import CompleteStatus from '$lib/custom_components/ui/status/CompleteStatus.svelte';
+	import Pencil from 'lucide-svelte/icons/pencil';
 
 	export let data: PageData;
 
@@ -18,7 +20,6 @@
 	const form = data.form;
 	const grant = data.grant;
 	const formData = data.formData;
-	const submission = data.submission;
 
 </script>
 
@@ -30,13 +31,13 @@
 		class="min-h-screen hidden basis-1/4 flex-grow-0 md:flex flex-col justify-end
 		h-full items-start space-y-4 fixed w-1/4 bottom-0 left-0 p-16"
 	>
-		<Alert.Root>
+		<!-- <Alert.Root>
 			<AlertCircle class="h-4 w-4"></AlertCircle>
 			<Alert.Title>Note</Alert.Title>
 			<Alert.Description
 				>This form has been submitted, but can still be viewed.</Alert.Description
 			>
-		</Alert.Root>
+		</Alert.Root> -->
 		<div class="flex gap-2">
 			<Badge variant="outline" class="text-md mt-1">GRANT</Badge>
 			<h2 class="text-2xl font-bold tracking-tight">{grant?.title || 'Unknown'}</h2>
@@ -49,10 +50,31 @@
 						src={banner}
 						alt={grant.bannerAlt || ''}
 					/>
-					<!-- TODO Grant image alt text! -->
 				</Card.Content>
 			</Card.Root>
 		{/if}
+		<div class="flex justify-center w-full">
+			<CompleteStatus complete={form.complete}></CompleteStatus>
+		</div>
+		<a
+			class="w-full"
+			href={`/grant-user/grant/${toShort(grant.id)}/form/${toShort(form.id)}`}
+			target="_blank"
+			on:click={(e) => e.preventDefault()}
+		>
+			<Button
+				on:click={() => {
+					goto(`/grant-user/grant/${toShort(grant.id)}/form/${toShort(form.id)}`);
+				}}
+				size="lg"
+				variant="secondary"
+				class="w-full text-md gap-2"
+				disabled={!grant}
+			>
+				<Pencil class="h-4 w-4"></Pencil>
+				<span>{"Edit Form"}</span>
+			</Button>
+		</a>
 		<a
 			class="w-full"
 			href={`/grant-user/grant/${!grant ? '' : toShort(grant.id)}`}
