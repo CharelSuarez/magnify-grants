@@ -5,7 +5,8 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ params }) => {
 	const grants = await db.grant.findMany({
 		where: {
-			organizationId: fromShort(params.organization_id)
+			organizationId: fromShort(params.organization_id),
+			published: true
 		},
 		include: {
 			organization: true
