@@ -8,7 +8,7 @@ const upload = async (name: string, bucket: string, file: File, supabase: Supaba
 };
 
 export const uploadBanner = async (grantId: string, file: File, supabase: SupabaseClient) => {
-	return await upload(`${grantId}.png`, 'banners', file, supabase);
+	return await upload(`${grantId}`, 'banners', file, supabase);
 };
 
 export const uploadRequiredDocument = async (

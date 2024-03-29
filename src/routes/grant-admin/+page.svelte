@@ -29,7 +29,9 @@
 			<div class="flex items-center justify-between space-y-2">
 				<div>
 					<h2 class="text-2xl font-bold tracking-tight">{$t('analytics.title')}</h2>
-					<p class="text-muted-foreground">{$t('analytics.organization', { organizationName: organization?.name })}</p>
+					<p class="text-muted-foreground">
+						{$t('analytics.organization', { organizationName: organization?.name })}
+					</p>
 				</div>
 			</div>
 			<Separator />
@@ -52,7 +54,6 @@
 					</Card.Header>
 					<Card.Content>
 						<h1 class="text-7xl">{grantsPosted}</h1>
-
 					</Card.Content>
 				</Card.Root>
 				<Card.Root class="hover:drop-shadow-md">
@@ -70,7 +71,10 @@
 					</Card.Header>
 					<Card.Content>
 						{#each grantsPerSector as sector}
-							<p>{$t(`card.sectors.${sector.sector.replace("_", "").toLowerCase()}`)}: {sector._count.sector}</p>
+							<p>
+								{$t(`card.sectors.${sector.sector.replace('_', '').toLowerCase()}`)}: {sector._count
+									.sector}
+							</p>
 						{:else}
 							<p>{$t('card.grantsPerSector.empty')}</p>
 						{/each}
@@ -81,7 +85,7 @@
 						<Card.Title class="text-3xl">{$t('card.acceptanceRate.title')}</Card.Title>
 					</Card.Header>
 					<Card.Content>
-						<p class="text-7xl">{acceptanceRate}%</p>
+						<p class="text-7xl">{acceptanceRate | 0}%</p>
 					</Card.Content>
 				</Card.Root>
 			</div>

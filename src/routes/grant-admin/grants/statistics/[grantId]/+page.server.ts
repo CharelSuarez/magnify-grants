@@ -37,15 +37,11 @@ export const load: PageServerLoad = async (event) => {
 			);
 		}
 
-		const totalAmountAwarded = await db.application.aggregate({
+		const totalAmountAwarded = await db.submission.aggregate({
 			where: {
 				status: ApplicationStatus.ACCEPTED,
-				form: {
-					formsOnGrants: {
-						some: {
-							grantId: grant.id
-						}
-					}
+				grant: {
+					id: grant.id
 				}
 			},
 			_sum: {
@@ -53,22 +49,18 @@ export const load: PageServerLoad = async (event) => {
 			}
 		});
 
-		const applications = await db.application.findMany({
+		const applications = await db.submission.findMany({
 			where: {
-				form: {
-					formsOnGrants: {
-						some: {
-							grantId: grant.id
-						}
-					}
+				grant: {
+					id: grant.id
 				}
 			}
 		});
 
-		let numberOfApplications = 0;
+		let numberOfApplications = applications.length;
 		let avgAmountAwarded = 0;
 		let acceptanceRate = 0;
-		if (applications && totalAmountAwarded && totalAmountAwarded._sum.amountAwarded) {
+		if (totalAmountAwarded && totalAmountAwarded._sum.amountAwarded) {
 			numberOfApplications = applications.length;
 			const inProgressApplications = applications.filter(
 				(a) => a.status == ApplicationStatus.IN_PROGRESS

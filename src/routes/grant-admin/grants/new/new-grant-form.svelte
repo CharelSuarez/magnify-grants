@@ -313,7 +313,7 @@
 			Add document
 		</Button>
 
-		<Form.Legend>Add the types of documents the user must submit</Form.Legend>
+		<Form.Legend>Add the types of document prompts the user must submit documents for</Form.Legend>
 		{#each $formData.requiredDocuments as _, i}
 			<Form.ElementField {form} name="grantForms[{i}]">
 				<div class="w-full flex items-center space-x-2 flex-row p-5 bg-white border rounded-md">

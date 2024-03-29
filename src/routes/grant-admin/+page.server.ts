@@ -39,12 +39,12 @@ export const load: PageServerLoad = async (event) => {
 		}
 	});
 
-	const totalApplications = await db.application.count({
+	const totalApplications = await db.submission.count({
 		where: {
 			submissionDate: {
 				gte: new Date(new Date().setMonth(new Date().getMonth() - 1))
 			},
-			form: {
+			grant: {
 				formsOnGrants: {
 					some: {
 						grant: {
@@ -56,10 +56,10 @@ export const load: PageServerLoad = async (event) => {
 		}
 	});
 
-	const inProgressApplications = await db.application.count({
+	const inProgressApplications = await db.submission.count({
 		where: {
 			status: ApplicationStatus.IN_PROGRESS,
-			form: {
+			grant: {
 				formsOnGrants: {
 					some: {
 						grant: {
@@ -71,10 +71,10 @@ export const load: PageServerLoad = async (event) => {
 		}
 	});
 
-	const acceptedApplications = await db.application.count({
+	const acceptedApplications = await db.submission.count({
 		where: {
 			status: ApplicationStatus.ACCEPTED,
-			form: {
+			grant: {
 				formsOnGrants: {
 					some: {
 						grant: {
@@ -92,12 +92,12 @@ export const load: PageServerLoad = async (event) => {
 			: (acceptedApplications / (totalApplications - inProgressApplications)) * 100;
 
 	// sum the amountAwarded field where the form is associated with a grant that has the organizationId organization_id
-	const totalFundsAwarded = await db.application.aggregate({
+	const totalFundsAwarded = await db.submission.aggregate({
 		_sum: {
 			amountAwarded: true
 		},
 		where: {
-			form: {
+			grant: {
 				formsOnGrants: {
 					some: {
 						grant: {

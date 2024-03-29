@@ -4,14 +4,15 @@ import type { PageServerLoad } from './$types';
 import { fromShort } from '$lib/utils/url';
 import { FieldType, type Field, type Form } from '@prisma/client';
 import { z, type ZodTypeAny } from 'zod';
-import { zod } from "sveltekit-superforms/adapters";
+import { zod } from 'sveltekit-superforms/adapters';
 import { superValidate } from 'sveltekit-superforms';
 import { getFormDraftSchema, getFormSubmissionSchema } from '$lib/validation/form_schema';
 import { fail, type Actions, error } from '@sveltejs/kit';
+import { getBannerURL } from '$lib/utils/downloads';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user === null) {
-		console.log("error 2");
+		console.log('error 2');
 		redirect(
 			307,
 			'/grant-user',
@@ -27,6 +28,8 @@ export const load: PageServerLoad = async (event) => {
 	try {
 		const formId = fromShort(event.params.formId);
 		const grantId = fromShort(event.params.grantId);
+
+		const { data: bannerData } = await getBannerURL(grantId, event.locals.supabase);
 
 		const formOnGrants = await db.formsOnGrants.findFirst({
 			where: {
@@ -46,14 +49,15 @@ export const load: PageServerLoad = async (event) => {
 				grant: {
 					select: {
 						id: true,
-						title: true
+						title: true,
+						bannerAlt: true
 					}
 				}
 			}
 		});
 
 		if (!formOnGrants) {
-			console.log("error 1");
+			console.log('error 1');
 			redirect(
 				307,
 				'/grant-user',
@@ -97,28 +101,35 @@ export const load: PageServerLoad = async (event) => {
 				}
 			});
 			// Parse application entries into their objects.
-			const formData = Object.fromEntries(fields.map((field) => {
-				const value = JSON.parse(field.value);
-				// JSON can't decode dates properly, embarassing really...
-				if (field.field.type === FieldType.Date) {
-					return [field.fieldId, new Date(value)];
-				}
-				return [field.fieldId, value];
-			}));
+			const formData = Object.fromEntries(
+				fields.map((field) => {
+					const value = JSON.parse(field.value);
+					// JSON can't decode dates properly, embarassing really...
+					if (field.field.type === FieldType.Date) {
+						return [field.fieldId, new Date(value)];
+					}
+					return [field.fieldId, value];
+				})
+			);
 
 			// Use the draft schema for the first load, since this could be a draft.
 			const formSchema = getFormDraftSchema(formOnGrants.form.fields);
 			const superform = await superValidate(formData, zod(formSchema));
 			return {
-				formOnGrants, superform
+				formOnGrants,
+				superform,
+				banner: bannerData ? bannerData.signedUrl : null
 			};
 		}
 
 		const formSchema = getFormSubmissionSchema(formOnGrants.form.fields);
 		const superform = await superValidate(zod(formSchema));
+
 		console.log(formOnGrants);
 		return {
-			formOnGrants, superform
+			formOnGrants,
+			superform,
+			banner: bannerData ? bannerData.signedUrl : null
 		};
 	} catch (err) {
 		redirect(
@@ -135,10 +146,12 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
-
-    default: async (event) => {
-		if (event.locals.user === null || event.params.formId === undefined 
-			|| event.params.grantId === undefined) {
+	default: async (event) => {
+		if (
+			event.locals.user === null ||
+			event.params.formId === undefined ||
+			event.params.grantId === undefined
+		) {
 			return fail(400, {});
 		}
 
@@ -161,22 +174,22 @@ export const actions: Actions = {
 		if (!form) {
 			return fail(400, {});
 		}
-		
+
 		// Check if the form matches the form's schema.
 		const formSchema = getFormSubmissionSchema(form.fields);
-        const superform = await superValidate(event, zod(formSchema));
+		const superform = await superValidate(event, zod(formSchema));
 		const formData = superform.data;
 
 		let complete = true;
-        if (!superform.valid) {
+		if (!superform.valid) {
 			// If not, check if the form matches the form's draft schema.
 			const draftSchema = getFormDraftSchema(form.fields);
 			const draftValidation = await zod(draftSchema).validate(formData);
 			if (!draftValidation.success) {
-				return fail(400, { message: "Invalid draft", superform });
+				return fail(400, { message: 'Invalid draft', superform });
 			}
 			complete = false;
-        }
+		}
 
 		// Find latest application.
 		let possibleApp = await db.application.findFirst({
@@ -189,7 +202,7 @@ export const actions: Actions = {
 				updated: 'desc'
 			}
 		});
-		
+
 		if (!possibleApp) {
 			// If application doesn't exist, make one.
 			possibleApp = await db.application.create({
@@ -212,13 +225,13 @@ export const actions: Actions = {
 			});
 		}
 		if (!possibleApp) {
-			return fail(400, { message: "Internal server error", superform });
+			return fail(400, { message: 'Internal server error', superform });
 		}
 		// So typescript can shut its mouth...
 		const app = possibleApp;
 
 		await db.$transaction(
-			Object.keys(formData).map(fieldId =>
+			Object.keys(formData).map((fieldId) =>
 				db.applicationEntry.upsert({
 					where: {
 						appId_fieldId: {
@@ -229,16 +242,15 @@ export const actions: Actions = {
 					update: {
 						value: JSON.stringify(formData[fieldId])
 					},
-					create: { 
+					create: {
 						appId: app.id,
 						fieldId,
 						value: JSON.stringify(formData[fieldId])
 					}
 				})
 			)
-		)
+		);
 
-        return { superform };
-    },
-
+		return { superform };
+	}
 };

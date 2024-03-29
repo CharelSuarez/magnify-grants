@@ -35,7 +35,7 @@ export const actions: Actions = {
 		const grantAdmin = await event.locals.getGrantAdmin();
 
 		if (!grantAdmin) {
-			fail(401);
+			return fail(401);
 		}
 
 		try {

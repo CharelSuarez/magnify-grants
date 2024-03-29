@@ -1,26 +1,26 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-const download = async (name: string, bucket: string, supabase: SupabaseClient) => {
-	return await supabase.storage.from(bucket).download(name);
+const getURL = async (name: string, bucket: string, supabase: SupabaseClient) => {
+	return await supabase.storage.from(bucket).createSignedUrl(name, 6000);
 };
 
-export const downloadBanner = async (grantId: string, supabase: SupabaseClient) => {
-	return await download(`${grantId}.png`, 'banners', supabase);
+export const getBannerURL = async (grantId: string, supabase: SupabaseClient) => {
+	return await getURL(grantId, 'banners', supabase);
 };
 
 export const listGrantDocuments = async (grantId: string, supabase: SupabaseClient) => {
 	return await supabase.storage.from('documents').list(grantId);
 };
 
-export const downloadGrantDocument = async (
+export const getGrantDocumentURL = async (
 	grantId: string,
 	fileName: string,
 	supabase: SupabaseClient
 ) => {
-	return await download(`${grantId}/${fileName}`, 'documents', supabase);
+	return await getURL(`${grantId}/${fileName}`, 'documents', supabase);
 };
 
-export const downloadRequiredDocument = async (
+export const getRequiredDocumentURL = async (
 	userId: string,
 	docId: string,
 	supabase: SupabaseClient
@@ -37,5 +37,5 @@ export const downloadRequiredDocument = async (
 		return { data, error };
 	}
 
-	return await download(`${userId}/${docId}/${data[0].name}`, 'required_documents', supabase);
+	return await getURL(`${userId}/${docId}/${data[0].name}`, 'required_documents', supabase);
 };
