@@ -163,7 +163,6 @@ enum FieldType {
   MultipleChoice
   Checkbox
   Dropdown
-  FileUpload
   LinearScale
   Date
   Time
@@ -175,15 +174,15 @@ model Application {
   formId         String             @db.Uuid
   user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
-  version        Int                @default(0)
   complete       Boolean            @default(false)
   status         ApplicationStatus  @default(IN_PROGRESS)
   entries        ApplicationEntry[]
   submissionDate DateTime?
   amountAwarded  Int?
+  updated        DateTime           @default(now())
 
-  @@unique([userId, formId, version])
-  @@index([userId, formId])
+  @@unique([userId, formId, updated])
+  @@index([userId, formId, updated])
   @@map("applications")
 }
 
@@ -196,15 +195,13 @@ enum ApplicationStatus {
 }
 
 model ApplicationEntry {
-  id      String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   app     Application @relation(fields: [appId], references: [id], onDelete: Cascade)
   appId   String      @db.Uuid
   field   Field       @relation(fields: [fieldId], references: [id], onDelete: Cascade)
   fieldId String      @db.Uuid
   value   String      @default("")
 
-  @@unique([appId, fieldId])
-  @@index([appId, fieldId])
+  @@id([appId, fieldId])
   @@map("application_entries")
 }
 
