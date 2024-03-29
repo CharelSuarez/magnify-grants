@@ -6,8 +6,6 @@
 	import type { Selected } from 'bits-ui';
 	import ColourSelection from '../../colour-selection/Colour-Selection.svelte';
 
-	export let colourClass: string;
-
 	const navButtons = {
 		Overview: '/grant-admin',
 		Grants: '/grant-admin/grants',
@@ -33,5 +31,5 @@
 <div class="w-full" />
 
 <LocaleSelection />
-<ColourSelection bind:colourClass />
+<ColourSelection />
 

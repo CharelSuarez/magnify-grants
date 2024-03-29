@@ -8,13 +8,11 @@
 
 	import { t } from '$lib/i18n/i18n';
 
-	let colourClass: string;
 	export let data: PageData;
-
 </script>
 
-<Taskbar admin={data.admin} loggedIn={data.loggedIn} bind:colourClass />
-<main class={`flex-col min-h-screen h-auto ${colourClass}`}>
+<Taskbar admin={data.admin} loggedIn={data.loggedIn}/>
+<main class={`flex-col min-h-screen h-auto`}>
 	<div class="flex justify-center items-center h-screen relative flex-col font-satoshi">
 		<h1 class="text-[9rem] font-bold max-sm:text-lg">
 			{$t('home.title.first')}<span class="text-teal-500">{$t('home.title.second')} </span>
