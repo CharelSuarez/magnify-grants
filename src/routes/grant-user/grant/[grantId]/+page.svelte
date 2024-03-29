@@ -72,7 +72,7 @@
 		<p class="tracking-tight text-center mb-8 text-muted-foreground">{$t('apply.instructions')}</p>
 		<div class="flex justify-center w-full gap-10 items-center">
 			{#each data.forms as form}
-				<GrantForm form={form.form}></GrantForm>
+				<GrantForm form={form} grantId={data.grant.id}></GrantForm>
 			{/each}
 			<Button disabled class="gap-4">
 				<p>{$t('apply.submitApplication')}</p>

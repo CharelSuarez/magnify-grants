@@ -4,7 +4,7 @@ import { z } from "zod";
 export type Application = {
     id: string,
     grantTitle: string | undefined,
-    version: number,
+    updated: Date,
     complete: boolean,
     status: ApplicationStatus,
     userId: string,

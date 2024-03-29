@@ -3,7 +3,7 @@ import { redirect, type Actions, fail } from "@sveltejs/kit";
 import { redirect as redirectFlash } from "sveltekit-flash-message/server";
 import { message, setError, superValidate, type Infer } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
-import type { PageServerLoad } from "../../applications/$types";
+import type { PageServerLoad } from "./$types";
 import { lucia } from "$lib/server/auth";
 import { ApplicationStatus } from "@prisma/client";
 
@@ -86,7 +86,7 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Application[
                     name: true
                 }
             },
-            version: true,
+            updated: true,
             complete: true,
             status: true,
             user: {
@@ -109,7 +109,7 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Application[
     const flattened = applications.map((app) => ({
         id: app.id,
         grantTitle: app.form.name,
-        version: app.version,
+        updated: app.updated,
         complete: app.complete,
         status: app.status,
         userId: app.user.id,
@@ -117,7 +117,6 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Application[
         userProfileEmail: app.user.email,
         userProfileDateOfBirth: app.user?.profile?.dateOfBirth,
     }));
-    // console.log(flattened);
     return flattened
 }
 

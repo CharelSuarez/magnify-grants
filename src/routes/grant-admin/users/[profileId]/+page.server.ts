@@ -28,7 +28,7 @@ export const load: PageServerLoad = async (event) => {
 
 		if (!profile) {
 			redirect(
-				500,
+				307,
 				'/grant-admin/users/',
 				{
 					richColors: true,
@@ -44,7 +44,7 @@ export const load: PageServerLoad = async (event) => {
 		};
 	} catch (err) {
 		redirect(
-			500,
+			307,
 			'/grant-admin/users/',
 			{
 				richColors: true,
