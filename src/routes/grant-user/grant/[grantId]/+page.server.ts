@@ -42,13 +42,38 @@ export const load: PageServerLoad = async (event) => {
 				form: {
 					select: {
 						id: true,
-						name: true
+						name: true,
+						applications: {
+							select: {
+								updated: true,
+								complete: true
+							}
+						}
 					}
 				}
 			}
 		});
 
-		return { grant, forms };
+		const formsWithApplication : {
+			name: string;
+			id: string;
+			applications: {
+				complete: boolean;
+				updated: Date;
+			}[];
+			application?: {
+				complete: boolean;
+			}
+		}[] = forms;
+
+		formsWithApplication.forEach((form) => {
+			// Find the application with the most recent date.
+			form.application = form.applications.length == 0 ? undefined : form.applications.reduce((form, nextForm) => {
+				return nextForm.updated > form.updated ? nextForm : form;
+			}, form.applications[0]);
+		});
+
+		return { grant, forms: formsWithApplication };
 	} catch (err) {
 		console.log(err);
 		redirect(

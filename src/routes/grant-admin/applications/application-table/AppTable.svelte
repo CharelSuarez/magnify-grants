@@ -32,7 +32,8 @@
 			header: (_, { pluginStates }) => {
 				const { allPageRowsSelected } = pluginStates.select;
 				return createRender(GrantTableCheckbox, {
-					checked: allPageRowsSelected
+					checked: allPageRowsSelected,
+					ariaLabel: $t('application.table.selectAllRows')
 				});
 			},
 			cell: ({ row }, { pluginStates }) => {
@@ -40,7 +41,8 @@
 				const { isSelected } = getRowState(row);
 
 				return createRender(GrantTableCheckbox, {
-					checked: isSelected
+					checked: isSelected,
+					ariaLabel: $t('application.table.selectRow')
 				});
 			},
 			plugins: {

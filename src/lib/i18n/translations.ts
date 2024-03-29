@@ -39,7 +39,6 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'fieldType.MultipleChoice': 'Multiple Choice',
 		'fieldType.Checkbox': 'Checkbox',
 		'fieldType.Dropdown': 'Dropdown',
-		'fieldType.FileUpload': 'File Upload',
 		'fieldType.LinearScale': 'Linear Scale',
 		'fieldType.Date': 'Date',
 		'fieldType.Time': 'Time',
@@ -176,9 +175,12 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'apply.submitApplication': 'Submit Application',
 		'apply.oneMoreFormRequired': 'One More Form Required',
 		'page.title.postedGrants': 'Posted Grants',
-		applyBy: 'Apply by: ',
+		'applyBy': 'Apply by: ',
 		'grant.expirationDate': 'Expiration Date:',
-		'menu.viewStatistics': 'View statistics'
+		'menu.viewStatistics': 'View statistics',
+		'grant.form.return': 'Return to Grant',
+		'application.table.selectAllRows': 'Select all rows',
+		'application.table.selectRow': 'Select row',
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
@@ -220,7 +222,6 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'fieldType.MultipleChoice': 'Choix multiple',
 		'fieldType.Checkbox': 'Case à cocher',
 		'fieldType.Dropdown': 'Menu déroulant',
-		'fieldType.FileUpload': 'Téléversement de fichier',
 		'fieldType.LinearScale': 'Échelle linéaire',
 		'fieldType.Date': 'Date',
 		'fieldType.Time': 'Heure',
@@ -356,8 +357,11 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'apply.submitApplication': 'Soumettre la candidature',
 		'apply.oneMoreFormRequired': 'Un formulaire de plus requis',
 		'page.title.postedGrants': 'Subventions publiées',
-		applyBy: 'Postuler avant: ',
+		'applyBy': 'Postuler avant: ',
 		'grant.expirationDate': "Date d'expiration:",
-		'menu.viewStatistics': 'Voir les statistiques'
+		'menu.viewStatistics': 'Voir les statistiques',
+		'grant.form.return': 'Return to Grant',
+		'application.table.selectAllRows': 'Select all rows',
+		'application.table.selectRow': 'Select row',
 	}
 };
