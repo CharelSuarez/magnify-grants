@@ -8,6 +8,8 @@
     import CheckCircle from "lucide-svelte/icons/check-circle";
 	import { goto } from '$app/navigation';
 
+    export let grantId : string;
+
 	export let form: {
 		id: string;
 		name: string;
@@ -43,9 +45,9 @@
         <File class="w-full h-12"></File>
     </Card.Content>
     <Card.Footer class="w-full p-0">
-        <a class="w-full" href={`/grant-user/form/${toShort(form.id)}`} target="_blank" 
+        <a class="w-full" href={`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`} target="_blank" 
             on:click={(e) => e.preventDefault()}>
-            <Button class="w-full" on:click={() => goto(`/grant-user/form/${toShort(form.id)}`)}>Open Form</Button>
+            <Button class="w-full" on:click={() => goto(`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`)}>Open Form</Button>
         </a>
     </Card.Footer>
 </Card.Root>

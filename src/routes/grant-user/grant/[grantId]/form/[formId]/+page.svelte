@@ -21,8 +21,8 @@
 
 	export let data: PageData;
 
-	const form = data.form;
-	const grant = data.form.grant;
+	const form = data.formOnGrants.form;
+	const grant = data.formOnGrants.grant;
 
 	const formSchema = getFormSubmissionSchema(form.fields);
 	const formDraftSchema = getFormDraftSchema(form.fields);

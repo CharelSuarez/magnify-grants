@@ -54,6 +54,7 @@ export const load: PageServerLoad = async (event) => {
 			}
 		});
 
+		// Flatten the form and add application field for the latest one.
 		const formsWithApplication : {
 			name: string;
 			id: string;
@@ -64,7 +65,7 @@ export const load: PageServerLoad = async (event) => {
 			application?: {
 				complete: boolean;
 			}
-		}[] = forms;
+		}[] = forms.map((form) => form.form);
 
 		formsWithApplication.forEach((form) => {
 			// Find the application with the most recent date.

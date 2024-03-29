@@ -88,6 +88,7 @@ model Grant {
   formsOnGrants         FormsOnGrants[]
   bannerAlt             String?
   requiredDocuments     RequiredDocument[]
+  applications          Application[]
 
   @@map("grants")
 }
@@ -170,6 +171,8 @@ enum FieldType {
 
 model Application {
   id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  grant          Grant              @relation(fields: [grantId], references: [id], onDelete: Cascade)
+  grantId        String             @db.Uuid
   form           Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
   formId         String             @db.Uuid
   user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -181,8 +184,8 @@ model Application {
   amountAwarded  Int?
   updated        DateTime           @default(now())
 
-  @@unique([userId, formId, updated])
-  @@index([userId, formId, updated])
+  @@unique([grantId, userId, formId, updated])
+  @@index([grantId, userId, formId, updated])
   @@map("applications")
 }
 

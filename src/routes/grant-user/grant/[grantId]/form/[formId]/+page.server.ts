@@ -11,6 +11,7 @@ import { fail, type Actions, error } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user === null) {
+		console.log("error 2");
 		redirect(
 			307,
 			'/grant-user',
@@ -24,17 +25,22 @@ export const load: PageServerLoad = async (event) => {
 	}
 
 	try {
-		
 		const formId = fromShort(event.params.formId);
+		const grantId = fromShort(event.params.grantId);
 
-		const form = await db.form.findFirst({
+		const formOnGrants = await db.formsOnGrants.findFirst({
 			where: {
-				id: formId
+				formId,
+				grantId
 			},
 			include: {
-				fields: {
-					orderBy: {
-						index: 'asc' // Sort by field index.
+				form: {
+					include: {
+						fields: {
+							orderBy: {
+								index: 'asc' // Sort by field index.
+							}
+						}
 					}
 				},
 				grant: {
@@ -46,7 +52,8 @@ export const load: PageServerLoad = async (event) => {
 			}
 		});
 
-		if (!form) {
+		if (!formOnGrants) {
+			console.log("error 1");
 			redirect(
 				307,
 				'/grant-user',
@@ -63,7 +70,8 @@ export const load: PageServerLoad = async (event) => {
 		const possibleApp = await db.application.findFirst({
 			where: {
 				userId: event.locals.user.id,
-				formId: formId,
+				formId,
+				grantId
 			},
 			orderBy: {
 				updated: 'desc'
@@ -99,17 +107,18 @@ export const load: PageServerLoad = async (event) => {
 			}));
 
 			// Use the draft schema for the first load, since this could be a draft.
-			const formSchema = getFormDraftSchema(form.fields);
+			const formSchema = getFormDraftSchema(formOnGrants.form.fields);
 			const superform = await superValidate(formData, zod(formSchema));
 			return {
-				form, superform
+				formOnGrants, superform
 			};
 		}
 
-		const formSchema = getFormSubmissionSchema(form.fields);
+		const formSchema = getFormSubmissionSchema(formOnGrants.form.fields);
 		const superform = await superValidate(zod(formSchema));
+		console.log(formOnGrants);
 		return {
-			form, superform
+			formOnGrants, superform
 		};
 	} catch (err) {
 		redirect(
@@ -128,11 +137,13 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
 
     default: async (event) => {
-		if (event.locals.user === null || event.params.formId === undefined) {
+		if (event.locals.user === null || event.params.formId === undefined 
+			|| event.params.grantId === undefined) {
 			return fail(400, {});
 		}
 
 		const formId = fromShort(event.params.formId);
+		const grantId = fromShort(event.params.grantId);
 
 		const form = await db.form.findFirst({
 			where: {
@@ -142,12 +153,6 @@ export const actions: Actions = {
 				fields: {
 					orderBy: {
 						index: 'asc' // Sort by field index.
-					}
-				},
-				grant: {
-					select: {
-						id: true,
-						title: true
 					}
 				}
 			}
@@ -177,7 +182,8 @@ export const actions: Actions = {
 		let possibleApp = await db.application.findFirst({
 			where: {
 				userId: event.locals.user.id,
-				formId: formId,
+				formId,
+				grantId
 			},
 			orderBy: {
 				updated: 'desc'
@@ -189,7 +195,8 @@ export const actions: Actions = {
 			possibleApp = await db.application.create({
 				data: {
 					userId: event.locals.user.id,
-					formId: formId,
+					formId,
+					grantId,
 					complete
 				}
 			});
