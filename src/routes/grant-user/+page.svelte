@@ -51,7 +51,7 @@
 			/>
 		</div>
 		<div class="grid grid-cols-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 grid-rows-auto ml-12 mt-8 w-[80%] gap-4 overflow-hidden">
-			{#if orgs.length === 0}
+			{#if grants.length === 0}
 				<p>{$t('body.grants.notfound')}</p>
 			{/if}
 

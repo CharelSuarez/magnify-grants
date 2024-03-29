@@ -55,7 +55,7 @@
 			class="flex h-[80vh] w-[75vw] bg-teal-600 mt-12 rounded-xl relative overflow-hidden p-12 shadow-inset shadow-2xl cursor-default"
 		>
 			<div class="flex-col font-satoshi">
-				<h1 class="text-white font-semibold text-[3.5rem] text-center">
+				<h1 class="text-white font-semibold text-[3rem] text-center">
 					{$t('home.sectionTitle')}
 				</h1>
 				<p class="w-[60%] text-white ml-24 mt-8 text-[1.5rem] leading-[3rem] z-[20]">
