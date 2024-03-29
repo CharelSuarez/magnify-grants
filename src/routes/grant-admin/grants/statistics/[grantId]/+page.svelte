@@ -1,9 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import * as Card from '$lib/components/ui/card';
-	import { Button } from '$lib/components/ui/button';
-	import { Badge } from '$lib/components/ui/badge';
-	import { toShort } from '$lib/utils/url';
 	import { t } from '$lib/i18n/i18n';
 	import { Separator } from '$lib/components/ui/separator';
 	import { Activity, DollarSign, Users } from 'lucide-svelte';
@@ -26,7 +23,7 @@
 			<div class="flex items-center justify-between space-y-2">
 				<div>
 					<h2 class="text-2xl font-bold tracking-tight">{$t('analytics.grant.title')}</h2>
-					<p class="text-muted-foreground">{grant.title ? grant.title : "No Title"}</p>
+					<p class="text-muted-foreground">{grant.title ? grant.title : 'No Title'}</p>
 				</div>
 			</div>
 			<div class="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
@@ -64,10 +61,12 @@
 							<DollarSign class="h-4 w-4 text-muted-foreground" />
 						</Card.Header>
 						<Card.Content>
-							<div class="text-2xl font-bold">${avgAmountAwarded || "N/A"}</div>
+							<div class="text-2xl font-bold">${avgAmountAwarded || '0'}</div>
 						</Card.Content>
 					</Card.Root>
 				</div>
-			<Separator />
+				<Separator />
+			</div>
+		</div>
 	</main>
 </div>

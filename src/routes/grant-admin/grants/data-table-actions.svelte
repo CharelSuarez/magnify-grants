@@ -27,6 +27,10 @@
 		});
 	};
 
+	const gotoStatistics = (id: string) => {
+		goto(`/grant-admin/grants/statistics/${toShort(id)}`);
+	};
+
 	export let id: string;
 </script>
 
@@ -51,7 +55,8 @@
 		<DropdownMenu.Item on:click={deleteGrant}>{$t('menu.deleteGrant')}</DropdownMenu.Item>
 		<DropdownMenu.Item on:click={publishGrant}>{$t('menu.publishGrant')}</DropdownMenu.Item>
 		<DropdownMenu.Item on:click={unpublishGrant}>{$t('menu.unpublishGrant')}</DropdownMenu.Item>
-		<DropdownMenu.Item
-			on:click={goto(`/grant-admin/grants/statistics/${toShort(id)}`)}>{$t('menu.viewStatistics')}</DropdownMenu.Item>
+		<DropdownMenu.Item on:click={() => gotoStatistics(id)}
+			>{$t('menu.viewStatistics')}</DropdownMenu.Item
+		>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
