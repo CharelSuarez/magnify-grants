@@ -18,6 +18,7 @@ model User {
   role             Role                   @default(GRANT_USER)
   sessions         Session[]
   applications     Application[]
+  submissions      Submission[]
 
   gAdminInstance GrantAdmin?
 
@@ -89,6 +90,7 @@ model Grant {
   bannerAlt             String?
   requiredDocuments     RequiredDocument[]
   applications          Application[]
+  submissions           Submission[]
 
   @@map("grants")
 }
@@ -169,6 +171,20 @@ enum FieldType {
   Time
 }
 
+model Submission {
+  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  grant          Grant              @relation(fields: [grantId], references: [id], onDelete: Cascade)
+  grantId        String             @db.Uuid
+  applications   Application[]
+  status         ApplicationStatus  @default(IN_PROGRESS)
+  submissionDate DateTime           @default(now())
+  amountAwarded  Int?
+
+  @@map("submissions")
+}
+
 model Application {
   id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   grant          Grant              @relation(fields: [grantId], references: [id], onDelete: Cascade)
@@ -178,14 +194,14 @@ model Application {
   user           User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
   complete       Boolean            @default(false)
-  status         ApplicationStatus  @default(IN_PROGRESS)
   entries        ApplicationEntry[]
-  submissionDate DateTime?
-  amountAwarded  Int?
   updated        DateTime           @default(now())
+  submission     Submission?        @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  submissionId   String?            @db.Uuid
 
-  @@unique([grantId, userId, formId, updated])
-  @@index([grantId, userId, formId, updated])
+  @@unique([grantId, userId, formId, submissionId])
+  @@index([grantId, userId, formId]) // 🤫🧏‍♂️ (don't ask)
+  @@index([grantId, userId, formId, submissionId])
   @@map("applications")
 }
 
