@@ -34,6 +34,10 @@
 				{$t('nav.view.grants')}
 			</Button>
 
+			<Button class="mr-5 bg-teal-700 hover:bg-teal-500" href="/grant-user/application">
+				My Applications
+			</Button>
+
 			<form action="/logout" method="POST">
 				<Button type="submit" class="mr-5 bg-teal-700 hover:bg-teal-500">
 					{$t('nav.logOut')}
