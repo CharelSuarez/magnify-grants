@@ -82,7 +82,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'body.grants.notfound': 'No grants found',
 
 		'nav.magnifyAccess': 'MagnifyAccess',
-		'nav.logOut': 'Log out',
+		'nav.logOut': 'Log Out',
 		'nav.login': 'Login',
 		'nav.signUp': 'Sign up',
 		'home.title.first': 'Grant',
@@ -182,6 +182,8 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'application.table.selectAllRows': 'Select all rows',
 		'application.table.selectRow': 'Select row',
 		'table.header.dateSubmitted': 'Date Submitted',
+		'nav.view.myApplications': 'My Applications',
+		'nav.view.userDashboard': 'User Dashboard',
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
@@ -361,10 +363,12 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'applyBy': 'Postuler avant: ',
 		'grant.expirationDate': "Date d'expiration:",
 		'menu.viewStatistics': 'Voir les statistiques',
-		'grant.form.return': 'Return to Grant',
-		'application.table.selectAllRows': 'Select all rows',
-		'application.table.selectRow': 'Select row',
-		'table.header.dateSubmitted': 'Date Submitted',
+		'grant.form.return': 'Retour à la subvention',
+		'application.table.selectAllRows': 'Sélectionner toutes les lignes',
+		'application.table.selectRow': 'Sélectionner la ligne',
+		'table.header.dateSubmitted': 'Date de soumission',
+		'nav.view.myApplications': 'Mes candidatures',
+		'nav.view.userDashboard': 'Tableau de bord de l\'utilisateur',
 	},
 
 	es: {
@@ -547,10 +551,14 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'applyBy': 'Aplicar por: ',
 		'grant.expirationDate': 'Fecha de vencimiento:',
 		'menu.viewStatistics': 'Ver estadísticas',
-		'grant.form.return': 'Return to Grant',
-		'application.table.selectAllRows': 'Select all rows',
-		'application.table.selectRow': 'Select row',
-		'table.header.dateSubmitted': 'Date Submitted',
+		'grant.form.return': 'Volver a la subvención',
+		'application.table.selectAllRows': 'Seleccionar todas las filas',
+		'application.table.selectRow': 'Seleccionar fila',
+		'table.header.dateSubmitted': 'Fecha de envío',
+		'nav.view.myApplications': 'Mis aplicaciones',
+		'nav.view.userDashboard': 'Tablero de usuario',
+
+
 	},
 
 };
