@@ -23,3 +23,27 @@ export const load: PageServerLoad = async () => {
 		organizations: organizations
 	};
 };
+
+export const actions: Actions = {
+	default: async (request) => {
+
+		const grants = await db.grant.findMany({
+			where: {
+				published: true
+			}
+		});
+
+		const organizations = await db.organization.findMany({
+			where: {
+				grants: {
+					some: {}
+				}
+			}
+		});
+
+		return {
+			grants: grants,
+			organizations: {}
+		};
+	}
+};
