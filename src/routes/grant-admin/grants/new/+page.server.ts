@@ -1,3 +1,4 @@
+import { uploadBanner, uploadGrantDocument } from '$lib/utils/uploads.js';
 import { formSchema } from '$lib/validation/new_grant_schema.js';
 import type { PageServerLoad, Actions } from './$types.js';
 import { fail } from '@sveltejs/kit';
@@ -61,6 +62,14 @@ export const actions: Actions = {
 				});
 			}
 
+			const createRequiredDocuments = [];
+
+			for (const doc of form.data.requiredDocuments) {
+				createRequiredDocuments.push({
+					prompt: doc
+				});
+			}
+
 			const grant = await db.grant.create({
 				data: {
 					title: form.data.grantName,
@@ -74,17 +83,19 @@ export const actions: Actions = {
 					bannerAlt: form.data.bannerAlt || null,
 					formsOnGrants: {
 						create: createFormsOnGrants
+					},
+					requiredDocuments: {
+						create: createRequiredDocuments
 					}
 				}
 			});
 
 			if (form.data.banner) {
-				const { data, error } = await event.locals.supabase.storage
-					.from('banners')
-					.upload(`${grant.id}.png`, form.data.banner, {
-						cacheControl: '3600',
-						upsert: true
-					});
+				const { data, error } = await uploadBanner(
+					grant.id,
+					form.data.banner,
+					event.locals.supabase
+				);
 
 				if (!data) {
 					console.log(error);
@@ -92,19 +103,11 @@ export const actions: Actions = {
 				}
 			}
 
-			if (form.data.documents.length !== 0) {
-				for (const doc of form.data.documents) {
-					const { data, error } = await event.locals.supabase.storage
-						.from('documents')
-						.upload(`${grant.id}/${doc.name}`, doc, {
-							cacheControl: '3600',
-							upsert: true
-						});
-
-					if (!data) {
-						console.log(error);
-						return fail(500);
-					}
+			for (const doc of form.data.documents) {
+				const { data, error } = await uploadGrantDocument(grant.id, doc, event.locals.supabase);
+				if (!data) {
+					console.log(error);
+					return fail(500);
 				}
 			}
 		} catch (err) {

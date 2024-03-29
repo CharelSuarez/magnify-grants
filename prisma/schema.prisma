@@ -73,22 +73,32 @@ model Session {
 }
 
 model Grant {
-  id                    String          @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title                 String          @default("")
-  description           String          @default("")
-  acceptingApplications Boolean         @default(false)
-  rangeLow              Int             @default(0)
-  rangeHigh             Int             @default(0)
-  published             Boolean         @default(false)
+  id                    String             @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                 String             @default("")
+  description           String             @default("")
+  acceptingApplications Boolean            @default(false)
+  rangeLow              Int                @default(0)
+  rangeHigh             Int                @default(0)
+  published             Boolean            @default(false)
   expirationDate        DateTime?
-  organization          Organization    @relation(fields: [organizationId], references: [id])
-  organizationId        String          @db.Uuid
-  sector                Sector          @default(OTHER)
-  postedDate            DateTime        @default(now())
+  organization          Organization       @relation(fields: [organizationId], references: [id])
+  organizationId        String             @db.Uuid
+  sector                Sector             @default(OTHER)
+  postedDate            DateTime           @default(now())
   formsOnGrants         FormsOnGrants[]
-  bannerAlt             String?         
+  bannerAlt             String?
+  requiredDocuments     RequiredDocument[]
 
   @@map("grants")
+}
+
+model RequiredDocument {
+  id      String  @id @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  prompt  String
+  grant   Grant?  @relation(fields: [grantId], references: [id])
+  grantId String? @db.Uuid
+
+  @@map("req_documents")
 }
 
 model FormsOnGrants {

@@ -23,6 +23,18 @@
 
 	$: $formData.grantForms = selectedForms.map((f) => f.id);
 
+	const addReqDocument = () => {
+		$formData.requiredDocuments = [...$formData.requiredDocuments, ''];
+	};
+
+	const removeReqDocument = (i: number) => {
+		if (i < 0) {
+			return;
+		}
+		$formData.requiredDocuments.splice(i, 1);
+		$formData = $formData;
+	};
+
 	const handleBannerUpload = (e: { detail: { acceptedFiles: [file: File] } }) => {
 		const { acceptedFiles } = e.detail;
 		$formData.banner = acceptedFiles[0];
@@ -119,7 +131,7 @@
 		<Form.Legend>Select the forms required for applying to this grant</Form.Legend>
 		<Popover.Root bind:open let:ids>
 			<Popover.Trigger>
-				<Button href="/grant-admin/grants/new/" variant="outline">
+				<Button variant="outline">
 					<PlusCircle class="mr-3" />
 					Add form
 				</Button>
@@ -294,6 +306,27 @@
 			</div>
 		{/each}
 	</Form.Field>
+
+	<Form.Fieldset {form} name="requiredDocuments">
+		<Button on:click={addReqDocument} class="mt-3" variant="outline">
+			<PlusCircle class="mr-3" />
+			Add document
+		</Button>
+
+		<Form.Legend>Add the types of documents the user must submit</Form.Legend>
+		{#each $formData.requiredDocuments as _, i}
+			<Form.ElementField {form} name="grantForms[{i}]">
+				<div class="w-full flex items-center space-x-2 flex-row p-5 bg-white border rounded-md">
+					<Input bind:value={$formData.requiredDocuments[i]} />
+					<Button on:click={() => removeReqDocument(i)} variant="outline">
+						<XCircle class="mr-2" />
+						Remove document
+					</Button>
+				</div>
+				<Form.FieldErrors />
+			</Form.ElementField>
+		{/each}
+	</Form.Fieldset>
 
 	<div class="flex flex-row justify-start">
 		<Button type="submit" disabled={isLoading}>

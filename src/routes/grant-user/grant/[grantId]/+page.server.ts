@@ -4,8 +4,6 @@ import type { PageServerLoad } from './$types';
 import { fromShort } from '$lib/utils/url';
 
 export const load: PageServerLoad = async (event) => {
-	// TODO: Verify user...
-
 	try {
 		const id = fromShort(event.params.grantId);
 
