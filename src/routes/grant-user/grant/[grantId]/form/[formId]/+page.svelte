@@ -90,7 +90,7 @@
 </script>
 
 <div
-	class="min-h-full flex-1 flex-row p-20 mt-10 flex items-start justify-center gap-10 box-border"
+	class="min-h-full flex-1 flex-row p-20 pt-10 flex items-start justify-center gap-10 box-border"
 >
 	<div class="hidden md:flex basis-1/4 w-full"></div>
 	<div
@@ -107,8 +107,12 @@
 			</Alert.Root>
 		{/if}
 		<div class="flex gap-2">
-			<Badge variant="outline" class="text-md mt-1">GRANT</Badge>
-			<h2 class="text-2xl font-bold tracking-tight">{grant?.title || 'Unknown'}</h2>
+			<div class="flex gap-2 items-center">
+				<Badge variant="outline" class="text-md mt-1 max-h-10 gap-1">
+					<span>FORM</span>
+				</Badge>
+				<h2 class="text-4xl font-bold tracking-tight">{grant?.title || 'Unknown'}: {form.name}</h2>
+			</div>
 		</div>
 		{#if banner}
 			<Card.Root>
