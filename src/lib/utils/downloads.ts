@@ -25,7 +25,7 @@ export const downloadRequiredDocument = async (
 	docId: string,
 	supabase: SupabaseClient
 ) => {
-	const { data, errors } = await supabase.storage
+	const { data, error } = await supabase.storage
 		.from('required_documents')
 		.list(`${userId}/${docId}`, {
 			limit: 1
@@ -33,7 +33,8 @@ export const downloadRequiredDocument = async (
 
 	if (!data) {
 		console.log("Couldn't find document");
-		return { data, errors };
+		console.log(error);
+		return { data, error };
 	}
 
 	return await download(`${userId}/${docId}/${data[0].name}`, 'required_documents', supabase);
