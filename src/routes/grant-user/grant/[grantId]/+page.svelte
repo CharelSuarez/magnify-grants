@@ -48,7 +48,6 @@
 			setTimeout(() => (isLoading = false), 1000);
 			if (result.status === 200) {
 				getFlash(page);
-				location.reload();
 				submitted = true;
 			}
 		}
