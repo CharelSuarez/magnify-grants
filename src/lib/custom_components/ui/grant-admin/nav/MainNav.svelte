@@ -6,7 +6,6 @@
 	import type { Selected } from 'bits-ui';
 	import ColourSelection from '../../colour-selection/Colour-Selection.svelte';
 	import UsersRound from 'lucide-svelte/icons/users-round';
-	import { t } from '$lib/i18n/i18n';
 
 	const navButtons = {
 		'admin.nav.overview': '/grant-admin',
@@ -20,7 +19,6 @@
 	$: if (selected && selected.value) $locale = selected.value;
 </script>
 
-
 {#each Object.entries(navButtons) as [label, href]}
 	<Button
 		variant={$page.url.pathname === href ? 'secondary' : 'ghost'}
@@ -33,7 +31,7 @@
 
 <div class="w-full" />
 
-<Button variant='outline' class="gap-2" href="/">
+<Button variant="outline" class="gap-2" href="/">
 	<UsersRound class="h-5 w-5"></UsersRound>
 	<span>{$t('nav.view.userDashboard')}</span>
 </Button>

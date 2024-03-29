@@ -271,7 +271,11 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.new.banner_alt_text_desc': 'Please provide alt text for the banner image',
 		'nav.view.myApplications': 'My Applications',
 		'nav.view.userDashboard': 'User Dashboard',
-		'grant.application.edit_form': 'Edit Form'
+		'grant.application.edit_form': 'Edit Form',
+		'grant.myapps.my_applications': 'My Applications',
+		'grant.myapps.search_submissions': 'Search for Submissions',
+		'grant.myapps.view_by': 'View By',
+		'grant.myapps.submission_date': 'Submission Date'
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
@@ -548,7 +552,11 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 			"Veuillez fournir un texte alternatif pour l'image de bannière",
 		'nav.view.myApplications': 'Mes candidatures',
 		'nav.view.userDashboard': "Tableau de bord de l'utilisateur",
-		'grant.application.edit_form': 'Modifier le formulaire'
+		'grant.application.edit_form': 'Modifier le formulaire',
+		'grant.myapps.my_applications': 'Mes applications',
+		'grant.myapps.search_submissions': 'Rechercher des soumissions',
+		'grant.myapps.view_by': 'Voir par',
+		'grant.myapps.submission_date': 'Date de soumission'
 	},
 
 	es: {
@@ -826,6 +834,10 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 			'Por favor, proporcione texto alternativo para la imagen de la pancarta',
 		'nav.view.myApplications': 'Mis aplicaciones',
 		'nav.view.userDashboard': 'Tablero de usuario',
-		'grant.application.edit_form': 'Editar formulario'
+		'grant.application.edit_form': 'Editar formulario',
+		'grant.myapps.my_applications': 'Mis aplicaciones',
+		'grant.myapps.search_submissions': 'Buscar envíos',
+		'grant.myapps.view_by': 'Ver por',
+		'grant.myapps.submission_date': 'Fecha de envío'
 	}
 };
