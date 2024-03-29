@@ -162,8 +162,6 @@ export const actions: Actions = {
         const superform = await superValidate(event, zod(formSchema));
 		const formData = superform.data;
 
-		console.log(formData);
-
 		let complete = true;
         if (!superform.valid) {
 			// If not, check if the form matches the form's draft schema.

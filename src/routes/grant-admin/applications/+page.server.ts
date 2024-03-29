@@ -117,7 +117,6 @@ async function getApplications(form: Infer<FilterSchema>) : Promise<Application[
         userProfileEmail: app.user.email,
         userProfileDateOfBirth: app.user?.profile?.dateOfBirth,
     }));
-    // console.log(flattened);
     return flattened
 }
 
