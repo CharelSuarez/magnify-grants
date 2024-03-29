@@ -270,7 +270,8 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.new.banner_alt_text': 'Banner alt text',
 		'grant.new.banner_alt_text_desc': 'Please provide alt text for the banner image',
 		'nav.view.myApplications': 'My Applications',
-		'nav.view.userDashboard': 'User Dashboard'
+		'nav.view.userDashboard': 'User Dashboard',
+		'grant.application.edit_form': 'Edit Form'
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
@@ -546,7 +547,8 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.new.banner_alt_text_desc':
 			"Veuillez fournir un texte alternatif pour l'image de bannière",
 		'nav.view.myApplications': 'Mes candidatures',
-		'nav.view.userDashboard': "Tableau de bord de l'utilisateur"
+		'nav.view.userDashboard': "Tableau de bord de l'utilisateur",
+		'grant.application.edit_form': 'Modifier le formulaire'
 	},
 
 	es: {
@@ -823,6 +825,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.new.banner_alt_text_desc':
 			'Por favor, proporcione texto alternativo para la imagen de la pancarta',
 		'nav.view.myApplications': 'Mis aplicaciones',
-		'nav.view.userDashboard': 'Tablero de usuario'
+		'nav.view.userDashboard': 'Tablero de usuario',
+		'grant.application.edit_form': 'Editar formulario'
 	}
 };

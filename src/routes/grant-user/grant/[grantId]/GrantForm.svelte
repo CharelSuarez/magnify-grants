@@ -62,7 +62,7 @@
 				on:click={() => goto(`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`)}
 			>
 				{#if form.application}
-					<span>Edit Form</span>
+					<span>{$t('grant.application.edit_form')}</span>
 				{:else}
 					<span>{$t('grant.application.open_form')}</span>
 				{/if}
