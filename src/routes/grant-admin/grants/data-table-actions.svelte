@@ -1,11 +1,18 @@
 <script lang="ts">
-	import MoreHorizontal from 'lucide-svelte/icons/more-horizontal';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import { Button } from '$lib/components/ui/button';
-	import { t } from '$lib/i18n/i18n';
 	import { toShort } from '$lib/utils/url';
 	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
+	import {
+		ArrowUpRightFromSquare,
+		BarChart4,
+		EyeOff,
+		LayoutGrid,
+		Rocket,
+		Trash2
+	} from 'lucide-svelte';
+	import { t } from '$lib/i18n/i18n';
 
 	const dispatch = createEventDispatcher();
 
@@ -27,36 +34,64 @@
 		});
 	};
 
-	const gotoStatistics = (id: string) => {
-		goto(`/grant-admin/grants/statistics/${toShort(id)}`);
-	};
+	export let published: boolean;
 
 	export let id: string;
 </script>
 
-<DropdownMenu.Root>
-	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} class="relative h-8 w-8 p-0" size="icon" variant="ghost">
-			<span class="sr-only">{$t('menu.open')}</span>
-			<MoreHorizontal class="h-4 w-4" />
+<div class="flex flex-row space-x-2 w-full">
+	<Button
+		title="View Grant Page"
+		href={`/grant-user/grant/${toShort(id)}`}
+		variant="ghost"
+		size="icon"
+	>
+		<ArrowUpRightFromSquare />
+	</Button>
+
+	<Button
+		title="View Grant Submissions"
+		href={`/grant-admin/applications/?grant=${toShort(id)}`}
+		variant="ghost"
+		size="icon"
+	>
+		<LayoutGrid />
+	</Button>
+
+	<Button
+		title="View Grant Statistics"
+		href={`/grant-admin/grants/statistics/${toShort(id)}`}
+		variant="ghost"
+		size="icon"
+	>
+		<BarChart4 />
+	</Button>
+	{#if published}
+		<Button title="Unpublish Grant" on:click={unpublishGrant} variant="ghost" size="icon">
+			<EyeOff />
 		</Button>
-	</DropdownMenu.Trigger>
-	<DropdownMenu.Content>
-		<DropdownMenu.Group>
-			<DropdownMenu.Label>{$t('menu.actions')}</DropdownMenu.Label>
-			<a href={`/grant-user/grant/${toShort(id)}`} target="_blank">
-				<DropdownMenu.Item class="cursor-pointer">{$t('menu.openGrantPage')}</DropdownMenu.Item>
-			</a>
-			<DropdownMenu.Item on:click={() => {}}>
-				{$t('menu.viewApplicants')}
-			</DropdownMenu.Item>
-		</DropdownMenu.Group>
-		<DropdownMenu.Separator />
-		<DropdownMenu.Item on:click={deleteGrant}>{$t('menu.deleteGrant')}</DropdownMenu.Item>
-		<DropdownMenu.Item on:click={publishGrant}>{$t('menu.publishGrant')}</DropdownMenu.Item>
-		<DropdownMenu.Item on:click={unpublishGrant}>{$t('menu.unpublishGrant')}</DropdownMenu.Item>
-		<DropdownMenu.Item on:click={() => gotoStatistics(id)}
-			>{$t('menu.viewStatistics')}</DropdownMenu.Item
-		>
-	</DropdownMenu.Content>
-</DropdownMenu.Root>
+	{:else}
+		<Button title="Publish Grant" on:click={publishGrant} variant="ghost" size="icon">
+			<Rocket />
+		</Button>
+	{/if}
+	<AlertDialog.Root>
+		<AlertDialog.Trigger>
+			<Button title="Delete Grant" variant="ghost" size="icon">
+				<Trash2 />
+			</Button>
+		</AlertDialog.Trigger>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>{$t('alert.title')}</AlertDialog.Title>
+				<AlertDialog.Description>
+					{$t('alert.description')}
+				</AlertDialog.Description>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>{$t('alert.cancel')}</AlertDialog.Cancel>
+				<AlertDialog.Action on:click={deleteGrant}>{$t('alert.delete')}</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+</div>

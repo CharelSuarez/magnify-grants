@@ -126,9 +126,11 @@
 	<div class="flex items-center flex-col space-y-5">
 		{#if data.documents.length !== 0}
 			<Card.Root class="bg-secondary w-full  p-6 rounded-lg">
-				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">Supplied Documents</h2>
+				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">
+					{$t('grant.application.supplied_documents')}
+				</h2>
 				<p class="tracking-tight text-center mb-8 text-muted-foreground">
-					Please download, read, and follow any instructions provided in the following documents.
+					{$t('grant.application.instructions')}
 				</p>
 				<div class="flex justify-center w-full gap-10 items-center">
 					{#each data.documents as doc}
@@ -140,7 +142,9 @@
 
 		{#if data.forms.length !== 0}
 			<Card.Root class="bg-secondary w-full p-6 rounded-lg">
-				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">Forms</h2>
+				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">
+					{$t('grant.application.forms')}
+				</h2>
 				<p class="tracking-tight text-center mb-8 text-muted-foreground">
 					{$t('apply.instructions')}
 				</p>
@@ -153,9 +157,11 @@
 		{/if}
 		{#if data.grant.requiredDocuments.length !== 0}
 			<Card.Root class="bg-secondary w-full p-6 rounded-lg">
-				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">Required Documentation</h2>
+				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">
+					{$t('grant.application.required_documentation')}
+				</h2>
 				<p class="tracking-tight text-center mb-8 text-muted-foreground">
-					Please upload the documentation required to apply for this grant.
+					{$t('grant.application.upload_documentation')}
 				</p>
 				<form method="POST" enctype="multipart/form-data" id="reqDoc" use:enhance>
 					<Form.Fieldset {form} name="documents">
@@ -175,7 +181,9 @@
 		{/if}
 		{#if submitted}
 			<Card.Root class="bg-secondary w-full p-6 rounded-lg">
-				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">Submitted Successfully</h2>
+				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">
+					{$t('grant.application.submitted_successfully')}
+				</h2>
 			</Card.Root>
 		{:else}
 			<Button disabled={disabled || isLoading} type="submit" form="reqDoc" class="gap-4">
@@ -186,7 +194,7 @@
 				{#if disabled}
 					<Badge variant="destructive" class="pl-1 pr-2 gap-1">
 						<CircleAlert></CircleAlert>
-						Not all required fields are completed.
+						{$t('grant.application.incomplete_fields')}
 					</Badge>
 				{/if}
 			</Button>

@@ -4,6 +4,7 @@
 	import type { PageData } from './$types';
 	import { page } from '$app/stores';
 	import { updateFlash } from 'sveltekit-flash-message';
+	import { t } from '$lib/i18n/i18n';
 
 	export let data: PageData;
 
@@ -37,14 +38,17 @@
 		</div>
 
 		<div class="text-2xl pt-7 text-gray-700">{profile.firstName} {profile.lastName}</div>
-		<div class="text-md text-gray-700">Date of birth: {dateOfBirth}</div>
+		<div class="text-md text-gray-700">
+			{$t('admin.user.dob')}
+			{dateOfBirth}
+		</div>
 		<div class="max-h-[200px] flex-grow"></div>
 
 		{#if profile.user.role === Role.GRANT_USER && !promoted}
 			<form method="POST" on:submit|preventDefault={promoteUser}>
 				<Button type="submit" class="bg-gray-300 text-gray-700 hover:bg-gray-400"
-					>Promote to organization admin</Button
-				>
+					>{$t('admin.user.promote')}
+				</Button>
 			</form>
 		{/if}
 	</div>

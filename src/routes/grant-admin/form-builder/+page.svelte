@@ -7,5 +7,7 @@
 </script>
 
 <div class="container mx-auto py-10">
-	<DataTable {forms} />
+	{#if data && forms}
+		<DataTable {forms} />
+	{/if}
 </div>

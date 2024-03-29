@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createTable, Render, Subscribe, createRender, BodyRow } from 'svelte-headless-table';
+	import { createTable, Render, Subscribe, createRender } from 'svelte-headless-table';
 	import {
 		addPagination,
 		addSortBy,
@@ -8,7 +8,7 @@
 		addSelectedRows,
 		addColumnFilters
 	} from 'svelte-headless-table/plugins';
-	import { get, readable, writable, type Writable } from 'svelte/store';
+	import { get, writable } from 'svelte/store';
 	import ArrowUpDown from 'lucide-svelte/icons/arrow-up-down';
 	import ChevronDown from 'lucide-svelte/icons/chevron-down';
 	import * as Table from '$lib/components/ui/table';
@@ -19,23 +19,22 @@
 	import DataTableCheckbox from '$lib/custom_components/ui/table/table-checkbox.svelte';
 	import type { Grant } from '@prisma/client';
 	import Cross2 from 'svelte-radix/Cross2.svelte';
-	import { trueFalseFilter } from './filter-types';
-	import { DataTableFacetedFilter } from './index';
-	import { goto } from '$app/navigation';
-	import { toShort } from '$lib/utils/url';
 	import { PlusCircle } from 'lucide-svelte';
 	import { updateFlash } from 'sveltekit-flash-message';
 	import { page } from '$app/stores';
-
+	import { t } from '$lib/i18n/i18n';
+	import { toast } from 'svelte-sonner';
 
 	export let grants: Grant[];
+
+	grants.sort((a, b) => b.postedDate.getTime() - a.postedDate.getTime());
 
 	const data = writable(grants);
 
 	const table = createTable(data, {
 		page: addPagination(),
 		sort: addSortBy({
-			toggleOrder: ['asc', 'desc']
+			disableMultiSort: true
 		}),
 		filter: addTableFilter({
 			fn: ({ filterValue, value }) => value.toLowerCase().includes(filterValue.toLowerCase())
@@ -82,30 +81,7 @@
 				return value.substring(0, 25) + '...';
 			}
 		}),
-		table.column({
-			accessor: 'acceptingApplications',
-			header: 'Accepting Applications',
-			plugins: {
-				filter: {
-					exclude: true
-				},
-				colFilter: {
-					fn: ({ filterValue, value }) => {
-						if (filterValue.length === 0) return true;
-						console.log(filterValue, typeof value);
-						if (!Array.isArray(filterValue) || typeof value.toString() !== 'string') return true;
 
-						return filterValue.some((filter) => {
-							return value.toString().includes(filter);
-						});
-					},
-					initialFilterValue: [],
-					render: ({ filterValue }) => {
-						return get(filterValue);
-					}
-				}
-			}
-		}),
 		table.column({
 			accessor: 'published',
 			header: 'Published',
@@ -147,21 +123,34 @@
 			},
 			plugins: {
 				sort: {
-					getSortValue: ({ value }) => {
-						console.log(value);
-						return value;
-					}
+					invert: true
 				}
 			}
 		}),
 		table.column({
-			accessor: ({ id }) => id,
-			header: '',
+			accessor: 'postedDate',
+			header: 'Created At',
+			id: 'postedAt',
+			plugins: {
+				sort: {
+					invert: true
+				}
+			},
 			cell: ({ value }) => {
-				return createRender(DataTableActions, { id: value })
-				.on('delete', (e) => deleteGrant(e.detail.id))
-				.on('publish', (e) => publishGrant(e.detail.id))
-				.on('unpublish', (e) => unpublishGrant(e.detail.id));
+				const date = value.toLocaleString();
+				if (date.length == 0) return $t('common.none');
+				else if (date.length < 25) return date;
+				return date.substring(0, 25) + '...';
+			}
+		}),
+		table.column({
+			accessor: (id) => id,
+			header: '',
+			cell: ({ value: { id, published } }) => {
+				return createRender(DataTableActions, { id, published })
+					.on('delete', (e) => deleteGrant(e.detail.id))
+					.on('publish', (e) => publishGrant(e.detail.id))
+					.on('unpublish', (e) => unpublishGrant(e.detail.id));
 			}
 		})
 	]);
@@ -173,14 +162,7 @@
 	const { filterValue } = pluginStates.filter;
 	const { hiddenColumnIds } = pluginStates.hide;
 	const { selectedDataIds } = pluginStates.select;
-	const {
-		filterValues
-	}: {
-		filterValues: Writable<{
-			acceptingApplications: string[];
-			published: string[];
-		}>;
-	} = pluginStates.colFilter;
+	const { filterValues } = pluginStates.colFilter;
 
 	const ids = flatColumns.map((col) => col.id);
 	let hideForId = Object.fromEntries(ids.map((id) => [id, true]));
@@ -205,6 +187,13 @@
 		if (res.status === 200) {
 			await updateFlash(page);
 		}
+
+		if (res.status === 500) {
+			toast.error('Failed to delete grant', {
+				description: 'Cannot delete grant, submissions may depend on it.'
+			});
+		}
+
 		const index = grants.map((g) => g.id).indexOf(id);
 		grants.splice(index, 1);
 		$data = $data;
@@ -247,7 +236,6 @@
 		grants[index].published = false;
 		$data = $data;
 	};
-
 </script>
 
 <svelte:head>
@@ -258,23 +246,13 @@
 	<div class="flex items-center py-4 space-x-2">
 		<Button href="/grant-admin/grants/new/" variant="outline">
 			<PlusCircle class="mr-3" />
-			New grant
+			{$t('grant.table.newgrant')}
 		</Button>
 		<Input
 			bind:value={$filterValue}
 			class="max-w-sm"
-			placeholder="Search titles or descriptions"
+			placeholder={$t('grant.table.search')}
 			type="text"
-		/>
-		<DataTableFacetedFilter
-			bind:filterValues={$filterValues.acceptingApplications}
-			options={trueFalseFilter}
-			title="Accepting Applications"
-		/>
-		<DataTableFacetedFilter
-			bind:filterValues={$filterValues.published}
-			options={trueFalseFilter}
-			title="Published"
 		/>
 		{#if showReset}
 			<Button
@@ -293,7 +271,7 @@
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<Button builders={[builder]} class="ml-auto" variant="outline">
-					Columns
+					{$t('grant.table.columns')}
 					<ChevronDown class="ml-2 h-4 w-4" />
 				</Button>
 			</DropdownMenu.Trigger>
@@ -317,7 +295,7 @@
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
 									<Table.Head {...attrs} class="[&:has([role=checkbox])]:pl-3">
-										{#if cell.id === 'range'}
+										{#if cell.id === 'range' || cell.id === 'postedAt'}
 											<Button variant="ghost" on:click={props.sort.toggle}>
 												<Render of={cell.render()} />
 												<ArrowUpDown class={'ml-2 h-4 w-4'} />
@@ -351,22 +329,24 @@
 	</div>
 	<div class="flex items-center justify-end space-x-4 py-4">
 		<div class="flex-1 text-sm text-muted-foreground">
-			{Object.keys($selectedDataIds).length} of{' '}
-			{$rows.length} row(s) selected.
+			{$t('pagination.selectedCount', {
+				count: Object.keys($selectedDataIds).length,
+				total: $rows.length
+			})}
 		</div>
 		<Button
 			disabled={!$hasPreviousPage}
 			on:click={() => ($pageIndex = $pageIndex - 1)}
 			size="sm"
 			variant="outline"
-		>Previous
+			>{$t('table.pagination.previous')}
 		</Button>
 		<Button
 			disabled={!$hasNextPage}
 			on:click={() => ($pageIndex = $pageIndex + 1)}
 			size="sm"
 			variant="outline"
-		>Next
+			>{$t('table.pagination.next')}
 		</Button>
 	</div>
 </div>

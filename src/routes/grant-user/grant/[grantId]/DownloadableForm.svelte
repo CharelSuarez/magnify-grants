@@ -2,6 +2,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import File from 'lucide-svelte/icons/file-text';
+	import { t } from '$lib/i18n/i18n';
 
 	export let doc: {
 		name: string;
@@ -17,6 +18,8 @@
 		<File class="w-full h-12"></File>
 	</Card.Content>
 	<Card.Footer class="w-full p-0">
-		<Button class="w-full" href={doc.url}>Download Document</Button>
+		<Button class="w-full break-all" href={doc.url}
+			>{$t('grant.application.download_document')}</Button
+		>
 	</Card.Footer>
 </Card.Root>

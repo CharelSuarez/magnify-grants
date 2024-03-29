@@ -21,9 +21,12 @@ export const POST: RequestHandler = async (event) => {
 		});
 	} catch (err) {
 		console.log(err);
-		return new Response(JSON.stringify({ message: `Server error: could not delete grant + ${err}` }), {
-			status: 500
-		});
+		return new Response(
+			JSON.stringify({ message: `Server error: could not delete grant + ${err}` }),
+			{
+				status: 500
+			}
+		);
 	}
 
 	setFlash(

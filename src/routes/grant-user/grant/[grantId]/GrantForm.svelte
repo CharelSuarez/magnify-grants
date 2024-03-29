@@ -9,6 +9,7 @@
 	import Eye from 'lucide-svelte/icons/eye';
 
 	import { goto } from '$app/navigation';
+	import { t } from '$lib/i18n/i18n';
 
 	export let grantId: string;
 
@@ -16,12 +17,12 @@
 		id: string;
 		name: string;
 		application?: {
-			id: string,
+			id: string;
 			complete: boolean;
 		};
 	};
 
-	$: appId = form.application?.id || "";
+	$: appId = form.application?.id || '';
 </script>
 
 <Card.Root class="flex flex-col justify-start h-min w-48 p-4 space-y-2">
@@ -31,18 +32,18 @@
 			{#if form.application.complete}
 				<Badge class="pl-1 pr-2 gap-1 bg-green-500">
 					<CheckCircle></CheckCircle>
-					Complete
+					{$t('grant.application.complete')}
 				</Badge>
 			{:else}
 				<Badge class="pl-1 pr-2 gap-1 bg-yellow-500">
 					<CircleAlert></CircleAlert>
-					Draft
+					{$t('grant.application.draft')}
 				</Badge>
 			{/if}
 		{:else}
 			<Badge variant="destructive" class="pl-1 pr-2 gap-1">
 				<CircleAlert></CircleAlert>
-				Required
+				{$t('grant.application.required')}
 			</Badge>
 		{/if}
 	</Card.Header>
@@ -58,14 +59,14 @@
 		>
 			<Button
 				class="w-full"
-				on:click={() => goto(`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`)}>
+				on:click={() => goto(`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`)}
+			>
 				{#if form.application}
 					<span>Edit Form</span>
 				{:else}
-					<span>Open Form</span>
+					<span>{$t('grant.application.open_form')}</span>
 				{/if}
-			</Button
-			>
+			</Button>
 		</a>
 		{#if form.application}
 			<a
@@ -76,7 +77,9 @@
 			>
 				<Button
 					class="w-10 p-0"
-					on:click={() => goto(`/grant-user/application/${toShort(appId)}/form/${toShort(form.id)}`)}>
+					on:click={() =>
+						goto(`/grant-user/application/${toShort(appId)}/form/${toShort(form.id)}`)}
+				>
 					<Eye></Eye>
 				</Button>
 			</a>

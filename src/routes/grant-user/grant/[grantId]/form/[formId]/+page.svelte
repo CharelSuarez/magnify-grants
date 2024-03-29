@@ -42,13 +42,13 @@
 			if (data.editable) {
 				options.validators = zodClient(formSchema);
 				setTimeout(() => (isLoading = false), 250);
-				toast.success('The form has been saved!');
+				toast.success($t('grant.application.form.saved_successfully'));
 			}
 		},
 		onError: (error) => {
 			if (data.editable) {
 				options.validators = zodClient(formSchema);
-				toast.error(`Failed to save form: ${error.result.error.message}!`);
+				toast.error($t('grant.application.form.save_failed'));
 				setTimeout(() => (isLoading = false), 250);
 			}
 		}
@@ -97,13 +97,12 @@
 		class="min-h-screen hidden basis-1/4 flex-grow-0 md:flex flex-col justify-end
 		h-full items-start space-y-4 fixed w-1/4 bottom-0 left-0 p-16"
 	>
+		<div class="grow h-1/2" />
 		{#if errors}
 			<Alert.Root variant="destructive">
 				<AlertCircle class="h-4 w-4"></AlertCircle>
 				<Alert.Title>Note</Alert.Title>
-				<Alert.Description
-					>The form is incomplete, but can still be saved as a draft.</Alert.Description
-				>
+				<Alert.Description>{$t('grant.application.form.incomplete')}</Alert.Description>
 			</Alert.Root>
 		{/if}
 		<div class="flex gap-2">
@@ -122,14 +121,12 @@
 						src={banner}
 						alt={grant.bannerAlt || ''}
 					/>
-					<!-- TODO Grant image alt text! -->
 				</Card.Content>
 			</Card.Root>
 		{/if}
 		{#if data.editable}
 			<Button
-				size="lg"
-				class="break-all w-full text-md gap-2"
+				class="max-h-[100px] w-full flex grow flex-wrap text-md gap-2"
 				disabled={!grant}
 				on:click={() => submitForm()}
 			>
@@ -137,10 +134,13 @@
 					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 				{/if}
 				<Save class="h-4 w-4"></Save>
-				<span>{'Save Form'}</span>
+				{$t('grant.application.form.save_form')}
 				{#if lastSaved}
 					<Badge class="text-md pt-1 pb-1"
-						>Saved at {lastSaved.getHours()}:{lastSaved.getMinutes()}</Badge
+						>{$t('grant.application.form.saved_at', {
+							hours: lastSaved.getHours(),
+							minutes: lastSaved.getMinutes()
+						})}</Badge
 					>
 				{/if}
 			</Button>

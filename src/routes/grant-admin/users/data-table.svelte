@@ -75,7 +75,12 @@
 
 <div>
 	<div class="flex flex-row items-center py-4">
-		<Input bind:value={$filterValue} class="max-w-sm" placeholder="Search names" type="text" />
+		<Input
+			bind:value={$filterValue}
+			class="max-w-sm"
+			placeholder={$t('grant.users.search_names')}
+			type="text"
+		/>
 	</div>
 	<div class="bg-white rounded-md border">
 		<Table.Root {...$tableAttrs}>

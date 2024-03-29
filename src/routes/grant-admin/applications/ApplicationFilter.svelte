@@ -1,4 +1,6 @@
 <script lang="ts">
+	import * as Popover from '$lib/components/ui/popover';
+	import * as Command from '$lib/components/ui/command';
 	import * as Card from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
@@ -7,10 +9,11 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 	import { filterSchema, type FilterSchema } from '$lib/validation/app_schema';
-	import { Loader2 } from 'lucide-svelte';
+	import { ChevronsUpDown, Loader2 } from 'lucide-svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { t } from '$lib/i18n/i18n';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { tick } from 'svelte';
 
 	let PendingIcon = AcceptStatus.IN_PROGRESS.icon;
 	let AcceptedIcon = AcceptStatus.ACCEPTED.icon;
@@ -19,7 +22,7 @@
 	let className: string = '';
 	export { className as class };
 	export let data: SuperValidated<Infer<FilterSchema>>;
-	export let grants : { id: string, title: string }[];
+	export let grants: { id: string; title: string }[];
 
 	let isLoading = false;
 	let filterForm = superForm(data, {
@@ -50,6 +53,19 @@
 	});
 	$: $formData.minAge = ageSlider[0];
 	$: $formData.maxAge = ageSlider[1];
+
+	let open = false;
+	let grantValue = '';
+
+	$: selectedGrant =
+		grants.find((f) => f.id === grantValue)?.title ?? $t('admin.applications.grant_applications');
+
+	const closeAndFocusTrigger = (triggerId: string) => {
+		open = false;
+		tick().then(() => {
+			document.getElementById(triggerId)?.focus();
+		});
+	};
 </script>
 
 <Card.Root class={className}>
@@ -59,38 +75,50 @@
 	</Card.Header>
 	<form method="POST" use:enhance class="w-full">
 		<Card.Content class="flex flex-col space-y-2">
-			<div class="grid gap-2">
-				<Label>Grants</Label>
-				<div class="flex gap-4">
-					{#each grants as grant}
-						<Form.Field form={filterForm} name="grant">
-							<Form.Control let:attrs>
-								<Button
-									size="sm"
-									{...attrs}
-									type="button"
-									name="grant"
-									id={grant.id}
-									on:click={() => {
-										formData.update((fields) => {
-											// fields.grant = fields.grant || [];
-											// if (fields.grant.includes(grant.id)) {
-											// 	fields.grant = fields.grant.filter((selected) => selected !== grant.id);
-											// } else {
-											// 	fields.grant.push(grant.id);
-											// }
-											fields.grant = grant.id;
-											return fields;
-										});
-									}}
-								>{grant.title}</Button>
-							</Form.Control>
-						</Form.Field>
-					{/each}
-				</div>
+			<div class="justify-self-start mb-5">
+				<Popover.Root bind:open let:ids>
+					<Popover.Trigger asChild let:builder>
+						<Button
+							builders={[builder]}
+							role="combobox"
+							class="justify-between"
+							aria-expanded={open}
+							variant="outline"
+							>{selectedGrant}
+							<ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+						</Button>
+					</Popover.Trigger>
+					<Popover.Content>
+						<Command.Root>
+							<Command.Input />
+							<Command.Empty>No form found</Command.Empty>
+							<Command.Group>
+								{#each grants as grant}
+									<Form.Field form={filterForm} name="grant">
+										<Command.Item
+											value={grant.id}
+											onSelect={(id) => {
+												formData.update((fields) => {
+													fields.grant = id;
+													return fields;
+												});
+												grantValue = grant.id;
+												closeAndFocusTrigger(ids.trigger);
+											}}
+										>
+											{grant.title}</Command.Item
+										>
+									</Form.Field>
+								{/each}
+							</Command.Group>
+						</Command.Root>
+					</Popover.Content>
+				</Popover.Root>
 			</div>
 			<div class="grid gap-2">
-				<Label>Age Range</Label>
+				<Label>
+					{$t('admin.applications.age_range')}
+				</Label>
 				<div class="flex gap-4">
 					<Form.Field form={filterForm} name="minAge" class="basis-1/4">
 						<Form.Control let:attrs>
@@ -144,7 +172,8 @@
 								<AcceptedIcon
 									class="mr-1 h-4 w-4 text-muted-foreground {AcceptStatus.ACCEPTED.color}"
 								/>
-								<Label class="text-center" for="accepted">{AcceptStatus.ACCEPTED.name}</Label>
+								<Label class="text-center" for="accepted">{$t('admin.applications.accepted')}</Label
+								>
 							</div>
 						</div>
 					</Form.Field>
@@ -157,7 +186,9 @@
 								<PendingIcon
 									class="mr-1 h-4 w-4 text-muted-foreground {AcceptStatus.IN_PROGRESS.color}"
 								/>
-								<Label class="text-center" for="pending">{AcceptStatus.IN_PROGRESS.name}</Label>
+								<Label class="text-center" for="pending"
+									>{$t('admin.applications.in_progress')}</Label
+								>
 							</div>
 						</div>
 					</Form.Field>
@@ -175,7 +206,8 @@
 								<RejectedIcon
 									class="mr-1 h-4 w-4 text-muted-foreground {AcceptStatus.REJECTED.color}"
 								/>
-								<Label class="text-center" for="rejected">{AcceptStatus.REJECTED.name}</Label>
+								<Label class="text-center" for="rejected">{$t('admin.applications.rejected')}</Label
+								>
 							</div>
 						</div>
 					</Form.Field>

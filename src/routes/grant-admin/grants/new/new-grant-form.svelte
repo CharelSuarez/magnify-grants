@@ -14,6 +14,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { tick } from 'svelte';
 	import Dropzone from 'svelte-file-dropzone';
+	import { t } from '$lib/i18n/i18n';
 
 	export let data: SuperValidated<Infer<FormSchema>>;
 	export let forms: DBForm[];
@@ -106,40 +107,32 @@
 <form method="POST" use:enhance class="flex flex-col space-y-5">
 	<Form.Field {form} name="grantName">
 		<Form.Control let:attrs>
-			<Form.Label>Grant Name/Title</Form.Label>
+			<Form.Label>{$t('grant.new.grant_name_title')}</Form.Label>
 			<Input {...attrs} bind:value={$formData.grantName} />
 		</Form.Control>
-		<Form.Description>The grant's name or title</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="grantDescription">
 		<Form.Control let:attrs>
-			<Form.Label>Grant Description</Form.Label>
-			<Textarea
-				{...attrs}
-				bind:value={$formData.grantDescription}
-				class="resize-none"
-				placeholder="What is this grant about?"
-			/>
+			<Form.Label>{$t('grant.new.grant_description')}</Form.Label>
+			<Textarea {...attrs} bind:value={$formData.grantDescription} class="resize-none" />
 		</Form.Control>
-		<Form.Description>The grant's description</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Fieldset {form} name="grantForms">
-		<Form.Legend>Select the forms required for applying to this grant</Form.Legend>
+		<Form.Legend>{$t('grant.new.select_forms_required')}</Form.Legend>
 		<Popover.Root bind:open let:ids>
 			<Popover.Trigger>
 				<Button variant="outline">
 					<PlusCircle class="mr-3" />
-					Add form
+					{$t('grant.new.add_form')}
 				</Button>
 			</Popover.Trigger>
 			<Popover.Content>
 				<Command.Root>
 					<Command.Input />
-					<Command.Empty>No form found</Command.Empty>
 					<Command.Group>
 						{#each formOptions as form}
 							<Command.Item
@@ -165,7 +158,7 @@
 						variant="outline"
 						on:click={() => removeForm(selectedForm.id)}
 						class="max-w-[150px] place-self-end"
-						style="grid-area: 1 / 2 / 2 / 3;">Remove</Button
+						style="grid-area: 1 / 2 / 2 / 3;">{$t('grant.new.remove')}</Button
 					>
 				</div>
 				<Form.FieldErrors />
@@ -181,8 +174,8 @@
 		<Form.Control let:attrs>
 			<Checkbox {...attrs} bind:checked={$formData.acceptingApplications} />
 			<div class="space-y-1 leading-none">
-				<Form.Label>Accepting Applications</Form.Label>
-				<Form.Description>Whether or not the form will accept new applications</Form.Description>
+				<Form.Label>{$t('grant.new.accepting_applications')}</Form.Label>
+				<Form.Description>{$t('grant.new.accepting_applications_desc')}</Form.Description>
 			</div>
 			<input hidden name={attrs.name} value={$formData.acceptingApplications} />
 		</Form.Control>
@@ -190,29 +183,25 @@
 
 	<Form.Field {form} name="rangeLow">
 		<Form.Control let:attrs>
-			<Form.Label>Minimum funding amount</Form.Label>
+			<Form.Label>{$t('grant.new.min_funding_amount')}</Form.Label>
 			<Input {...attrs} bind:value={$formData.rangeLow} step="0.01" type="number" />
 		</Form.Control>
-		<Form.Description
-			>The smallest amount of money awarded to recipients of this grant</Form.Description
-		>
+		<Form.Description>{$t('grant.new.min_funding_amount_desc')}</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="rangeHigh">
 		<Form.Control let:attrs>
-			<Form.Label>Maximum funding amount</Form.Label>
+			<Form.Label>{$t('grant.new.max_funding_amount')}</Form.Label>
 			<Input {...attrs} bind:value={$formData.rangeHigh} step="0.01" type="number" />
 		</Form.Control>
-		<Form.Description
-			>The largest amount of money awarded to recipients of this grant</Form.Description
-		>
+		<Form.Description>{$t('grant.new.max_funding_amount_desc')}</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Field {form} name="expirationDate">
 		<Form.Control let:attrs>
-			<Form.Label>The grant's expiration date</Form.Label>
+			<Form.Label>{$t('grant.new.expiration_date')}</Form.Label>
 			<Input
 				{...attrs}
 				bind:value={$formData.expirationDate}
@@ -220,26 +209,19 @@
 				type="date"
 			/>
 		</Form.Control>
-		<Form.Description
-			>When this grant will automatically stop accepting new applicants</Form.Description
-		>
+		<Form.Description>{$t('grant.new.expiration_date_desc')}</Form.Description>
 		<Form.FieldErrors />
 	</Form.Field>
 
 	<Form.Fieldset class="space-y-3" {form} name="sector">
-		<Form.Legend>Grant Sector</Form.Legend>
+		<Form.Legend>{$t('grant.new.grant_sector')}</Form.Legend>
 		<RadioGroup.Root bind:value={$formData.sector} class="flex flex-col space-y-1">
 			{#each sectorsArray as [key, _]}
 				<div class="flex items-center space-x-3 space-y-0">
 					<Form.Control let:attrs>
 						<RadioGroup.Item {...attrs} value={key} />
 						<Form.Label class="font-normal"
-							>{key
-								.toString()
-								.replace('_', ' & ')
-								.replace(/\w\S*/g, function (txt) {
-									return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-								})}</Form.Label
+							>{$t(`card.sectors.${key.replace('_', '').toLowerCase()}`)}</Form.Label
 						>
 					</Form.Control>
 				</div>
@@ -250,7 +232,7 @@
 	</Form.Fieldset>
 
 	<Form.Field {form} name="banner">
-		<Form.Legend>Upload a banner (optional)</Form.Legend>
+		<Form.Legend>{$t('grant.new.upload_banner')}</Form.Legend>
 		<Form.Control>
 			<Dropzone
 				containerClasses="justify-center min-h-[200px]"
@@ -260,13 +242,13 @@
 				{#if $formData.banner}
 					{$formData.banner.name}
 				{:else}
-					Drag an image to upload
+					{$t('grant.new.drag_upload_banner')}
 				{/if}
 			</Dropzone>
 			{#if $formData.banner}
 				<Button on:click={removeBanner} variant="outline">
 					<XCircle class="mr-2" />
-					Remove banner
+					{$t('grant.new.remove')}
 				</Button>
 			{/if}
 		</Form.Control>
@@ -276,21 +258,21 @@
 	{#if $formData.banner}
 		<Form.Field {form} name="bannerAlt">
 			<Form.Control let:attrs>
-				<Form.Label>Banner alt text</Form.Label>
+				<Form.Label>{$t('grant.new.banner_alt_text')}</Form.Label>
 				<Input {...attrs} bind:value={$formData.bannerAlt} />
 			</Form.Control>
-			<Form.Description>Please provide alt text for the banner image</Form.Description>
+			<Form.Description>{$t('grant.new.banner_alt_text_desc')}</Form.Description>
 			<Form.FieldErrors />
 		</Form.Field>
 	{/if}
 
 	<Form.Field {form} name="documents">
-		<Form.Legend>Upload documents you want the user to view (optional)</Form.Legend>
+		<Form.Legend>{$t('grant.new.upload_view_documents')}</Form.Legend>
 		<Form.Control>
 			<Dropzone
 				containerClasses="justify-center min-h-[200px]"
 				multiple={false}
-				on:drop={handleDocumentUpload}>Upload documents</Dropzone
+				on:drop={handleDocumentUpload}>{$t('grant.new.upload_documents')}</Dropzone
 			>
 		</Form.Control>
 		<Form.FieldErrors />
@@ -301,7 +283,7 @@
 				<div class="flex-grow w-full" />
 				<Button on:click={() => removeDocument(i)} variant="outline">
 					<XCircle class="mr-2" />
-					Remove document
+					{$t('grant.new.remove_document')}
 				</Button>
 			</div>
 		{/each}
@@ -310,17 +292,17 @@
 	<Form.Fieldset {form} name="requiredDocuments">
 		<Button on:click={addReqDocument} class="mt-3" variant="outline">
 			<PlusCircle class="mr-3" />
-			Add document
+			{$t('grant.new.add_document')}
 		</Button>
 
-		<Form.Legend>Add the types of document prompts the user must submit documents for</Form.Legend>
+		<Form.Legend>{$t('grant.new.add_document_type_desc')}</Form.Legend>
 		{#each $formData.requiredDocuments as _, i}
 			<Form.ElementField {form} name="grantForms[{i}]">
 				<div class="w-full flex items-center space-x-2 flex-row p-5 bg-white border rounded-md">
 					<Input bind:value={$formData.requiredDocuments[i]} />
 					<Button on:click={() => removeReqDocument(i)} variant="outline">
 						<XCircle class="mr-2" />
-						Remove document
+						{$t('grant.new.remove_document')}
 					</Button>
 				</div>
 				<Form.FieldErrors />

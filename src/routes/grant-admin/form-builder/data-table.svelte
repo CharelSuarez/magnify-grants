@@ -22,6 +22,8 @@
 
 	export let forms: Form[];
 
+	forms.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
 	const data = writable(forms);
 
 	const deleteForm = async (id: string) => {
@@ -140,12 +142,12 @@
 	<div class="flex flex-row items-center py-4 space-x-2">
 		<Button href="/grant-admin/form-builder/new" variant="outline">
 			<PlusCircle class="mr-2" />
-			New form
+			{$t('form.table.new_form')}
 		</Button>
 		<Input
 			bind:value={$filterValue}
 			class="max-w-sm"
-			placeholder={$t('table.searchPlaceholder')}
+			placeholder={$t('form.table.search_names_descriptions')}
 			type="text"
 		/>
 	</div>

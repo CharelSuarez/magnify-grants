@@ -105,9 +105,9 @@ model RequiredDocument {
 }
 
 model FormsOnGrants {
-  grant   Grant  @relation(fields: [grantId], references: [id])
+  grant   Grant  @relation(fields: [grantId], references: [id], onDelete: Cascade)
   grantId String @db.Uuid
-  form    Form   @relation(fields: [formId], references: [id])
+  form    Form   @relation(fields: [formId], references: [id] )
   formId  String @db.Uuid
 
   @@id(name: "formOnGrantId", [grantId, formId])

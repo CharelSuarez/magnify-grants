@@ -2,18 +2,18 @@
 	import { page } from '$app/stores';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import LocaleSelection from '$lib/custom_components/ui/locale-selection/LocaleSelection.svelte';
-	import { locale } from '../../../../i18n/i18n';
+	import { locale, t } from '$lib/i18n/i18n';
 	import type { Selected } from 'bits-ui';
 	import ColourSelection from '../../colour-selection/Colour-Selection.svelte';
 	import UsersRound from 'lucide-svelte/icons/users-round';
 	import { t } from '$lib/i18n/i18n';
 
 	const navButtons = {
-		Overview: '/grant-admin',
-		Grants: '/grant-admin/grants',
-		Applications: '/grant-admin/applications',
-		'Form Builder': '/grant-admin/form-builder',
-		Users: '/grant-admin/users'
+		'admin.nav.overview': '/grant-admin',
+		'admin.nav.grants': '/grant-admin/grants',
+		'admin.nav.applications': '/grant-admin/applications',
+		'admin.nav.formbuilder': '/grant-admin/form-builder',
+		'admin.nav.users': '/grant-admin/users'
 	};
 
 	let selected: Selected<string>;
@@ -27,7 +27,7 @@
 		{href}
 		class="font-semibold"
 	>
-		{label}
+		{$t(label)}
 	</Button>
 {/each}
 
@@ -39,4 +39,3 @@
 </Button>
 <LocaleSelection />
 <ColourSelection />
-

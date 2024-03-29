@@ -10,6 +10,7 @@
 	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import DatePicker from '$lib/custom_components/ui/date-picker/date-picker.svelte';
 	import { get } from 'svelte/store';
+	import { t } from '$lib/i18n/i18n';
 
 	export let editable = true;
 
@@ -68,7 +69,7 @@
 						{...attrs}
 						type="text"
 						name={field.id}
-						placeholder={'Type a short answer here.'}
+						placeholder={$t('grant.application.form.short_answer_placeholder')}
 					/>
 				</Form.Control>
 				<Form.FieldErrors />
@@ -81,7 +82,7 @@
 						bind:value={$formData[field.id]}
 						{...attrs}
 						name={field.id}
-						placeholder={'Type a paragraph here.'}
+						placeholder={$t('grant.application.form.paragraph_placeholder')}
 					></Textarea>
 				</Form.Control>
 				<Form.FieldErrors />
@@ -132,7 +133,7 @@
 						}}
 					>
 						<Select.Trigger class="w-full">
-							<Select.Value placeholder="Select an option" />
+							<Select.Value placeholder={$t('grant.application.form.select_option_placeholder')} />
 						</Select.Trigger>
 						<Select.Content>
 							<Select.Group>
@@ -184,7 +185,7 @@
 						{...attrs}
 						type="text"
 						name={field.id}
-						placeholder={'Enter a time in the format HH:MM AM/PM.'}
+						placeholder={$t('grant.application.form.enter_time_placeholder')}
 					/>
 				</Form.Control>
 				<Form.FieldErrors />

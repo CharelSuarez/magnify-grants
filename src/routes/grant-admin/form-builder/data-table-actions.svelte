@@ -1,17 +1,10 @@
 <script lang="ts">
-	import MoreHorizontal from 'lucide-svelte/icons/more-horizontal';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { Button } from '$lib/components/ui/button';
-	import { goto } from '$app/navigation';
-	import { Trash2 } from 'lucide-svelte';
+	import { ArrowUpRightFromSquare, Edit, Trash2 } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { t } from '$lib/i18n/i18n';
 	import { toShort } from '$lib/utils/url';
-
-	const formAction = (route: string) => {
-		goto(`/grant-admin/form-builder/${toShort(id)}/${route}`);
-	};
 
 	const dispatch = createEventDispatcher();
 
@@ -24,31 +17,28 @@
 	export let id: string;
 </script>
 
-<div class="flex flex-row w-full h-full space-x-10 items-center">
-	<DropdownMenu.Root>
-		<DropdownMenu.Trigger asChild let:builder>
-			<Button builders={[builder]} class="relative h-8 w-8 p-0" size="icon" variant="ghost">
-				<span class="sr-only">{$t('menu.open')}</span>
-				<MoreHorizontal class="h-4 w-4" />
-			</Button>
-		</DropdownMenu.Trigger>
-		<DropdownMenu.Content>
-			<DropdownMenu.Group>
-				<DropdownMenu.Label>{$t('menu.actions')}</DropdownMenu.Label>
-			</DropdownMenu.Group>
-			<DropdownMenu.Separator />
-			<DropdownMenu.Item on:click={() => formAction('view')}
-				>{$t('menu.viewDocument')}</DropdownMenu.Item
-			>
-			<DropdownMenu.Item on:click={() => formAction('edit')}
-				>{$t('menu.editDocument')}</DropdownMenu.Item
-			>
-		</DropdownMenu.Content>
-	</DropdownMenu.Root>
+<div class="flex flex-row space-x-2 w-full">
+	<Button
+		href={`/grant-admin/form-builder/${toShort(id)}/view`}
+		variant="ghost"
+		title="View Form"
+		size="icon"
+	>
+		<ArrowUpRightFromSquare />
+	</Button>
+
+	<Button
+		variant="ghost"
+		href={`/grant-admin/form-builder/${toShort(id)}/edit`}
+		title="Edit Form"
+		size="icon"
+	>
+		<Edit />
+	</Button>
 
 	<AlertDialog.Root>
 		<AlertDialog.Trigger>
-			<Button variant="ghost" size="icon">
+			<Button name="Delete Form" variant="ghost" size="icon">
 				<Trash2 />
 			</Button>
 		</AlertDialog.Trigger>

@@ -2,6 +2,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import Palette from 'lucide-svelte/icons/palette';
+	import { t } from '$lib/i18n/i18n';
 
 	interface Colour {
 		saturation: number;
@@ -27,7 +28,7 @@
 		200: 'contrast-200'
 	};
 
-	const updateFilter = (saturation : number, contrast : number) => {
+	const updateFilter = (saturation: number, contrast: number) => {
 		if (typeof window === 'undefined') return;
 
 		const classList = document.querySelector('html')?.classList;
@@ -48,26 +49,42 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button variant="outline" builders={[builder]} class="gap-2">
-			<span><Palette strokeWidth={1}/></span>
-			Colour Options
+			<span><Palette strokeWidth={1} /></span>
+			{$t('nav.colour_selection')}
 		</Button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
-		<DropdownMenu.Label>Adjust Saturation</DropdownMenu.Label>
+		<DropdownMenu.Label>{$t('colour_selection.adjust_saturation')}</DropdownMenu.Label>
 		<DropdownMenu.Separator />
 		<div class="flex flex-wrap justify-center">
-			<Button variant="outline" on:click={() => (colour.saturation = 0)}>Very Low</Button>
-			<Button variant="outline" on:click={() => (colour.saturation = 50)}>Low</Button>
-			<Button variant="outline" on:click={() => (colour.saturation = 100)}>Normal</Button>
-			<Button variant="outline" on:click={() => (colour.saturation = 150)}>High</Button>
-			<Button variant="outline" on:click={() => (colour.saturation = 200)}>Very High</Button>
+			<Button variant="outline" on:click={() => (colour.saturation = 0)}
+				>{$t('colour_selection.very_low')}</Button
+			>
+			<Button variant="outline" on:click={() => (colour.saturation = 50)}
+				>{$t('colour_selection.low')}</Button
+			>
+			<Button variant="outline" on:click={() => (colour.saturation = 100)}
+				>{$t('colour_selection.normal')}</Button
+			>
+			<Button variant="outline" on:click={() => (colour.saturation = 150)}
+				>{$t('colour_selection.high')}</Button
+			>
+			<Button variant="outline" on:click={() => (colour.saturation = 200)}
+				>{$t('colour_selection.very_high')}</Button
+			>
 		</div>
-		<DropdownMenu.Label>Adjust Contrast</DropdownMenu.Label>
+		<DropdownMenu.Label>{$t('colour_selection.adjust_contrast')}</DropdownMenu.Label>
 		<DropdownMenu.Separator />
 		<div class="flex flex-wrap justify-center">
-			<Button variant="outline" on:click={() => (colour.contrast = 100)}>Normal</Button>
-			<Button variant="outline" on:click={() => (colour.contrast = 150)}>High</Button>
-			<Button variant="outline" on:click={() => (colour.contrast = 200)}>Very High</Button>
+			<Button variant="outline" on:click={() => (colour.contrast = 100)}
+				>{$t('colour_selection.normal')}</Button
+			>
+			<Button variant="outline" on:click={() => (colour.contrast = 150)}
+				>{$t('colour_selection.high')}</Button
+			>
+			<Button variant="outline" on:click={() => (colour.contrast = 200)}
+				>{$t('colour_selection.very_high')}</Button
+			>
 		</div>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
