@@ -7,6 +7,7 @@
 	import type { PageData } from './$types';
 
 	import { t } from '$lib/i18n/i18n';
+	import Footer from '$lib/custom_components/ui/footer/Footer.svelte';
 
 	export let data: PageData;
 </script>
@@ -77,14 +78,5 @@
 		</div>
 	</div>
 
-	<footer
-		class="flex flex-col justify-center items-center mt-[5rem] bg-teal-800 h-[150px] text-white cursor-default font-satoshi"
-	>
-		<div class="flex text-xl">
-			{$t('footer.association')}
-		</div>
-		<div class="flex text-teal-950 font-bold italic text-lg">
-			{$t('footer.developedBy')}
-		</div>
-	</footer>
 </main>
+<Footer />

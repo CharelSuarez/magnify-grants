@@ -4,6 +4,7 @@
 	import { toShort } from '$lib/utils/url';
 	import { AcceptStatus } from '../../grant-admin/applications/application-table/app-acceptance-statuses';
 	import { Button } from '$lib/components/ui/button';
+
 	import { t } from '$lib/i18n/i18n';
 
 	export let data: PageData;
@@ -65,8 +66,12 @@
 		</div>
 	</div>
 
-	<div class="flex"></div>
+	{#if filtered.length === 0}
+		<div class="flex text-[4rem] font-bold font-satoshi text-teal-500  w-full min-h-[50vh] justify-center items-center">{$t('grant.application.noResults')}</div>
+	{/if}
+
 	<div class="grid grid-cols-4 gap-4 max-2xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1">
+
 		{#each filtered as submission (submission.id)}
 			<SubmissionGrant
 				name="{submission.grant.title},"

@@ -275,7 +275,8 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.myapps.my_applications': 'My Applications',
 		'grant.myapps.search_submissions': 'Search for Submissions',
 		'grant.myapps.view_by': 'View By',
-		'grant.myapps.submission_date': 'Submission Date'
+		'grant.myapps.submission_date': 'Submission Date',
+		'grant.application.noResults': 'No results found',
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
@@ -556,7 +557,8 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.myapps.my_applications': 'Mes applications',
 		'grant.myapps.search_submissions': 'Rechercher des soumissions',
 		'grant.myapps.view_by': 'Voir par',
-		'grant.myapps.submission_date': 'Date de soumission'
+		'grant.myapps.submission_date': 'Date de soumission',
+		'grant.application.noResults': 'Aucun résultat trouvé',
 	},
 
 	es: {
@@ -838,6 +840,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.myapps.my_applications': 'Mis aplicaciones',
 		'grant.myapps.search_submissions': 'Buscar envíos',
 		'grant.myapps.view_by': 'Ver por',
-		'grant.myapps.submission_date': 'Fecha de envío'
+		'grant.myapps.submission_date': 'Fecha de envío',
+		'grant.application.noResults': 'No se encontraron resultados',
 	}
 };

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import logo from '$lib/assets/branding/images/rbc-icon-template.png';
+	import Logo from '../Logo/Logo.svelte';
 
 	import { t } from '$lib/i18n/i18n';
 
@@ -13,6 +13,7 @@
 	const handleClick = () => {
 		goto(endpoint);
 	};
+	
 </script>
 
 <Button
@@ -21,7 +22,7 @@
 	on:click={handleClick}
 >	
 	<div class="flex w-full  gap-4 mb-4">
-		<img src={logo} alt="" class="h-[40px] self-center">
+		<Logo />
 		<h1 class="flex text-[1.5rem] font-bold w-full text-wrap leading-10 text-left ">{name}</h1>
 	</div>
 

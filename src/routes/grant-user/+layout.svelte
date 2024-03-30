@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
+	import Footer from '$lib/custom_components/ui/footer/Footer.svelte';
+import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
 </script>
@@ -8,4 +9,5 @@
 <div class="pt-[88px]">
 	<slot/>
 </div>
+<Footer/>
 
