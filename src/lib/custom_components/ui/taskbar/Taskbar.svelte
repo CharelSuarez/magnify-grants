@@ -15,7 +15,7 @@
 </script>
 
 <div
-	class="top-0 flex justify-between px-10 py-5 shadow-lg items-center fixed w-full z-[10] backdrop-blur-md bg-opacity-40"
+	class="top-0 flex justify-between px-10 py-5 shadow-lg items-center fixed w-full z-[30] backdrop-blur-md bg-opacity-40"
 >
 	<div class="flex items-center">
 		<a href="/">
@@ -59,7 +59,9 @@
 				{$t('nav.signUp')}
 			</Button>
 		{/if}
-		<LocaleSelection />
-		<ColourSelection />
+		<div class="flex gap-4">
+			<LocaleSelection />
+			<ColourSelection />
+		</div>
 	</div>
 </div>

@@ -13,6 +13,7 @@
       SheetHeader,
       SheetTitle
   } from "$lib/components/ui/sheet";
+	import Footer from '$lib/custom_components/ui/footer/Footer.svelte';
 </script>
 
 <div class="flex flex-col h-screen">
@@ -65,6 +66,7 @@
     </div>
 
 </div>
+<Footer />
 
 <style>
 	:global(body) {
