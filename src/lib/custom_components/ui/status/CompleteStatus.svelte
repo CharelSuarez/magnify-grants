@@ -6,13 +6,12 @@
 
     export let complete: boolean;
 
-    $: icon = complete ? CheckCircle : CircleAlert;
-    $: color = complete ? 'bg-green-500' : 'bg-yellow-500';
-    $: text = complete ? 'Complete' : 'Draft';
+    // $: icon = complete ? CheckCircle : CircleAlert;
+    // $: color = complete ? 'bg-green-500' : 'bg-yellow-500';
 
 </script>
 
-<Badge class={`flex gap-2 max-h-12 px-4 py-2 ${color} hover:${color} text-[1rem] font-satoshi font-medium w-fit`}>
-    <svelte:component this={icon} class={color}></svelte:component>
-    {text}
+<Badge class={`flex gap-2 max-h-12 px-4 py-2 bg-green-500 hover:bg-green-500 text-[1rem] font-satoshi font-medium w-fit`}>
+    <svelte:component this={CheckCircle} class={'bg-green-500'}></svelte:component>
+    {'Complete'}
 </Badge>
