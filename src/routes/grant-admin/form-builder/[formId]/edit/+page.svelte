@@ -46,9 +46,14 @@
 </script>
 
 <svelte:window on:beforeunload|preventDefault />
+<svelte:head>
+	<title>
+		{$t('form.editForm')} - {formName}
+</title>
+</svelte:head>
 
-<EditableForm bind:fields bind:formName bind:formDescription {errors}>
-	<Button disabled={isLoading} variant="outline" on:click={editForm}>
+<EditableForm bind:fields bind:formDescription bind:formName {errors}>
+	<Button disabled={isLoading} on:click={editForm} variant="outline">
 		{#if isLoading}
 			<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 		{/if}

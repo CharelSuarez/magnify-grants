@@ -36,8 +36,8 @@
 			>
 		</Alert.Root> -->
 		<div class="flex gap-2">
-			<Badge variant="outline" class="text-md mt-1">GRANT</Badge>
-			<h2 class="text-2xl font-bold tracking-tight">{grant?.title || 'Unknown'}</h2>
+			<Badge class="text-md mt-1" variant="outline">GRANT</Badge>
+			<h2 class="text-2xl font-bold tracking-tight">{grant?.title || $t('form.grant.noTitle')}</h2>
 		</div>
 		{#if banner}
 			<Card.Root>
@@ -56,36 +56,36 @@
 		<a
 			class="w-full"
 			href={`/grant-user/grant/${toShort(grant.id)}/form/${toShort(form.id)}`}
-			target="_blank"
 			on:click={(e) => e.preventDefault()}
+			target="_blank"
 		>
 			<Button
+				class="w-full text-md gap-2"
+				disabled={!grant}
 				on:click={() => {
 					goto(`/grant-user/grant/${toShort(grant.id)}/form/${toShort(form.id)}`);
 				}}
 				size="lg"
 				variant="secondary"
-				class="w-full text-md gap-2"
-				disabled={!grant}
 			>
 				<Pencil class="h-4 w-4"></Pencil>
-				<span>{'Edit Form'}</span>
+				<span>{$t('form.edit')}</span>
 			</Button>
 		</a>
 		<a
 			class="w-full"
 			href={`/grant-user/grant/${!grant ? '' : toShort(grant.id)}`}
-			target="_blank"
 			on:click={(e) => e.preventDefault()}
+			target="_blank"
 		>
 			<Button
+				class="w-full text-md gap-2"
+				disabled={!grant}
 				on:click={() => {
 					goto(`/grant-user/grant/${!grant ? '' : toShort(grant.id)}`);
 				}}
 				size="lg"
 				variant="secondary"
-				class="w-full text-md gap-2"
-				disabled={!grant}
 			>
 				<ExternalLink class="h-4 w-4"></ExternalLink>
 				<span>{$t('grant.form.return')}</span>
@@ -94,11 +94,11 @@
 	</div>
 	<div class="basis-1/2 w-full h-full flex flex-1 flex-col justify-start items-center space-y-10">
 		<div class="flex gap-2 items-center">
-			<Badge variant="outline" class="text-md mt-1 max-h-10 gap-1">
-				<Eye strokeWidth={1} class="h-8 w-8"></Eye>
+			<Badge class="text-md mt-1 max-h-10 gap-1" variant="outline">
+				<Eye class="h-8 w-8" strokeWidth={1}></Eye>
 				<span>FORM</span>
 			</Badge>
-			<h2 class="text-4xl font-bold tracking-tight">{grant?.title || 'Unknown'}: {form.name}</h2>
+			<h2 class="text-4xl font-bold tracking-tight">{grant?.title || $t('form.grant.noTitle')}: {form.name}</h2>
 		</div>
 		{#each form.fields as field}
 			<ViewFormField {field} value={formData[field.id]}></ViewFormField>

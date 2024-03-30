@@ -43,6 +43,10 @@
 	let fields: { type: FieldType; index: number; prompt?: string; options: string[] }[] = [];
 </script>
 
+<svelte:head>
+	<title>New Form Builder</title>
+</svelte:head>
+
 <svelte:window on:beforeunload|preventDefault />
 
 <EditableForm bind:fields bind:formDescription bind:formName {errors}>

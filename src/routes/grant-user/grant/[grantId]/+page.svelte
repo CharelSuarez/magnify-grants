@@ -74,6 +74,10 @@
 	let submitted = data.submitted;
 </script>
 
+<svelte:head>
+	<title>{data.grant.title}</title>
+</svelte:head>
+
 <div class="min-h-screen flex-1 flex-col p-20 md:flex items-center">
 	<div class="flex justify-start h-full items-center space-y-2 gap-10 mt-8 mb-8">
 		{#if data.banner}

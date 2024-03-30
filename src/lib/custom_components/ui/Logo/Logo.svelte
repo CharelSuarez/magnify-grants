@@ -2,7 +2,7 @@
     import logo from '$lib/assets/branding/images/search.png';
 </script>
 
-<img src={logo} alt="" srcset="" >
+<img alt="Logo" src={logo} srcset="" >
 
 <style>
     img {

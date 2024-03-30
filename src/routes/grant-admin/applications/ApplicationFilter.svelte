@@ -73,16 +73,16 @@
 		<Card.Title>{$t('applications.filter.title')}</Card.Title>
 		<Card.Description>{$t('applications.filter.description')}</Card.Description>
 	</Card.Header>
-	<form method="POST" use:enhance class="w-full">
+	<form class="w-full" method="POST" use:enhance>
 		<Card.Content class="flex flex-col space-y-2">
 			<div class="justify-self-start mb-5">
 				<Popover.Root bind:open let:ids>
 					<Popover.Trigger asChild let:builder>
 						<Button
-							builders={[builder]}
-							role="combobox"
-							class="justify-between"
 							aria-expanded={open}
+							builders={[builder]}
+							class="justify-between"
+							role="combobox"
 							variant="outline"
 							>{selectedGrant}
 							<ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -120,38 +120,38 @@
 					{$t('admin.applications.age_range')}
 				</Label>
 				<div class="flex gap-4">
-					<Form.Field form={filterForm} name="minAge" class="basis-1/4">
+					<Form.Field class="basis-1/4" form={filterForm} name="minAge">
 						<Form.Control let:attrs>
 							<Input
-								bind:value={$formData.minAge}
 								{...attrs}
-								type="number"
-								min={0}
+								bind:value={$formData.minAge}
 								max={150}
+								min={0}
 								name="minAge"
 								placeholder="0"
+								type="number"
 							/>
 						</Form.Control>
 					</Form.Field>
-					<Slider class="basis-1/2" bind:value={ageSlider} min={0} step={1} max={150}></Slider>
-					<Form.Field form={filterForm} name="maxAge" class="basis-1/4">
+					<Slider bind:value={ageSlider} class="basis-1/2" max={150} min={0} step={1}></Slider>
+					<Form.Field class="basis-1/4" form={filterForm} name="maxAge">
 						<Form.Control let:attrs>
 							<Input
-								bind:value={$formData.maxAge}
 								{...attrs}
-								type="number"
-								min={0}
+								bind:value={$formData.maxAge}
 								max={150}
+								min={0}
 								name="maxAge"
 								placeholder="150"
+								type="number"
 							/>
 						</Form.Control>
 					</Form.Field>
 				</div>
-				<Form.Field form={filterForm} name="minAge" class="text-center">
+				<Form.Field class="text-center" form={filterForm} name="minAge">
 					<Form.FieldErrors />
 				</Form.Field>
-				<Form.Field form={filterForm} name="maxAge" class="text-center">
+				<Form.Field class="text-center" form={filterForm} name="maxAge">
 					<Form.FieldErrors />
 				</Form.Field>
 			</div>
@@ -162,10 +162,11 @@
 						<div class="h-full flex items-center gap-2">
 							<Form.Control let:attrs>
 								<input
-									type="checkbox"
-									bind:checked={$formData.accepted}
 									{...attrs}
+									aria-label="accepted"
+									bind:checked={$formData.accepted}
 									name="accepted"
+									type="checkbox"
 								/>
 							</Form.Control>
 							<div class="flex gap-0">
@@ -180,7 +181,7 @@
 					<Form.Field form={filterForm} name="pending">
 						<div class="h-full flex items-center gap-2">
 							<Form.Control let:attrs>
-								<input type="checkbox" bind:checked={$formData.pending} {...attrs} name="pending" />
+								<input {...attrs} bind:checked={$formData.pending} name="pending" type="checkbox" />
 							</Form.Control>
 							<div class="flex gap-0">
 								<PendingIcon
@@ -196,10 +197,10 @@
 						<div class="h-full flex items-center gap-2">
 							<Form.Control let:attrs>
 								<input
-									type="checkbox"
-									bind:checked={$formData.rejected}
 									{...attrs}
+									bind:checked={$formData.rejected}
 									name="rejected"
+									type="checkbox"
 								/>
 							</Form.Control>
 							<div class="flex gap-0">
@@ -212,19 +213,19 @@
 						</div>
 					</Form.Field>
 				</div>
-				<Form.Field form={filterForm} name="accepted" class="text-center">
+				<Form.Field class="text-center" form={filterForm} name="accepted">
 					<Form.FieldErrors />
 				</Form.Field>
-				<Form.Field form={filterForm} name="pending" class="text-center">
+				<Form.Field class="text-center" form={filterForm} name="pending">
 					<Form.FieldErrors />
 				</Form.Field>
-				<Form.Field form={filterForm} name="rejected" class="text-center">
+				<Form.Field class="text-center" form={filterForm} name="rejected">
 					<Form.FieldErrors />
 				</Form.Field>
 			</div>
 		</Card.Content>
 		<Card.Footer>
-			<Form.Button disabled={isLoading || errors} class="w-full">
+			<Form.Button class="w-full" disabled={isLoading || errors}>
 				{#if isLoading}
 					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 				{/if}

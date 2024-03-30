@@ -281,6 +281,9 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.myapps.view_by': 'View By',
 		'grant.myapps.submission_date': 'Submission Date',
 		'grant.application.noResults': 'No results found',
+		'form.grant.noTitle': 'Unknown',
+		'form.edit': 'Edit form',
+		'form': "FORM"
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
@@ -460,7 +463,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		applyBy: 'Postuler avant: ',
 		'grant.expirationDate': "Date d'expiration:",
 		'menu.viewStatistics': 'Voir les statistiques',
-		'grant.form.return': 'Return to Grant',
+		'grant.form.return': 'Retourner au subvention',
 		'application.table.selectAllRows': 'Select all rows',
 		'application.table.selectRow': 'Select row',
 		'table.header.dateSubmitted': 'Date Submitted',
@@ -563,6 +566,9 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.myapps.view_by': 'Voir par',
 		'grant.myapps.submission_date': 'Date de soumission',
 		'grant.application.noResults': 'Aucun résultat trouvé',
+		'form.grant.noTitle': 'Inconnu',
+		'form.edit': 'Modifier le formulaire',
+		'form': "FORMULAIRE"
 	},
 
 	es: {
@@ -846,6 +852,7 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.myapps.view_by': 'Ver por',
 		'grant.myapps.submission_date': 'Fecha de envío',
 		'grant.application.noResults': 'No se encontraron resultados',
+		'form.grant.noTitle': 'Desconocido'
 	},
 	zh: {
 		"homepage.title": "你好，世界！",

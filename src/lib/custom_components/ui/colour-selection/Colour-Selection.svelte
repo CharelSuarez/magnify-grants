@@ -48,7 +48,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="outline" builders={[builder]} class="gap-2">
+		<Button aria-label="Website color options" builders={[builder]} class="gap-2" variant="outline">
 			<span><Palette strokeWidth={1} /></span>
 			{$t('nav.colour_selection')}
 		</Button>
@@ -57,32 +57,32 @@
 		<DropdownMenu.Label>{$t('colour_selection.adjust_saturation')}</DropdownMenu.Label>
 		<DropdownMenu.Separator />
 		<div class="flex flex-wrap justify-center">
-			<Button variant="outline" on:click={() => (colour.saturation = 0)}
+			<Button aria-label="Very low saturation" on:click={() => (colour.saturation = 0)} variant="outline"
 				>{$t('colour_selection.very_low')}</Button
 			>
-			<Button variant="outline" on:click={() => (colour.saturation = 50)}
+			<Button aria-label="Low saturation" on:click={() => (colour.saturation = 50)} variant="outline"
 				>{$t('colour_selection.low')}</Button
 			>
-			<Button variant="outline" on:click={() => (colour.saturation = 100)}
+			<Button aria-label="Normal saturation" on:click={() => (colour.saturation = 100)} variant="outline"
 				>{$t('colour_selection.normal')}</Button
 			>
-			<Button variant="outline" on:click={() => (colour.saturation = 150)}
+			<Button aria-label="High saturation"on:click={() => (colour.saturation = 150)} variant="outline"
 				>{$t('colour_selection.high')}</Button
 			>
-			<Button variant="outline" on:click={() => (colour.saturation = 200)}
+			<Button aria-label="Very High saturation" on:click={() => (colour.saturation = 200)} variant="outline"
 				>{$t('colour_selection.very_high')}</Button
 			>
 		</div>
 		<DropdownMenu.Label>{$t('colour_selection.adjust_contrast')}</DropdownMenu.Label>
 		<DropdownMenu.Separator />
 		<div class="flex flex-wrap justify-center">
-			<Button variant="outline" on:click={() => (colour.contrast = 100)}
+			<Button aria-label="Normal contrast" on:click={() => (colour.contrast = 100)} variant="outline"
 				>{$t('colour_selection.normal')}</Button
 			>
-			<Button variant="outline" on:click={() => (colour.contrast = 150)}
+			<Button aria-label="High contrast" on:click={() => (colour.contrast = 150)} variant="outline"
 				>{$t('colour_selection.high')}</Button
 			>
-			<Button variant="outline" on:click={() => (colour.contrast = 200)}
+			<Button aria-label="Very High contrast" on:click={() => (colour.contrast = 200)} variant="outline"
 				>{$t('colour_selection.very_high')}</Button
 			>
 		</div>

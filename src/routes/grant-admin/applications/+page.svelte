@@ -18,6 +18,10 @@
 	$: updateApplications(form);
 </script>
 
+<svelte:head>
+	<title>{$t('admin.applications.grant_applications')}</title>
+</svelte:head>
+
 <div class="h-full flex-1 flex-col space-y-8 p-8 flex">
 	<div class="flex items-center justify-between space-y-2">
 		<div>
@@ -34,6 +38,6 @@
 	>
 		<GrantTable {applications} class="w-4/5" />
 		<div class="flex md:hidden w-full flex-grow" />
-		<GrantTableFilter data={data.filter} grants={data.grants} class="h-min items-center" />
+		<GrantTableFilter class="h-min items-center" data={data.filter} grants={data.grants} />
 	</div>
 </div>

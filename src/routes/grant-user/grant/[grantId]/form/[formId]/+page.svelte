@@ -89,6 +89,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{form.name}</title>
+</svelte:head>
+
 <div
 	class="min-h-full flex-1 flex-row p-20 pt-10 flex items-start justify-center gap-10 box-border"
 >
@@ -107,7 +111,7 @@
 		{/if}
 		<div class="flex gap-2">
 			<div class="flex gap-2 items-center">
-				<Badge variant="outline" class="text-md mt-1 max-h-10 gap-1">
+				<Badge class="text-md mt-1 max-h-10 gap-1" variant="outline">
 					<span>FORM</span>
 				</Badge>
 				<h2 class="text-4xl font-bold tracking-tight">{grant?.title || 'Unknown'}: {form.name}</h2>
@@ -148,17 +152,17 @@
 		<a
 			class="w-full"
 			href={`/grant-user/grant/${!grant ? '' : toShort(grant.id)}`}
-			target="_blank"
 			on:click={(e) => e.preventDefault()}
+			target="_blank"
 		>
 			<Button
+				class="w-full text-md gap-2"
+				disabled={!grant}
 				on:click={() => {
 					goto(`/grant-user/grant/${!grant ? '' : toShort(grant.id)}`);
 				}}
 				size="lg"
 				variant="secondary"
-				class="w-full text-md gap-2"
-				disabled={!grant}
 			>
 				<ExternalLink class="h-4 w-4"></ExternalLink>
 				<span>{$t('grant.form.return')}</span>
@@ -167,10 +171,10 @@
 	</div>
 	<div class="basis-1/2 w-full h-full flex flex-1 flex-col justify-start items-center space-y-10">
 		<div class="flex gap-2">
-			<Badge variant="outline" class="text-md mt-1">FORM</Badge>
+			<Badge class="text-md mt-1" variant="outline">FORM</Badge>
 			<h2 class="text-4xl font-bold tracking-tight">{grant?.title || 'Unknown'}: {form.name}</h2>
 		</div>
-		<form method="POST" use:enhance class="w-full flex flex-col gap-10">
+		<form class="w-full flex flex-col gap-10" method="POST" use:enhance>
 			{#each form.fields as field}
 				<FormField editable={data.editable} {field} {filterForm}></FormField>
 			{/each}

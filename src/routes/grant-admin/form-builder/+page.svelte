@@ -6,6 +6,10 @@
 	let forms = data.response;
 </script>
 
+<svelte:head>
+	<title>Form Builder</title>
+</svelte:head>
+
 <div class="container mx-auto py-10">
 	{#if data && forms}
 		<DataTable {forms} />

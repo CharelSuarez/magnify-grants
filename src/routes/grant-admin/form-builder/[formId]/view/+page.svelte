@@ -14,6 +14,10 @@
 			: null;
 </script>
 
+<svelte:head>
+	<title>{"View form"}</title>
+</svelte:head>
+
 {#if form}
 	<container class="container flex w-screen flex-col space-y-5 items-center my-20">
 		<FormElement type="header" allowHover={false}>
