@@ -4,6 +4,7 @@
 	import type { PageData } from './$types';
 	import { Button } from '$lib/components/ui/button';
 	import { t } from '$lib/i18n/i18n';
+	import { toShort } from '$lib/utils/url';
 
 	export let data: PageData;
 
@@ -39,7 +40,7 @@
 			{/each}
 		{/if}
 		<div class="flex flex-row w-full h-full justify-items-start">
-			<Button variant="outline" href="/grant-admin/form-builder/{form.id}/edit"
+			<Button variant="outline" href={`/grant-admin/form-builder/${toShort(form.id)}/edit`}
 				>{$t('form.editButton')}</Button
 			>
 		</div>

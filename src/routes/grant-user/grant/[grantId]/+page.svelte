@@ -21,14 +21,15 @@
 	export let data: PageData;
 
 	const isComplete = () => {
-		const formDocIds = $formData.documents.map((v) => v.id);
+		if ($formData.documents) {
+			const formDocIds = $formData.documents.map((v) => v.id);
 
-		for (const doc of data.grant.requiredDocuments) {
-			if (!formDocIds.includes(doc.id)) {
-				return false;
+			for (const doc of data.grant.requiredDocuments) {
+				if (!formDocIds.includes(doc.id)) {
+					return false;
+				}
 			}
 		}
-
 		for (const form of data.forms) {
 			if (!form.application || !form.application.complete) {
 				return false;
@@ -69,7 +70,7 @@
 
 	let disabled = true;
 
-	$: $formData.documents, (disabled = !isComplete());
+	$: $formData, (disabled = !isComplete());
 
 	let submitted = data.submitted;
 </script>

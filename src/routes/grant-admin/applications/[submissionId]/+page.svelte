@@ -11,8 +11,14 @@
 	import { ApplicationStatus } from '@prisma/client';
 	import { updateFlash } from 'sveltekit-flash-message';
 	import { page } from '$app/stores';
+	import { Slider } from '$lib/components/ui/slider';
+	import { Input } from '$lib/components/ui/input';
 
 	export let data: PageData;
+
+	let amount: number[] = [];
+
+	$: amountToAward = amount[0];
 
 	const updateStatus = async (status: ApplicationStatus) => {
 		const res = await fetch('/grant-admin/applications/approve/', {
@@ -22,7 +28,8 @@
 			},
 			body: JSON.stringify({
 				id: submission.id,
-				status
+				status,
+				amount: amountToAward
 			})
 		});
 
@@ -68,19 +75,27 @@
 					<Button
 						class="items-center"
 						variant="outline"
-						on:click={() => updateStatus(ApplicationStatus.ACCEPTED)}
-					>
-						<Check class="mr-2" />
-						Approve User for Grant
-					</Button>
-					<Button
-						class="items-center"
-						variant="outline"
 						on:click={() => updateStatus(ApplicationStatus.REJECTED)}
 					>
 						<X class="mr-2" />
 						Deny User for Grant
 					</Button>
+
+					<Button
+						class="items-center"
+						variant="outline"
+						on:click={() => updateStatus(ApplicationStatus.ACCEPTED)}
+					>
+						<Check class="mr-2" />
+						Approve User for Grant
+					</Button>
+					<Input bind:value={amountToAward} class="mt-10" placeholder={'Amount to award...'} />
+					<Slider
+						bind:value={amount}
+						max={submission.grant.rangeHigh}
+						min={submission.grant.rangeLow}
+						step={1}
+					/>
 				{/if}
 			</div>
 

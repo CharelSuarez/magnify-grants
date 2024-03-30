@@ -17,13 +17,15 @@ export const POST: RequestHandler = async (event) => {
 
 		const id = data.id;
 		const status: ApplicationStatus = data.status;
+		const amount: number = data.amount;
 
 		await db.submission.update({
 			where: {
 				id
 			},
 			data: {
-				status
+				status,
+				amountAwarded: amount
 			}
 		});
 	} catch (err) {
