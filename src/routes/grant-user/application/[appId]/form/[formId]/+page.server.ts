@@ -1,13 +1,15 @@
 import { db } from '$lib/server/db';
 import { redirect } from 'sveltekit-flash-message/server';
 import type { PageServerLoad } from './$types';
-import { fromShort, toShort } from '$lib/utils/url';
-import { FieldType, type Field, type Form } from '@prisma/client';
+import { fromShort } from '$lib/utils/url';
+import { FieldType, type Form } from '@prisma/client';
 import { getBannerURL } from '$lib/utils/downloads';
 
 export const load: PageServerLoad = async (event) => {
 	try {
-		if (event.locals.user === null) {
+		const user = event.locals.user;
+
+		if (!user) {
 			redirect(
 				307,
 				'/grant-user',
@@ -23,9 +25,9 @@ export const load: PageServerLoad = async (event) => {
 		const formId = fromShort(event.params.formId);
 		const appId = fromShort(event.params.appId);
 
-		const possibleApplication = (await db.application.findFirst({
+		const possibleApplication = await db.application.findFirst({
 			where: {
-				id: appId,
+				id: appId
 			},
 			select: {
 				userId: true,
@@ -38,7 +40,7 @@ export const load: PageServerLoad = async (event) => {
 					}
 				}
 			}
-		}));
+		});
 
 		if (!possibleApplication) {
 			redirect(
@@ -56,8 +58,7 @@ export const load: PageServerLoad = async (event) => {
 		// Check that user is the grant owner or the grant's org admin.
 		const grant = possibleApplication.grant;
 		const organizationId = (await event.locals.getGrantAdmin())?.organizationId;
-		if (possibleApplication.userId !== event.locals.user.id && 
-			organizationId !== grant.organizationId) {
+		if (possibleApplication.userId !== user.id && organizationId !== grant.organizationId) {
 			redirect(
 				307,
 				'/grant-user',
@@ -102,11 +103,11 @@ export const load: PageServerLoad = async (event) => {
 		}
 
 		const form = possibleForm.form;
-		
+
 		// Find latest application.
 		const possibleApp = await db.application.findFirst({
 			where: {
-				id: appId,
+				id: appId
 			},
 			orderBy: {
 				updated: 'desc'

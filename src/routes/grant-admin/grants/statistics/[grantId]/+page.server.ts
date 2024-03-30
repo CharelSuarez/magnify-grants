@@ -5,8 +5,6 @@ import { fromShort } from '$lib/utils/url';
 import { ApplicationStatus } from '@prisma/client';
 
 export const load: PageServerLoad = async (event) => {
-	// TODO: Verify user...
-
 	try {
 		const id = fromShort(event.params.grantId);
 

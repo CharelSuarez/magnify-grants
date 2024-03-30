@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { createTable, Render, Subscribe, createRender } from 'svelte-headless-table';
+	import { createTable, Render, Subscribe, createRender, BodyRow } from 'svelte-headless-table';
 	import { addPagination, addTableFilter, addSelectedRows } from 'svelte-headless-table/plugins';
 	import { type Writable } from 'svelte/store';
 	import * as Table from '$lib/components/ui/table';
-	import GrantTableActions from './AppTableActions.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import GrantTableCheckbox from '$lib/custom_components/ui/table/table-checkbox.svelte';
@@ -11,6 +10,8 @@
 	import type { Application } from '$lib/validation/app_schema';
 	import AppTableAge from './AppTableAgeCell.svelte';
 	import { t } from '$lib/i18n/i18n';
+	import { goto } from '$app/navigation';
+	import { toShort } from '$lib/utils/url';
 
 	let className: string = '';
 	export { className as class };
@@ -73,7 +74,7 @@
 		}),
 		table.column({
 			accessor: 'submissionDate',
-			header: $t("table.header.dateSubmitted"),
+			header: $t('table.header.dateSubmitted'),
 			cell: ({ value }) => {
 				return value.toDateString();
 			}
@@ -86,13 +87,6 @@
 					value
 				});
 			}
-		}),
-		table.column({
-			accessor: ({ id }) => id,
-			header: '',
-			cell: ({ value }) => {
-				return createRender(GrantTableActions, { id: value });
-			}
 		})
 	]);
 
@@ -102,6 +96,12 @@
 	const { hasNextPage, hasPreviousPage, pageIndex } = pluginStates.page;
 	const { filterValue } = pluginStates.filter;
 	const { selectedDataIds } = pluginStates.select;
+
+	const gotoApplication = (row: BodyRow<any, any>) => {
+		if (row.isData()) {
+			goto(`/grant-admin/applications/${toShort(row.original.id)}`);
+		}
+	};
 </script>
 
 <div class="{className} bg-white rounded-md border p-4">
@@ -142,7 +142,12 @@
 			<Table.Body {...$tableBodyAttrs}>
 				{#each $pageRows as row (row.id)}
 					<Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-						<Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && 'selected'}>
+						<Table.Row
+							{...rowAttrs}
+							class="hover:cursor-pointer"
+							on:click={() => gotoApplication(row)}
+							data-state={$selectedDataIds[row.id] && 'selected'}
+						>
 							{#each row.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs>
 									<Table.Cell {...attrs} class="[&:has([role=checkbox])]:pl-3">

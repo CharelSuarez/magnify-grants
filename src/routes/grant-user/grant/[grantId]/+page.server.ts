@@ -31,7 +31,7 @@ export const load: PageServerLoad = async (event) => {
 		if (!grant) {
 			redirect(
 				307,
-				`/grant-user`, // TODO Change to the grant exploration page!
+				`/grant-user`,
 				{
 					richColors: true,
 					type: 'error',
@@ -132,7 +132,7 @@ export const load: PageServerLoad = async (event) => {
 		console.log(err);
 		redirect(
 			307,
-			'/grant-user', // TODO Change to the grant exploration page!
+			'/grant-user',
 			{
 				richColors: true,
 				type: 'error',

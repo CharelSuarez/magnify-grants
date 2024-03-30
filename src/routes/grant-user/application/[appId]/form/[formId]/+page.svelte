@@ -6,8 +6,6 @@
 	import { toShort } from '$lib/utils/url';
 	import { t } from '$lib/i18n/i18n';
 	import ViewFormField from './ViewFormField.svelte';
-	import * as Alert from '$lib/components/ui/alert/index.js';
-	import AlertCircle from 'lucide-svelte/icons/alert-circle';
 	import ExternalLink from 'lucide-svelte/icons/external-link';
 	import { goto } from '$app/navigation';
 	import Eye from 'lucide-svelte/icons/eye';
@@ -20,7 +18,6 @@
 	const form = data.form;
 	const grant = data.grant;
 	const formData = data.formData;
-
 </script>
 
 <div
@@ -72,7 +69,7 @@
 				disabled={!grant}
 			>
 				<Pencil class="h-4 w-4"></Pencil>
-				<span>{"Edit Form"}</span>
+				<span>{'Edit Form'}</span>
 			</Button>
 		</a>
 		<a

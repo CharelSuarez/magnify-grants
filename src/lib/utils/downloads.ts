@@ -37,5 +37,8 @@ export const getRequiredDocumentURL = async (
 		return { data, error };
 	}
 
-	return await getURL(`${userId}/${docId}/${data[0].name}`, 'required_documents', supabase);
+	return {
+		urlObject: await getURL(`${userId}/${docId}/${data[0].name}`, 'required_documents', supabase),
+		fileName: data[0].name
+	};
 };

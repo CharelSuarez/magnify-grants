@@ -84,7 +84,6 @@
 						src={data.banner}
 						alt={data.grant.bannerAlt || ''}
 					/>
-					<!-- TODO Grant image alt text! -->
 				</Card.Content>
 			</Card.Root>
 		{/if}

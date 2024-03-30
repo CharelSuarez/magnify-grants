@@ -130,7 +130,7 @@ async function getApplications(
 				is: {
 					// User either has no profile, or matches DOB filter.
 					OR: [
-						{ profile: null }, // TODO Make this field non-optional!
+						{ profile: null },
 						{
 							profile: {
 								dateOfBirth: {

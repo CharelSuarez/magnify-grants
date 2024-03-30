@@ -66,11 +66,11 @@
 	const { pageIndex, hasNextPage, hasPreviousPage } = pluginStates.page;
 	const { filterValue } = pluginStates.filter;
 
-	function gotoUser(row: BodyRow<any, any>) {
+	const gotoUser = (row: BodyRow<any, any>) => {
 		if (row.isData()) {
 			goto(`/grant-admin/users/${toShort(row.original.id)}`);
 		}
-	}
+	};
 </script>
 
 <div>

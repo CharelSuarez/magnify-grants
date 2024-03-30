@@ -5,8 +5,6 @@ import { fromShort } from '$lib/utils/url';
 
 /** @type {import('./$types').PageServerLoad} */
 export const load: LayoutServerLoad = async (event) => {
-	//TODO: Verify user
-
 	try {
 		const form = await db.form.findFirst({
 			where: {

@@ -7,6 +7,7 @@
 	export let doc: {
 		name: string;
 		url: string;
+		prompt?: string;
 	};
 </script>
 
@@ -17,7 +18,10 @@
 	<Card.Content class="w-full p-0">
 		<File class="w-full h-12"></File>
 	</Card.Content>
-	<Card.Footer class="w-full p-0">
+	<Card.Footer class="flex flex-col space-y-3 w-full p-0">
+		{#if doc.prompt}
+			<Card.CardDescription class="font-bold break-all">{doc.prompt}</Card.CardDescription>
+		{/if}
 		<Button class="w-full break-all" href={doc.url}
 			>{$t('grant.application.download_document')}</Button
 		>

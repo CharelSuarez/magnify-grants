@@ -7,8 +7,6 @@ import { Role, type GrantAdmin } from '@prisma/client';
 
 /** @type {import('./$types').PageServerLoad} */
 export const load: PageServerLoad = async (event) => {
-	//TODO: Verify user
-
 	try {
 		const profile = await db.profile.findFirst({
 			where: {
@@ -58,7 +56,7 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
 	default: async (event) => {
-		const grantAdmin: GrantAdmin = await event.locals.getGrantAdmin();
+		const grantAdmin = await event.locals.getGrantAdmin();
 
 		if (!grantAdmin) {
 			return fail(401);

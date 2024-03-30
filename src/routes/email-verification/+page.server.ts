@@ -1,82 +1,81 @@
-import { codeSchema } from "$lib/validation/auth_schema";
-import { redirect, type Actions, fail } from "@sveltejs/kit";
-import { redirect as redirectFlash } from "sveltekit-flash-message/server";
-import { message, setError, superValidate } from "sveltekit-superforms";
-import { zod } from "sveltekit-superforms/adapters";
-import type { PageServerLoad } from "./$types";
-import { verifyVerificationCode } from "$lib/utils/codes";
-import { lucia } from "$lib/server/auth";
+import { codeSchema } from '$lib/validation/auth_schema';
+import { redirect, type Actions, fail } from '@sveltejs/kit';
+import { redirect as redirectFlash } from 'sveltekit-flash-message/server';
+import { message, setError, superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import type { PageServerLoad } from './$types';
+import { verifyVerificationCode } from '$lib/utils/codes';
+import { lucia } from '$lib/server/auth';
 
 export const load: PageServerLoad = async (event) => {
+	if (!event.locals.user) {
+		redirect(303, '/');
+	}
 
+	if (event.locals.user.emailVerified) {
+		redirect(303, '/');
+	}
 
-    if (!event.locals.user) {
-        redirect(303, "/");
-    }
-
-    if (event.locals.user.emailVerified) {
-        redirect(303, "/"); //TODO: redirect to their dashboard or smthing
-    }
-
-    return {
-        form: await superValidate(zod(codeSchema)),
-    };
+	return {
+		form: await superValidate(zod(codeSchema))
+	};
 };
 
 export const actions: Actions = {
+	default: async (event) => {
+		// should not be able to submit this form but just in case these checks
 
-    default: async (event) => {
+		const user = event.locals.user;
 
-        // should not be able to submit this form but just in case these checks
+		if (!user) {
+			return fail(401);
+		}
 
-        const user = event.locals.user;
+		if (user.emailVerified) {
+			return fail(401);
+		}
 
-        if (!user) {
-            return fail(401);
-        }
+		const form = await superValidate(event, zod(codeSchema));
 
-        if (user.emailVerified) {
-            return fail(401);
-        }
+		if (!form.valid) {
+			return fail(400, {
+				form
+			});
+		}
 
-        const form = await superValidate(event, zod(codeSchema));
+		const code = form.data.code;
 
-        if (!form.valid) {
-            return fail(400, {
-                form,
-            });
-        }
+		const valid = await verifyVerificationCode(user.id, code);
 
-        const code = form.data.code;
+		if (!valid) {
+			const errMsg = 'Invalid code';
+			setError(form, 'code', errMsg);
+			return message(form, {
+				type: 'error',
+				text: errMsg
+			});
+		}
 
-        const valid = await verifyVerificationCode(user.id, code);
+		await lucia.invalidateUserSessions(user.id); //make sure we invalidate the session
 
-        if (!valid) {
-            const errMsg = "Invalid code";
-            setError(form, "code", errMsg);
-            return message(form, {
-                type: "error",
-                text: errMsg
-            });
-        }
+		await db.user.update({
+			where: {
+				id: user.id
+			},
+			data: {
+				emailVerified: true
+			}
+		});
 
-        await lucia.invalidateUserSessions(user.id); //make sure we invalidate the session
-
-        await db.user.update({
-            where: {
-                id: user.id
-            },
-            data: {
-                emailVerified: true,
-            }
-        });
-
-        redirectFlash(303, "/login", {
-            type: "success",
-            richColors: true,
-            message: "Your email has been confirmed",
-        }, event);
-
-    },
-
+		redirectFlash(
+			303,
+			'/login',
+			{
+				type: 'success',
+				richColors: true,
+				message: 'Your email has been confirmed'
+			},
+			event
+		);
+	}
 };

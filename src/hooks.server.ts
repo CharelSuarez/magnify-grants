@@ -7,25 +7,6 @@ import { Role } from '@prisma/client';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
-// TODO: Implement this
-// enum ALLOWED {
-// 	ALWAYS,
-// 	HAS_USER,
-// 	IS_VERIFIED,
-// 	HAS_PROFILE,
-// }
-
-// const routes = {
-// 	login: {
-// 		route: '/login',
-// 		allowed: ALLOWED.ALWAYS
-// 	},
-// 	signup: {
-// 		route: "/signup",
-// 		allowed: ALLOWED.ALWAYS
-// 	}
-// }
-
 const alwaysAllowed = ['/login', '/signup', '/reset-password', '/applications', '/grant-preview'];
 
 // inherits from alwaysAllowed
