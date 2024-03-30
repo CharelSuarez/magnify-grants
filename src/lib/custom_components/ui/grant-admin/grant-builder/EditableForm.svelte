@@ -109,8 +109,8 @@
 
 <container class="container flex w-screen flex-col space-y-5 items-center my-20">
 	<FormElement type="header">
-		<Input bind:value={formName} placeholder={$t('form.placeholder.name')} />
-		<Input bind:value={formDescription} placeholder={$t('form.placeholder.description')} />
+		<Input bind:value={formName} placeholder={$t('form.placeholder.name')} aria-label={$t('form.placeholder.name')}/>
+		<Input bind:value={formDescription} placeholder={$t('form.placeholder.description')} aria-label={$t('form.placeholder.description')}/>
 	</FormElement>
 	{#if 'name' in errors}
 		<FormElement type="error">
@@ -131,19 +131,19 @@
 			type="field"
 		>
 			<h1 class="text-muted-foreground">{$t(`fieldType.${field.type}`)} Prompt</h1>
-			<Input placeholder={$t('form.placeholder.question')} bind:value={field.prompt} />
+			<Input placeholder={$t('form.placeholder.question')} bind:value={field.prompt} aria-label={$t('form.placeholder.question')}/>
 			{#if hasOptions(field.type)}
 				<h1 class="text-muted-foreground">{$t('form.field.options', { fieldType: field.type })}</h1>
 				<div class="flex flex-col space-y-5">
 					{#each field.options as option, j}
 						<div class="flex space-x-1 flex-row w-full h-full">
-							<Input bind:value={field.options[j]} />
-							<Button on:click={() => deleteOption(i, j)} variant="outline" size="icon">
+							<Input bind:value={field.options[j]} aria-label="Option"/>
+							<Button on:click={() => deleteOption(i, j)} variant="outline" size="icon" aria-label="Delete option">
 								<Trash2 />
 							</Button>
 						</div>
 					{/each}
-					<Button on:click={() => addOption(i)} size="icon" variant="outline">
+					<Button on:click={() => addOption(i)} size="icon" variant="outline" aria-label="Add option">
 						<PlusCircle />
 					</Button>
 				</div>
