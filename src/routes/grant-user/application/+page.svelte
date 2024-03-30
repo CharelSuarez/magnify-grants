@@ -5,6 +5,8 @@
 	import { AcceptStatus } from '../../grant-admin/applications/application-table/app-acceptance-statuses';
 	import { Button } from '$lib/components/ui/button';
 
+	import { t } from '$lib/i18n/i18n';
+
 	export let data: PageData;
 
 	let search: string;
