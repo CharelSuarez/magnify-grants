@@ -9,5 +9,4 @@ import Taskbar from '$lib/custom_components/ui/taskbar/Taskbar.svelte';
 <div class="pt-[88px]">
 	<slot/>
 </div>
-<Footer/>
 

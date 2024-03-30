@@ -61,12 +61,12 @@
 
     </BaseHeader>
 
-    <div class={`h-full`}>
+    <div class={`h-screen`}>
       <slot />
     </div>
-
+  
 </div>
-<Footer />
+
 
 <style>
 	:global(body) {
