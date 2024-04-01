@@ -48,8 +48,8 @@
 <svelte:window on:beforeunload|preventDefault />
 <svelte:head>
 	<title>
-		{$t('form.editForm')} - {formName}
-</title>
+		{$t('form.editButton')} - {formName}
+	</title>
 </svelte:head>
 
 <EditableForm bind:fields bind:formDescription bind:formName {errors}>

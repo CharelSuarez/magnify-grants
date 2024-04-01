@@ -47,24 +47,31 @@
 
 <div class="h-full flex-1 flex-col p-20 pt-10 md:flex items-center">
 	<div class="flex items-center flex-col space-y-10 w-full">
-		<div class="flex flex-row w-full">
+		<div class="flex flex-row flex-wrap justify-center w-full">
 			<div class="basis-3/4 space-y-4">
 				<h2 class="text-4xl font-bold tracking-tight">
 					<div class="flex gap-4">
 						<span>{submission.grant.title}</span>
-						<Button
-							class="items-center"
-							variant="outline"
-							href={`/grant-user/grant/${toShort(submission.grant.id)}`}
-						>
-							<ArrowUpRightFromSquare class="mr-2" />
-							Visit Grant Page
-						</Button>
+						<a href={`/grant-user/grant/${toShort(submission.grant.id)}`}>
+							<Button class="items-center" variant="outline">
+								<ArrowUpRightFromSquare class="mr-2" />
+								Visit Grant Page
+							</Button>
+						</a>
 					</div>
 				</h2>
-				<p class="text-muted-foreground w-full">
+				<p class="text-muted-foreground">
 					{submission.grant.description}
 				</p>
+				{#if userProfile}
+					<p class="text-muted-foreground">
+						{userProfile?.firstName}
+						{userProfile?.lastName}
+					</p>
+					<p class="text-muted-foreground">
+						Date of Birth: {userProfile?.dateOfBirth.toISOString().split('T')[0]}
+					</p>
+				{/if}
 				<div class="flex items-center flex-col space-y-10">
 					{#if submission.applications.length !== 0}
 						<Card.Root class="bg-secondary w-full p-6 rounded-lg">
@@ -74,48 +81,44 @@
 							</p>
 							<div class="flex justify-center w-full gap-10 items-center">
 								{#each submission.applications as app}
-									<FormCard application={app} {submission}/>
+									<FormCard application={app} {submission} />
 								{/each}
 							</div>
 						</Card.Root>
 					{/if}
 				</div>
 			</div>
-
-			{#if data && userProfile}
-				<ProfileCard classNames="basis-1/4 h-full" profile={userProfile} />
-			{/if}
 		</div>
 		{#if submission.status === ApplicationStatus.IN_PROGRESS}
-		<Separator></Separator>
-		<div class="!mt-5 space-y-2 w-fit">
-			<Input bind:value={amountToAward} placeholder={'Amount to award...'} />
-			<Slider
-				bind:value={amount}
-				max={submission.grant.rangeHigh}
-				min={submission.grant.rangeLow}
-				step={1}
-			/>
-			<div class="flex w-full justify-center gap-5 !mt-5">
-				<Button
-					class="items-center"
-					variant="destructive"
-					on:click={() => updateStatus(ApplicationStatus.REJECTED)}
-				>
-					<X class="mr-2" />
-					Deny User for Grant
-				</Button>
+			<Separator></Separator>
+			<div class="!mt-5 space-y-2 w-fit">
+				<Input bind:value={amountToAward} placeholder={'Amount to award...'} />
+				<Slider
+					bind:value={amount}
+					max={submission.grant.rangeHigh}
+					min={submission.grant.rangeLow}
+					step={1}
+				/>
+				<div class="flex w-full justify-center gap-5 !mt-5">
+					<Button
+						class="items-center"
+						variant="destructive"
+						on:click={() => updateStatus(ApplicationStatus.REJECTED)}
+					>
+						<X class="mr-2" />
+						Deny User for Grant
+					</Button>
 
-				<Button
-					class="items-center"
-					variant="outline"
-					on:click={() => updateStatus(ApplicationStatus.ACCEPTED)}
-				>
-					<Check class="mr-2" />
-					Approve User for Grant
-				</Button>
+					<Button
+						class="items-center"
+						variant="outline"
+						on:click={() => updateStatus(ApplicationStatus.ACCEPTED)}
+					>
+						<Check class="mr-2" />
+						Approve User for Grant
+					</Button>
+				</div>
 			</div>
-		</div>
-	{/if}
+		{/if}
 	</div>
 </div>

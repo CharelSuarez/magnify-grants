@@ -140,10 +140,12 @@
 
 <div>
 	<div class="flex flex-row items-center py-4 space-x-2">
-		<Button href="/grant-admin/form-builder/new" variant="outline">
-			<PlusCircle class="mr-2" />
-			{$t('form.table.new_form')}
-		</Button>
+		<a href="/grant-admin/form-builder/new">
+			<Button variant="outline">
+				<PlusCircle class="mr-2" />
+				{$t('form.table.new_form')}
+			</Button>
+		</a>
 		<Input
 			bind:value={$filterValue}
 			class="max-w-sm"

@@ -22,8 +22,8 @@
 		{#if doc.prompt}
 			<Card.CardDescription class="font-bold break-all">{doc.prompt}</Card.CardDescription>
 		{/if}
-		<Button class="w-full break-all" href={doc.url}
-			>{$t('grant.application.download_document')}</Button
-		>
+		<a href={doc.url} target="_blank">
+			<Button class="w-full break-all">{$t('grant.application.download_document')}</Button>
+		</a>
 	</Card.Footer>
 </Card.Root>

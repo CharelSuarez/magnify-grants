@@ -62,27 +62,15 @@
 				on:click={() => goto(`/grant-user/grant/${toShort(grantId)}/form/${toShort(form.id)}`)}
 			>
 				{#if form.application}
-					<span>{$t('grant.application.edit_form')}</span>
+					{#if form.application.complete}
+						<span>{$t('grant.application.open_form')}</span>
+					{:else}
+						<span>{$t('grant.application.edit_form')}</span>
+					{/if}
 				{:else}
 					<span>{$t('grant.application.open_form')}</span>
 				{/if}
 			</Button>
 		</a>
-		{#if form.application}
-			<a
-				class="w-fit"
-				href={`/grant-user/application/${toShort(appId)}/form/${toShort(form.id)}`}
-				target="_blank"
-				on:click={(e) => e.preventDefault()}
-			>
-				<Button
-					class="w-10 p-0"
-					on:click={() =>
-						goto(`/grant-user/application/${toShort(appId)}/form/${toShort(form.id)}`)}
-				>
-					<Eye></Eye>
-				</Button>
-			</a>
-		{/if}
 	</Card.Footer>
 </Card.Root>

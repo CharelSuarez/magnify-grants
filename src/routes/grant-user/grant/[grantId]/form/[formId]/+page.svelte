@@ -7,13 +7,17 @@
 	import { t } from '$lib/i18n/i18n';
 	import { superForm, type Infer } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
-	import { getFormDraftSchema, getFormSubmissionSchema, type FormMessage } from '$lib/validation/form_schema';
+	import {
+		getFormDraftSchema,
+		getFormSubmissionSchema,
+		type FormMessage
+	} from '$lib/validation/form_schema';
 	import FormField from './FormField.svelte';
 	import { Loader2 } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { onMount } from 'svelte';
 	import * as Alert from '$lib/components/ui/alert/index.js';
-	import {AlertCircle, CheckCircle2} from 'lucide-svelte';
+	import { AlertCircle, CheckCircle2 } from 'lucide-svelte';
 	import Save from 'lucide-svelte/icons/save';
 	import ExternalLink from 'lucide-svelte/icons/external-link';
 	import { goto } from '$app/navigation';
@@ -116,7 +120,7 @@
 	>
 		<div class="grow h-1/2" />
 		{#if draft}
-			<Alert.Root variant='destructive'>
+			<Alert.Root variant="destructive">
 				<AlertCircle class="h-4 w-4"></AlertCircle>
 				<Alert.Title>Note</Alert.Title>
 				<Alert.Description>{$t('grant.application.form.incomplete')}</Alert.Description>
@@ -158,14 +162,14 @@
 				{/if}
 				<Save class="h-4 w-4"></Save>
 				{$t('grant.application.form.save_form')}
-				{#if lastSaved}
-					<Badge class="text-md pt-1 pb-1"
-						>{$t('grant.application.form.saved_at', {
-							time: lastSaved.toLocaleTimeString(undefined, {timeStyle: 'short'})
-						})}</Badge
-					>
-				{/if}
 			</Button>
+			{#if lastSaved}
+				<Badge class="text-md self-center pt-1 pb-1"
+					>{$t('grant.application.form.saved_at', {
+						time: lastSaved.toLocaleTimeString(undefined, { timeStyle: 'short' })
+					})}</Badge
+				>
+			{/if}
 		{/if}
 		<a
 			class="w-full"

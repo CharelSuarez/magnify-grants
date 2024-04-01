@@ -18,25 +18,17 @@
 </script>
 
 <div class="flex flex-row gap-2 w-full">
-	<Button
-		href={`/grant-admin/form-builder/${toShort(id)}/view`}
-		variant="ghost"
-		title="View Form Preview"
-		size="icon"
-		aria-label="View form preview"
-	>
-		<Eye />
-	</Button>
+	<a href={`/grant-admin/form-builder/${toShort(id)}/view`}>
+		<Button variant="ghost" title="View Form Preview" size="icon" aria-label="View form preview">
+			<Eye />
+		</Button>
+	</a>
 
-	<Button
-		variant="ghost"
-		href={`/grant-admin/form-builder/${toShort(id)}/edit`}
-		title="Edit Form"
-		size="icon"
-		aria-label="Edit form"
-	>
-		<Pencil />
-	</Button>
+	<a href={`/grant-admin/form-builder/${toShort(id)}/edit`}>
+		<Button variant="ghost" title="Edit Form" size="icon" aria-label="Edit form">
+			<Pencil />
+		</Button>
+	</a>
 
 	<AlertDialog.Root>
 		<AlertDialog.Trigger>

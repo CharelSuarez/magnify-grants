@@ -4,14 +4,7 @@
 	import { toShort } from '$lib/utils/url';
 	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
-	import {
-		ExternalLink,
-		BarChartBig,
-		EyeOff,
-		Rocket,
-		Trash2,
-		Users
-	} from 'lucide-svelte';
+	import { ExternalLink, BarChartBig, EyeOff, Rocket, Trash2, Users } from 'lucide-svelte';
 	import { t } from '$lib/i18n/i18n';
 
 	const dispatch = createEventDispatcher();
@@ -40,30 +33,24 @@
 </script>
 
 <div class="flex flex-row space-x-2 w-full">
-	<Button
-		title="View Grant Submissions"
-		href={`/grant-admin/applications/?grant=${toShort(id)}`}
-		variant="ghost"
-		size="icon"
-	>
-		<Users />
-	</Button>
-	<Button
-		title="View Grant Statistics"
-		href={`/grant-admin/grants/statistics/${toShort(id)}`}
-		variant="ghost"
-		size="icon"
-	>
-		<BarChartBig />
-	</Button>
-		<Button
-		title="View Grant Page"
-		href={`/grant-user/grant/${toShort(id)}`}
-		variant="ghost"
-		size="icon"
-	>
-		<ExternalLink />
-	</Button>
+	<a href={`/grant-admin/applications/?grant=${toShort(id)}`}
+		><Button title="View Grant Submissions" variant="ghost" size="icon">
+			<Users />
+		</Button>
+	</a>
+
+	<a href={`/grant-admin/grants/statistics/${toShort(id)}`}
+		><Button title="View Grant Statistics" variant="ghost" size="icon">
+			<BarChartBig />
+		</Button>
+	</a>
+
+	<a href={`/grant-user/grant/${toShort(id)}`}
+		><Button title="View Grant Page" variant="ghost" size="icon">
+			<ExternalLink />
+		</Button>
+	</a>
+
 	{#if published}
 		<Button title="Unpublish Grant" on:click={unpublishGrant} variant="ghost" size="icon">
 			<EyeOff />
