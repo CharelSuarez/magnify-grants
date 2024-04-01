@@ -35,7 +35,7 @@
 	);
 </script>
 
-<main class="flex flex-col min-h-screen p-12 pt-4">
+<main class="flex flex-col min-h-full p-12 py-4">
 	<div class="flex text-[3rem] font-satoshi font-bold mb-4">
 		{$t('grant.myapps.my_applications')}
 	</div>

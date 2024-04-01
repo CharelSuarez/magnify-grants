@@ -37,8 +37,7 @@
 	<div
 		class="flex items-center md:items-start flex-col md:flex-row md:flex-1 justify-between h-full w-full gap-10 mt-2"
 	>
-		<GrantTable {applications} class="w-4/5" />
-		<div class="flex md:hidden w-full flex-grow" />
-		<GrantTableFilter class="h-min items-center" data={data.filter} grants={data.grants} />
+		<GrantTable {applications} class="w-full" />
+		<GrantTableFilter class="h-fit items-center" data={data.filter} grants={data.grants} />
 	</div>
 </div>

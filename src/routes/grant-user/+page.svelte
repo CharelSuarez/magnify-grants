@@ -30,7 +30,7 @@
 
 </script>
 
-<main class="flex-col min-h-screen h-auto font-satoshi p-12 pt-4">
+<main class="flex-col min-h-full h-auto font-satoshi p-12 py-4">
 	<div class="flex text-[3rem] font-bold mb-4">{$t('page.title.postedGrants')}</div>
 	<div class="flex mb-8 w-full flex-col items-center">
 		<div class="flex w-full">

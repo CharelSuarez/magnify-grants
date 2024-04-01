@@ -20,8 +20,17 @@ const translate = (locale: string, key: string | number, vars: {[x: string]: str
 
 	// Grab the translation from the translations object.
 	let text = translations[locale][key];
+	if (!text && locale !== "en") {
+		text = translations["en"][key];
+		if (text) {
+			console.warn(`No translation found for ${locale}.${key}, using default en.`);
+		}
+	}
 
-	if (!text) throw new Error(`no translation found for ${locale}.${key}`);
+	if (!text) {
+		console.warn(`No translation found for ${locale}.${key}, using error string.`);
+		return key.toString();
+	}
 
 	// Replace any passed in variables in the translation string.
 	Object.keys(vars).map((k) => {

@@ -5,12 +5,12 @@
 	import { createEventDispatcher } from 'svelte';
 	import { goto } from '$app/navigation';
 	import {
-		ArrowUpRightFromSquare,
-		BarChart4,
+		ExternalLink,
+		BarChartBig,
 		EyeOff,
-		LayoutGrid,
 		Rocket,
-		Trash2
+		Trash2,
+		Users
 	} from 'lucide-svelte';
 	import { t } from '$lib/i18n/i18n';
 
@@ -41,30 +41,28 @@
 
 <div class="flex flex-row space-x-2 w-full">
 	<Button
-		title="View Grant Page"
-		href={`/grant-user/grant/${toShort(id)}`}
-		variant="ghost"
-		size="icon"
-	>
-		<ArrowUpRightFromSquare />
-	</Button>
-
-	<Button
 		title="View Grant Submissions"
 		href={`/grant-admin/applications/?grant=${toShort(id)}`}
 		variant="ghost"
 		size="icon"
 	>
-		<LayoutGrid />
+		<Users />
 	</Button>
-
 	<Button
 		title="View Grant Statistics"
 		href={`/grant-admin/grants/statistics/${toShort(id)}`}
 		variant="ghost"
 		size="icon"
 	>
-		<BarChart4 />
+		<BarChartBig />
+	</Button>
+		<Button
+		title="View Grant Page"
+		href={`/grant-user/grant/${toShort(id)}`}
+		variant="ghost"
+		size="icon"
+	>
+		<ExternalLink />
 	</Button>
 	{#if published}
 		<Button title="Unpublish Grant" on:click={unpublishGrant} variant="ghost" size="icon">

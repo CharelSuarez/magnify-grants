@@ -24,6 +24,7 @@
 	import { page } from '$app/stores';
 	import { t } from '$lib/i18n/i18n';
 	import { toast } from 'svelte-sonner';
+	import TablePublishedCell from './TablePublishedCell.svelte';
 
 	export let grants: Grant[];
 
@@ -85,6 +86,11 @@
 		table.column({
 			accessor: 'published',
 			header: 'Published',
+			cell: ({ value }) => {
+				return createRender(TablePublishedCell, {
+					published: value
+				});
+			},
 			plugins: {
 				filter: {
 					exclude: true
