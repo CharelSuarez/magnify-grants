@@ -31,12 +31,11 @@
 		{#if field.type == FieldType.ShortAnswer}
 			<div class="flex flex-col items-center">
                 <Input bind:value={value} disabled={true}
-                type="text" name={field.id} placeholder={''}
-                />
+                type="text" name={field.id} placeholder={''} class='!opacity-100'/>
 			</div>
 		{:else if field.type == FieldType.Paragraph}
 			<div class="flex flex-col items-center">
-                <Textarea bind:value={value} disabled={true} class="min-h-min"
+                <Textarea bind:value={value} disabled={true} class="min-h-min !opacity-100"
                     name={field.id} placeholder={'Type a paragraph here.'}>
                 </Textarea>
 			</div>
@@ -44,7 +43,7 @@
             <RadioGroup.Root class="flex gap-4 items-center h-10" bind:value={value} disabled={true}>
                 {#each field.options as option}
                     <div class="flex items-center gap-2 mt-2">
-                        <RadioGroup.Item class="h-5 w-5" value={option} disabled={true}/>
+                        <RadioGroup.Item class="h-5 w-5 !opacity-100" value={option} disabled={true}/>
                         <p class="font-normal">{option}</p>
                     </div>
                 {/each}
@@ -79,7 +78,7 @@
             <RadioGroup.Root class="flex gap-4 items-center h-10" value={value.toString()} disabled={true}>
                 {#each {length: 10} as _, i}
                     <div class="flex items-center gap-2 mt-2">
-                        <RadioGroup.Item class="h-5 w-5" value={(i + 1).toString()}/>
+                        <RadioGroup.Item class="h-5 w-5 !opacity-100" value={(i + 1).toString()}/>
                         <p class="font-normal">{i+1}</p>
                     </div>
                 {/each}
@@ -90,7 +89,7 @@
             </div>
         {:else if field.type == FieldType.Time}
             <div class="flex gap-4 items-center h-10">
-                <Input bind:value={value} disabled={true} type="text"
+                <Input bind:value={value} disabled={true} type="text" class='!opacity-100'
                     name={field.id} placeholder={'Enter a time in the format HH:MM AM/PM.'}/>
             </div>
 		{/if}

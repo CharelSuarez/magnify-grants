@@ -81,8 +81,7 @@ export const formDocSchema = z.object({
 				),
 			id: z.string()
 		})
-	),
-	grantId: z.string()
+	)
 });
 
 export type RequiredDocSchema = typeof requiredDocSchema;

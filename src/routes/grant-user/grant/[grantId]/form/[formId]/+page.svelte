@@ -5,19 +5,18 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { toShort } from '$lib/utils/url';
 	import { t } from '$lib/i18n/i18n';
-	import { superForm, type Infer, type SuperValidated } from 'sveltekit-superforms';
+	import { superForm, type Infer } from 'sveltekit-superforms';
 	import { zod, zodClient } from 'sveltekit-superforms/adapters';
-	import { getFormDraftSchema, getFormSubmissionSchema } from '$lib/validation/form_schema';
+	import { getFormDraftSchema, getFormSubmissionSchema, type FormMessage } from '$lib/validation/form_schema';
 	import FormField from './FormField.svelte';
 	import { Loader2 } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { onMount } from 'svelte';
 	import * as Alert from '$lib/components/ui/alert/index.js';
-	import AlertCircle from 'lucide-svelte/icons/alert-circle';
+	import {AlertCircle, CheckCircle2} from 'lucide-svelte';
 	import Save from 'lucide-svelte/icons/save';
 	import ExternalLink from 'lucide-svelte/icons/external-link';
 	import { goto } from '$app/navigation';
-	import * as Form from '$lib/components/ui/form';
 
 	export let data: PageData;
 
@@ -29,36 +28,50 @@
 	const formDraftSchema = getFormDraftSchema(form.fields);
 
 	let isLoading = false;
-	let filterForm = superForm(data.superform, {
+	let filterForm = superForm<Infer<typeof formSchema>, FormMessage>(data.superform, {
 		resetForm: false,
 		dataType: 'json',
 		validators: zodClient(formSchema),
 		onSubmit: () => {
+			if (!data.editable) return false;
+
 			lastModified = Date.now();
 			lastSaved = new Date();
 			isLoading = true;
 		},
 		onResult: () => {
 			if (data.editable) {
-				options.validators = zodClient(formSchema);
+				options.validators = zod(formSchema);
 				setTimeout(() => (isLoading = false), 250);
-				toast.success($t('grant.application.form.saved_successfully'));
 			}
 		},
 		onError: (error) => {
 			if (data.editable) {
-				options.validators = zodClient(formSchema);
+				options.validators = zod(formSchema);
 				toast.error($t('grant.application.form.save_failed'));
 				setTimeout(() => (isLoading = false), 250);
 			}
 		}
 	});
 
-	const { form: formData, enhance, allErrors, options } = filterForm;
+	const { form: formData, enhance, options, message } = filterForm;
 
-	let errors = false;
-	allErrors.subscribe((value) => {
-		errors = value.length > 0;
+	let draft = false;
+	let submitted = false;
+
+	message.subscribe((value) => {
+		if (!value) return;
+
+		if (value.status === 'draft') {
+			toast.success($t('grant.application.form.draft_submitted'));
+			draft = true;
+		} else if (value.status === 'submitted') {
+			toast.success($t('grant.application.form.saved_successfully'));
+			draft = false;
+			submitted = true;
+		} else {
+			toast.error(value.text);
+		}
 	});
 
 	let mounted = false;
@@ -71,7 +84,7 @@
 
 		// Subscribe to form data changes, ignoring during submission.
 		formData.subscribe((value) => {
-			if (!isLoading) {
+			if (!isLoading && data.editable) {
 				lastModified = Date.now();
 				setTimeout(() => {
 					if (Date.now() - lastModified <= 4000) {
@@ -102,11 +115,17 @@
 		h-full items-start space-y-4 fixed w-1/4 bottom-0 left-0 p-16"
 	>
 		<div class="grow h-1/2" />
-		{#if errors}
-			<Alert.Root variant="destructive">
+		{#if draft}
+			<Alert.Root variant='destructive'>
 				<AlertCircle class="h-4 w-4"></AlertCircle>
 				<Alert.Title>Note</Alert.Title>
 				<Alert.Description>{$t('grant.application.form.incomplete')}</Alert.Description>
+			</Alert.Root>
+		{:else if submitted}
+			<Alert.Root>
+				<CheckCircle2 class="h-4 w-4"></CheckCircle2>
+				<Alert.Title>Complete</Alert.Title>
+				<Alert.Description>{$t('grant.application.form.submitted')}</Alert.Description>
 			</Alert.Root>
 		{/if}
 		<div class="flex gap-2">
@@ -142,8 +161,7 @@
 				{#if lastSaved}
 					<Badge class="text-md pt-1 pb-1"
 						>{$t('grant.application.form.saved_at', {
-							hours: lastSaved.getHours(),
-							minutes: lastSaved.getMinutes()
+							time: lastSaved.toLocaleTimeString(undefined, {timeStyle: 'short'})
 						})}</Badge
 					>
 				{/if}

@@ -1,14 +1,6 @@
 <script lang="ts">
     import Badge from '$lib/components/ui/badge/badge.svelte';
 	import CheckCircle from 'lucide-svelte/icons/check-circle';
-    import CircleAlert from 'lucide-svelte/icons/alert-circle';
-
-
-    export let complete: boolean;
-
-    // $: icon = complete ? CheckCircle : CircleAlert;
-    // $: color = complete ? 'bg-green-500' : 'bg-yellow-500';
-
 </script>
 
 <Badge class={`flex gap-2 max-h-12 px-4 py-2 bg-green-500 hover:bg-green-500 text-[1rem] font-satoshi font-medium w-fit`}>

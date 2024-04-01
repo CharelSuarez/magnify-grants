@@ -22,15 +22,17 @@ export const load: PageServerLoad = async (event) => {
 			);
 		}
 
+		const submissionId = fromShort(event.params.submissionId);
 		const formId = fromShort(event.params.formId);
-		const appId = fromShort(event.params.appId);
 
-		const possibleApplication = await db.application.findFirst({
+		const possibleApp = await db.application.findFirst({
 			where: {
-				id: appId
+				submissionId,
+				formId
 			},
 			select: {
-				userId: true,
+				id: true,
+				complete: true,
 				grant: {
 					select: {
 						id: true,
@@ -39,10 +41,12 @@ export const load: PageServerLoad = async (event) => {
 						organizationId: true
 					}
 				}
+			},
+			orderBy: {
+				updated: 'desc'
 			}
 		});
-
-		if (!possibleApplication) {
+		if (!possibleApp) {
 			redirect(
 				307,
 				'/grant-user',
@@ -54,11 +58,12 @@ export const load: PageServerLoad = async (event) => {
 				event
 			);
 		}
+		const app = possibleApp;
 
-		// Check that user is the grant owner or the grant's org admin.
-		const grant = possibleApplication.grant;
+		// Check that user is the grant's owner.
+		const grant = app.grant;
 		const organizationId = (await event.locals.getGrantAdmin())?.organizationId;
-		if (possibleApplication.userId !== user.id && organizationId !== grant.organizationId) {
+		if (organizationId !== grant.organizationId) {
 			redirect(
 				307,
 				'/grant-user',
@@ -88,7 +93,6 @@ export const load: PageServerLoad = async (event) => {
 				}
 			}
 		});
-
 		if (!possibleForm) {
 			redirect(
 				307,
@@ -101,37 +105,8 @@ export const load: PageServerLoad = async (event) => {
 				event
 			);
 		}
-
 		const form = possibleForm.form;
 
-		// Find latest application.
-		const possibleApp = await db.application.findFirst({
-			where: {
-				id: appId
-			},
-			orderBy: {
-				updated: 'desc'
-			},
-			select: {
-				id: true,
-				complete: true
-			}
-		});
-
-		if (!possibleApp) {
-			redirect(
-				307,
-				'/grant-user',
-				{
-					richColors: true,
-					type: 'error',
-					message: 'Application not found'
-				},
-				event
-			);
-		}
-
-		const app = possibleApp;
 		const fields = await db.applicationEntry.findMany({
 			where: {
 				appId: app.id
@@ -161,6 +136,8 @@ export const load: PageServerLoad = async (event) => {
 		const { data: bannerData } = await getBannerURL(grant.id, event.locals.supabase);
 
 		return {
+			submissionId,
+			app,
 			form,
 			grant,
 			formData,

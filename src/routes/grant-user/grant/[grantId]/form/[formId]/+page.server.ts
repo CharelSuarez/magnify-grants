@@ -5,8 +5,8 @@ import { fromShort } from '$lib/utils/url';
 import { FieldType, type Field, type Form } from '@prisma/client';
 import { z, type ZodTypeAny } from 'zod';
 import { zod } from 'sveltekit-superforms/adapters';
-import { superValidate } from 'sveltekit-superforms';
-import { getFormDraftSchema, getFormSubmissionSchema } from '$lib/validation/form_schema';
+import { message, superValidate, type Infer } from 'sveltekit-superforms';
+import { getFormDraftSchema, getFormSubmissionSchema, type FormMessage } from '$lib/validation/form_schema';
 import { fail, type Actions, error } from '@sveltejs/kit';
 import { getBannerURL } from '$lib/utils/downloads';
 
@@ -89,6 +89,9 @@ export const load: PageServerLoad = async (event) => {
 				id: true
 			}
 		});
+
+		let formData = {};
+
 		if (possibleApp) {
 			const app = possibleApp;
 			let fields = await db.applicationEntry.findMany({
@@ -111,7 +114,7 @@ export const load: PageServerLoad = async (event) => {
 				&& field.value !== "");
 
 			// Parse application entries into their objects.
-			const formData = Object.fromEntries(
+			formData = Object.fromEntries(
 				fields.map((field) => {
 					const value = JSON.parse(field.value);
 					// JSON can't decode dates properly, embarassing really...
@@ -121,21 +124,11 @@ export const load: PageServerLoad = async (event) => {
 					return [field.fieldId, value];
 				})
 			);
-
-			// Use the draft schema for the first load, since this could be a draft.
-			const formSchema = getFormDraftSchema(formOnGrants.form.fields);
-			const superform = await superValidate(formData, zod(formSchema));
-
-			return {
-				editable: appCount === 0,
-				formOnGrants,
-				superform,
-				banner: bannerData ? bannerData.signedUrl : null
-			};
 		}
 
-		const formSchema = getFormSubmissionSchema(formOnGrants.form.fields);
-		const superform = await superValidate(zod(formSchema));
+		// Always use draft schema, since this could be a draft or incomplete.
+		const formSchema = getFormDraftSchema(formOnGrants.form.fields);
+		const superform = await superValidate(formData, zod(formSchema));
 
 		return {
 			editable: appCount === 0,
@@ -205,7 +198,7 @@ export const actions: Actions = {
 
 		// Check if the form matches the form's schema.
 		let formSchema = getFormSubmissionSchema(form.fields);
-		let superform = await superValidate(requestForm, zod(formSchema));
+		let superform = await superValidate<Infer<typeof formSchema>, FormMessage>(requestForm, zod(formSchema));
 		let formData = superform.data;
 
 		let complete = true;
@@ -280,6 +273,10 @@ export const actions: Actions = {
 			)
 		);
 
-		return { superform };
+		if (complete) {
+			return message(superform, {status: 'submitted', text: "Form submitted successfully!"});
+		} else {
+			return message(superform, {status: 'draft', text: "Draft saved successfully!"});
+		}
 	}
 };

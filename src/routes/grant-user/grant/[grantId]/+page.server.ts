@@ -11,11 +11,11 @@ import { uploadRequiredDocument } from '$lib/utils/uploads';
 
 export const load: PageServerLoad = async (event) => {
 	try {
-		const id = fromShort(event.params.grantId);
+		const grantId = fromShort(event.params.grantId);
 
 		const grant = await db.grant.findFirst({
 			where: {
-				id: id
+				id: grantId
 			},
 			include: {
 				organization: {
@@ -163,12 +163,12 @@ export const actions: Actions = {
 		}
 
 		try {
-			const data = form.data;
+			const grantId = fromShort(event.params.grantId);
 
 			const appCount = await db.submission.count({
 				where: {
 					userId: event.locals.user?.id,
-					grantId: data.grantId
+					grantId
 				}
 			});
 
@@ -183,7 +183,7 @@ export const actions: Actions = {
 
 			const forms = await db.formsOnGrants.findMany({
 				where: {
-					grantId: data.grantId,
+					grantId,
 					form: {
 						applications: {
 							some: {
@@ -226,6 +226,7 @@ export const actions: Actions = {
 				}
 			}
 
+			const data = form.data;
 			for (const doc of data.documents) {
 				if (doc.file) {
 					const { data, error } = await uploadRequiredDocument(
@@ -255,7 +256,7 @@ export const actions: Actions = {
 					},
 					grant: {
 						connect: {
-							id: data.grantId
+							id: grantId
 						}
 					},
 					applications: {
@@ -270,7 +271,7 @@ export const actions: Actions = {
 
 		redirect(
 			301,
-			'/grant-user/',
+			'/grant-user/application',
 			{
 				type: 'success',
 				message: 'Successfully submitted application',

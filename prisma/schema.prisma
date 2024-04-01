@@ -196,7 +196,7 @@ model Application {
   complete       Boolean            @default(false)
   entries        ApplicationEntry[]
   updated        DateTime           @default(now())
-  submission     Submission?        @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  submission     Submission?        @relation(fields: [submissionId], references: [id], onDelete: SetNull)
   submissionId   String?            @db.Uuid
 
   @@unique([grantId, userId, formId, submissionId])

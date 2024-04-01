@@ -237,10 +237,11 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.application.form.select_option_placeholder': 'Select an option',
 		'grant.application.form.enter_time_placeholder': 'Enter a time in the format HH:MM AM/PM',
 		'grant.application.form.saved_successfully': 'The form has been saved!',
+		'grant.application.form.draft_submitted': 'A draft of the form has been saved!',
 		'grant.application.form.save_failed': 'Failed to save form',
 		'grant.application.form.incomplete':
-			'The form is incomplete, but can still be saved as a draft.',
-		'grant.application.form.saved_at': 'Saved at {{hours}}:{{minutes}}',
+			'The form is incomplete, but has been saved as a draft.',
+		'grant.application.form.saved_at': 'Saved at {{time}}',
 		'grant.application.form.save_form': 'Save Form',
 		'grant.application.form.return_to_grant': 'Return to Grant',
 		'grant.new.add_form': 'Add form',
@@ -283,7 +284,9 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.application.noResults': 'No results found',
 		'form.grant.noTitle': 'Unknown',
 		'form.edit': 'Edit form',
-		'form': "FORM"
+		'form': "FORM",
+		'grant.application.form.submitted':
+			'The form been completed successfully!\nPlease return to the grant page to continue your application.',
 	},
 	fr: {
 		'homepage.title': '¡Hola Mundo!',
@@ -519,10 +522,11 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.application.form.select_option_placeholder': 'Sélectionnez une option',
 		'grant.application.form.enter_time_placeholder': 'Entrez une heure au format HH:MM AM/PM',
 		'grant.application.form.saved_successfully': 'Le formulaire a été enregistré !',
+		'grant.application.form.draft_submitted': 'Un brouillon du formulaire a été enregistré !',
 		'grant.application.form.save_failed': "Échec de l'enregistrement du formulaire",
 		'grant.application.form.incomplete':
 			'Le formulaire est incomplet, mais peut encore être enregistré comme brouillon.',
-		'grant.application.form.saved_at': 'Enregistré à {{hours}}:{{minutes}}',
+		'grant.application.form.saved_at': 'Enregistré à {{time}}',
 		'grant.application.form.save_form': 'Enregistrer le formulaire',
 		'grant.application.form.return_to_grant': 'Retourner à la subvention',
 		'grant.new.grant_name_title': 'Nom/Titre de la subvention',
@@ -568,7 +572,9 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.application.noResults': 'Aucun résultat trouvé',
 		'form.grant.noTitle': 'Inconnu',
 		'form.edit': 'Modifier le formulaire',
-		'form': "FORMULAIRE"
+		'form': "FORMULAIRE",
+		'grant.application.form.submitted':
+			'Le formulaire a été rempli avec succès !\nVeuillez revenir à la page de la subvention pour continuer votre demande.',
 	},
 
 	es: {
@@ -806,10 +812,11 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.application.form.select_option_placeholder': 'Seleccione una opción',
 		'grant.application.form.enter_time_placeholder': 'Ingrese una hora en el formato HH:MM AM/PM',
 		'grant.application.form.saved_successfully': '¡El formulario se ha guardado!',
+		'grant.application.form.draft_submitted': '¡Se ha guardado un borrador del formulario!',
 		'grant.application.form.save_failed': 'Error al guardar el formulario',
 		'grant.application.form.incomplete':
 			'El formulario está incompleto, pero aún se puede guardar como borrador.',
-		'grant.application.form.saved_at': 'Guardado a las {{hours}}:{{minutes}}',
+		'grant.application.form.saved_at': 'Guardado a las {{time}}',
 		'grant.application.form.save_form': 'Guardar formulario',
 		'grant.application.form.return_to_grant': 'Volver a la subvención',
 		'grant.new.grant_name_title': 'Nombre/Título de la subvención',
@@ -852,7 +859,9 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		'grant.myapps.view_by': 'Ver por',
 		'grant.myapps.submission_date': 'Fecha de envío',
 		'grant.application.noResults': 'No se encontraron resultados',
-		'form.grant.noTitle': 'Desconocido'
+		'form.grant.noTitle': 'Desconocido',
+		'grant.application.form.submitted':
+			'¡El formulario se ha completado con éxito!\nVuelva a la página de subvención para continuar con su solicitud.',
 	},
 	zh: {
 		"homepage.title": "你好，世界！",
@@ -1083,9 +1092,10 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"grant.application.form.select_option_placeholder": "选择一个选项",
 		"grant.application.form.enter_time_placeholder": "按 HH:MM AM/PM 格式输入时间",
 		"grant.application.form.saved_successfully": "表单已保存！",
+		"grant.application.form.draft_submitted": "表单草稿已保存！",
 		"grant.application.form.save_failed": "表单保存失败",
 		"grant.application.form.incomplete": "表单不完整，但仍可作为草稿保存。",
-		"grant.application.form.saved_at": "保存于 {{hours}}:{{minutes}}",
+		"grant.application.form.saved_at": "保存于 {{time}}",
 		"grant.application.form.save_form": "保存表单",
 		"grant.application.form.return_to_grant": "返回到赠款",
 		"grant.new.add_form": "添加表单",
@@ -1120,7 +1130,9 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"grant.myapps.search_submissions": "搜索提交物",
 		"grant.myapps.view_by": "查看方式",
 		"grant.myapps.submission_date": "提交日期",
-		"grant.application.noResults": "未找到结果"
+		"grant.application.noResults": "未找到结果",
+		'grant.application.form.submitted':
+			'表单已成功提交！\n返回赠款页面继续申请。',
 	},
 	ar: {
 		"homepage.title": "مرحباً بالعالم!",
@@ -1351,9 +1363,10 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"grant.application.form.select_option_placeholder": "اختر خيارًا",
 		"grant.application.form.enter_time_placeholder": "أدخل الوقت بتنسيق HH:MM ص/م",
 		"grant.application.form.saved_successfully": "تم حفظ النموذج بنجاح",
+		"grant.application.form.draft_submitted": "تم حفظ مسودة النموذج بنجاح",
 		"grant.application.form.save_failed": "فشل في حفظ النموذج",
 		"grant.application.form.incomplete": "النموذج غير مكتمل، ولكن يمكن حفظه كمسودة.",
-		"grant.application.form.saved_at": "تم الحفظ في {{hours}}:{{minutes}}",
+		"grant.application.form.saved_at": "تم الحفظ في {{time}}",
 		"grant.application.form.save_form": "حفظ النموذج",
 		"grant.application.form.return_to_grant": "العودة إلى المنحة",
 		"grant.new.add_form": "إضافة نموذج",
@@ -1388,6 +1401,8 @@ export const translations: { [locale: string]: { [key: string]: string } } = {
 		"grant.myapps.search_submissions": "البحث عن التقديمات",
 		"grant.myapps.view_by": "عرض بواسطة",
 		"grant.myapps.submission_date": "تاريخ التقديم",
-		"grant.application.noResults": "لم يتم العثور على نتائج"
+		"grant.application.noResults": "لم يتم العثور على نتائج",
+		'grant.application.form.submitted':
+			'تم تقديم النموذج بنجاح!\nالرجاء العودة إلى صفحة المنح لمتابعة التقديم.',
 	}
 };

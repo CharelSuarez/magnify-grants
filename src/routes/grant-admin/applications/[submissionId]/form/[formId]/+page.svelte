@@ -18,6 +18,8 @@
 	const form = data.form;
 	const grant = data.grant;
 	const formData = data.formData;
+	const app = data.app;
+	const submissionId = data.submissionId;
 </script>
 
 <div
@@ -28,13 +30,6 @@
 		class="min-h-screen hidden basis-1/4 flex-grow-0 md:flex flex-col justify-end
 		h-full items-start space-y-4 fixed w-1/4 bottom-0 left-0 p-16"
 	>
-		<!-- <Alert.Root>
-			<AlertCircle class="h-4 w-4"></AlertCircle>
-			<Alert.Title>Note</Alert.Title>
-			<Alert.Description
-				>This form has been submitted, but can still be viewed.</Alert.Description
-			>
-		</Alert.Root> -->
 		<div class="flex gap-2">
 			<Badge class="text-md mt-1" variant="outline">GRANT</Badge>
 			<h2 class="text-2xl font-bold tracking-tight">{grant?.title || $t('form.grant.noTitle')}</h2>
@@ -51,11 +46,11 @@
 			</Card.Root>
 		{/if}
 		<div class="flex justify-center w-full">
-			<CompleteStatus complete={form.complete}></CompleteStatus>
+			<CompleteStatus></CompleteStatus>
 		</div>
 		<a
 			class="w-full"
-			href={`/grant-user/grant/${toShort(grant.id)}/form/${toShort(form.id)}`}
+			href={`/grant-admin/applications/${toShort(submissionId)}`}
 			on:click={(e) => e.preventDefault()}
 			target="_blank"
 		>
@@ -63,29 +58,9 @@
 				class="w-full text-md gap-2"
 				disabled={!grant}
 				on:click={() => {
-					goto(`/grant-user/grant/${toShort(grant.id)}/form/${toShort(form.id)}`);
+					goto(`/grant-admin/applications/${toShort(submissionId)}`);
 				}}
 				size="lg"
-				variant="secondary"
-			>
-				<Pencil class="h-4 w-4"></Pencil>
-				<span>{$t('form.edit')}</span>
-			</Button>
-		</a>
-		<a
-			class="w-full"
-			href={`/grant-user/grant/${!grant ? '' : toShort(grant.id)}`}
-			on:click={(e) => e.preventDefault()}
-			target="_blank"
-		>
-			<Button
-				class="w-full text-md gap-2"
-				disabled={!grant}
-				on:click={() => {
-					goto(`/grant-user/grant/${!grant ? '' : toShort(grant.id)}`);
-				}}
-				size="lg"
-				variant="secondary"
 			>
 				<ExternalLink class="h-4 w-4"></ExternalLink>
 				<span>{$t('grant.form.return')}</span>

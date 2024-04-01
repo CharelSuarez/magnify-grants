@@ -66,8 +66,6 @@
 
 	const { form: formData, enhance } = form;
 
-	$formData.grantId = data.grant.id;
-
 	let disabled = true;
 
 	$: $formData, (disabled = !isComplete());
@@ -168,20 +166,18 @@
 					<p class="tracking-tight text-center mb-8 text-muted-foreground">
 						{$t('grant.application.upload_documentation')}
 					</p>
-					<form method="POST" enctype="multipart/form-data" id="reqDoc" use:enhance>
-						<Form.Fieldset {form} name="documents">
-							<Form.FieldErrors />
-							<div class="flex justify-center w-full gap-10 items-center">
-								{#each data.grant.requiredDocuments as doc}
-									<RequiredDocumentation
-										{submitted}
-										on:uploaded={(e) => addFile(e, doc.id)}
-										fieldName={doc.prompt}
-									/>
-								{/each}
-							</div>
-						</Form.Fieldset>
-					</form>
+					<Form.Fieldset {form} name="documents">
+						<Form.FieldErrors />
+						<div class="flex justify-center w-full gap-10 items-center">
+							{#each data.grant.requiredDocuments as doc}
+								<RequiredDocumentation
+									{submitted}
+									on:uploaded={(e) => addFile(e, doc.id)}
+									fieldName={doc.prompt}
+								/>
+							{/each}
+						</div>
+					</Form.Fieldset>
 				</Card.Root>
 			{/if}
 		</div>
@@ -192,18 +188,20 @@
 				</h2>
 			</Card.Root>
 		{:else}
-			<Button disabled={disabled || isLoading} type="submit" form="reqDoc" class="gap-4">
-				<p>{$t('apply.submitApplication')}</p>
-				{#if isLoading}
-					<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-				{/if}
-				{#if disabled}
-					<Badge variant="destructive" class="pl-1 pr-2 gap-1">
-						<CircleAlert></CircleAlert>
-						{$t('grant.application.incomplete_fields')}
-					</Badge>
-				{/if}
-			</Button>
+			<form method="POST" enctype="multipart/form-data" use:enhance>
+				<Button disabled={disabled || isLoading} type="submit" class="gap-4">
+					<span>{$t('apply.submitApplication')}</span>
+					{#if isLoading}
+						<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+					{/if}
+					{#if disabled}
+						<Badge variant="destructive" class="pl-1 pr-2 gap-1">
+							<CircleAlert></CircleAlert>
+							{$t('grant.application.incomplete_fields')}
+						</Badge>
+					{/if}
+				</Button>
+			</form>
 		{/if}
 	</div>
 </div>

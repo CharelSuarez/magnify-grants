@@ -126,14 +126,12 @@ export function getFormDraftSchema(fields: Field[]) {
 				form[field.id] = z.date().optional().nullable();
 				break;
 			case FieldType.LinearScale:
-				form[field.id] = z.number().int().min(1).max(10).optional();
+				form[field.id] = z.number().int().min(0).max(10);
 				break;
 			case FieldType.Time:
 				form[field.id] = z
 					.string()
-					.regex(/^\d{2}:\d{2}(?:AM|PM)$/, {
-						message: 'Invalid time format! Use HH:MMAM or HH:MMPM.'
-					})
+					.max(50)
 					.optional();
 				break;
 			default:
@@ -153,6 +151,8 @@ export function getFormDraftSchema(fields: Field[]) {
 		{ message: 'Invalid field(s) in form!' }
 	);
 }
+
+export type FormMessage = { status: 'submitted' | 'draft' | 'error'; text: string };
 
 export { fieldSchema, fieldsSchema, formSchema };
 export type FieldSchema = typeof fieldSchema;
