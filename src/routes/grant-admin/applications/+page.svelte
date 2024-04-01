@@ -5,6 +5,7 @@
 	import { writable, type Writable } from 'svelte/store';
 	import type { Application } from '$lib/validation/app_schema';
 	import { t } from '$lib/i18n/i18n';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -22,8 +23,8 @@
 	<title>{$t('admin.applications.grant_applications')}</title>
 </svelte:head>
 
-<div class="h-full flex-1 flex-col space-y-8 p-8 flex">
-	<div class="flex items-center justify-between space-y-2">
+<div class="container py-10">
+	<div class="flex items-center justify-between space-y-2 mb-2">
 		<div>
 			<h2 class="text-2xl font-bold tracking-tight">
 				{$t('admin.applications.grant_applications')}
@@ -34,7 +35,7 @@
 		</div>
 	</div>
 	<div
-		class="flex items-center md:items-start flex-col md:flex-row md:flex-1 justify-between h-full w-full gap-10"
+		class="flex items-center md:items-start flex-col md:flex-row md:flex-1 justify-between h-full w-full gap-10 mt-2"
 	>
 		<GrantTable {applications} class="w-4/5" />
 		<div class="flex md:hidden w-full flex-grow" />

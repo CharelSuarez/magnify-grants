@@ -21,7 +21,8 @@ export const load: PageServerLoad = async (event) => {
 				organization: {
 					select: {
 						id: true,
-						name: true
+						name: true,
+						description: true
 					}
 				},
 				requiredDocuments: true

@@ -30,9 +30,9 @@
 
 </script>
 
-<main class="flex-col min-h-screen h-auto font-satoshi">
-	<div class="flex p-[3rem] text-[3rem] font-bold ">{$t('page.title.postedGrants')}</div>
-	<div class="flex mb-8 w-full px-[3rem] flex-col items-center">
+<main class="flex-col min-h-screen h-auto font-satoshi p-12 pt-4">
+	<div class="flex text-[3rem] font-bold mb-4">{$t('page.title.postedGrants')}</div>
+	<div class="flex mb-8 w-full flex-col items-center">
 		<div class="flex w-full">
 			<h1 class="text-teal-600 font-bold text-3xl">{$t('body.grants')}</h1>
 			<input
@@ -57,7 +57,7 @@
 			{/each}
 		</div>
 	</div>
-	<div class="flex mb-8 w-full px-[3rem] flex-col relative min-h-[300px]">
+	<div class="flex mb-8 w-full flex-col relative min-h-[300px]">
 		<div class="flex">
 			<h1 class="text-teal-600 font-bold text-3xl">{$t('body.organization')}</h1>
 				<input

@@ -81,8 +81,8 @@ export const load: PageServerLoad = async (event) => {
 		};
 	} catch (err) {
 		redirectFlash(
-			500,
-			'/grant-admin/applications/',
+			307,
+			'/grant-admin/applications',
 			{
 				richColors: true,
 				type: 'error',

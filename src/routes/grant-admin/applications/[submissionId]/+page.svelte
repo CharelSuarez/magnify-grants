@@ -13,6 +13,7 @@
 	import { page } from '$app/stores';
 	import { Slider } from '$lib/components/ui/slider';
 	import { Input } from '$lib/components/ui/input';
+	import { toShort } from '$lib/utils/url';
 
 	export let data: PageData;
 
@@ -54,7 +55,7 @@
 						<Button
 							class="items-center"
 							variant="outline"
-							href={`/grant-user/grant/${submission.grant.id}`}
+							href={`/grant-user/grant/${toShort(submission.grant.id)}`}
 						>
 							<ArrowUpRightFromSquare class="mr-2" />
 							Visit Grant Page
@@ -79,41 +80,42 @@
 						</Card.Root>
 					{/if}
 				</div>
-				{#if submission.status === ApplicationStatus.IN_PROGRESS}
-					<div class="!mt-5 space-y-2">
-						<Input bind:value={amountToAward} placeholder={'Amount to award...'} />
-						<Slider
-							bind:value={amount}
-							max={submission.grant.rangeHigh}
-							min={submission.grant.rangeLow}
-							step={1}
-						/>
-						<div class="flex w-full justify-center gap-10 !mt-5">
-							<Button
-								class="items-center"
-								variant="destructive"
-								on:click={() => updateStatus(ApplicationStatus.REJECTED)}
-							>
-								<X class="mr-2" />
-								Deny User for Grant
-							</Button>
-	
-							<Button
-								class="items-center"
-								variant="outline"
-								on:click={() => updateStatus(ApplicationStatus.ACCEPTED)}
-							>
-								<Check class="mr-2" />
-								Approve User for Grant
-							</Button>
-						</div>
-					</div>
-				{/if}
 			</div>
 
 			{#if data && userProfile}
 				<ProfileCard classNames="basis-1/4 h-full" profile={userProfile} />
 			{/if}
 		</div>
+		{#if submission.status === ApplicationStatus.IN_PROGRESS}
+		<Separator></Separator>
+		<div class="!mt-5 space-y-2 w-fit">
+			<Input bind:value={amountToAward} placeholder={'Amount to award...'} />
+			<Slider
+				bind:value={amount}
+				max={submission.grant.rangeHigh}
+				min={submission.grant.rangeLow}
+				step={1}
+			/>
+			<div class="flex w-full justify-center gap-5 !mt-5">
+				<Button
+					class="items-center"
+					variant="destructive"
+					on:click={() => updateStatus(ApplicationStatus.REJECTED)}
+				>
+					<X class="mr-2" />
+					Deny User for Grant
+				</Button>
+
+				<Button
+					class="items-center"
+					variant="outline"
+					on:click={() => updateStatus(ApplicationStatus.ACCEPTED)}
+				>
+					<Check class="mr-2" />
+					Approve User for Grant
+				</Button>
+			</div>
+		</div>
+	{/if}
 	</div>
 </div>

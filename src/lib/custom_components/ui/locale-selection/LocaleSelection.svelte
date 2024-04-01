@@ -15,7 +15,7 @@
 </script>
 
 <Select.Root bind:selected>
-	<Select.Trigger class="w-[180px]">
+	<Select.Trigger class="w-full">
 		<Select.Value placeholder="en" />
 	</Select.Trigger>
 	<Select.Content>

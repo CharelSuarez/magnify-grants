@@ -1,10 +1,7 @@
 <script lang="ts">
-
-  import MainNav from '$lib/custom_components/ui/grant-admin/nav/MainNav.svelte';
   import BaseHeader from '$lib/custom_components/ui/grant-admin/nav/BaseHeader.svelte';
   import Button from '$lib/components/ui/button/button.svelte';
   import Branding from '$lib/custom_components/ui/grant-admin/nav/Branding.svelte';
-
   import {
       Sheet,
       SheetTrigger,
@@ -13,21 +10,16 @@
       SheetHeader,
       SheetTitle
   } from "$lib/components/ui/sheet";
-	import Footer from '$lib/custom_components/ui/footer/Footer.svelte';
+	import AdminTaskbar from '$lib/custom_components/ui/taskbar/AdminTaskbar.svelte';
+	import AdminNav from '$lib/custom_components/ui/taskbar/AdminNav.svelte';
 </script>
 
 <div class="flex flex-col h-screen">
-
-    <BaseHeader full={true}>
-
-        <div class="mr-4 hidden md:flex w-full">
-            <a class="mr-6 flex items-center space-x-2" href="/">
-                <Branding />
-            </a>
-                <nav class="flex grow items-center space-x-6 text-sm font-bold">
-                    <MainNav/>
-                </nav>
-
+    <BaseHeader>
+        <div class="hidden md:flex w-full">
+            <nav class="flex grow items-center text-sm font-bold">
+                <AdminTaskbar/>
+            </nav>
         </div>
 
         <div class="flex flex-1 items-center justify-between space-x-2 sm:space-x-4 md:justify-end">
@@ -47,8 +39,8 @@
                     </SheetTitle>
                     <SheetDescription>
                         <div class="my-4 h-[calc(100vh-8rem)] pb-10 p1-6 overflow-auto">
-                            <div class="flex flex-col space-y-3 items-start">
-                                <MainNav/>
+                            <div class="flex flex-col items-start justify-between h-full">
+                                <AdminNav horizontal={false} />
                             </div>
                         </div>
                     </SheetDescription>

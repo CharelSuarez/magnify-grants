@@ -77,8 +77,8 @@
 	<title>{data.grant.title}</title>
 </svelte:head>
 
-<div class="min-h-screen flex-1 flex-col p-20 pt-0 md:flex items-center">
-	<div class="flex justify-start h-full items-center space-y-2 gap-10 mt-8 mb-8">
+<div class="min-h-full flex-1 flex-col p-20 pt-0 pb-5 md:flex items-center">
+	<div class="container flex justify-start h-full items-start space-y-2 gap-10 mt-8 mb-8">
 		{#if data.banner}
 			<Card.Root class="basis-1/4">
 				<Card.Content class={'h-60 w-96 p-0 rounded-inherit'}>
@@ -90,20 +90,11 @@
 				</Card.Content>
 			</Card.Root>
 		{/if}
-		<div class="basis-3/4">
-			<h2 class="text-4xl font-bold tracking-tight">{data.grant.title}</h2>
-			<Badge class="mb-4">GRANT</Badge>
-			<p class="text-muted-foreground">
+		<div class="basis-3/4 flex flex-col w-full h-full justify-start">
+			<h2 class="text-4xl font-bold tracking-tight w-full flex-grow-0">{data.grant.title}</h2>
+			<Badge class="mb-4 w-fit flex-grow-0">GRANT</Badge>
+			<p class="text-muted-foreground flex-grow h-full">
 				{data.grant.description}
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique eveniet aut, maiores velit
-				facilis reprehenderit fugiat sint quos molestiae ipsa perferendis repudiandae nam necessitatibus
-				illum ad veritatis commodi modi consectetur magnam? Dolorem laboriosam tempore quis, veritatis
-				numquam sit, et sequi sunt quidem consequatur adipisci quia obcaecati nobis commodi esse dicta.
-				Lorem ipsum dolor sit amet consectetur adipisicing elit.<br />
-				Similique eveniet aut, maiores velit facilis reprehenderit fugiat sint quos molestiae ipsa perferendis
-				repudiandae nam necessitatibus illum ad veritatis commodi modi consectetur magnam? Dolorem laboriosam
-				tempore quis, veritatis numquam sit, et sequi sunt quidem consequatur adipisci quia obcaecati
-				nobis commodi esse dicta.
 			</p>
 		</div>
 		<Card.Root class="basis-1/4 h-full bg-secondary">
@@ -114,9 +105,7 @@
 			</Card.Header>
 			<Card.Content class="h-full w-full">
 				<Card.Description class="mb-4">
-					Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est inventore velit eius
-					incidunt amet tempora molestiae sapiente accusantium modi repudiandae commodi rerum
-					maiores error voluptatum, voluptatem.
+					{data.grant.organization.description}
 				</Card.Description>
 				<a href={`/grant-user/organization/${toShort(data.grant.organization.id)}`} target="_blank">
 					<Button class="w-full">{$t('grant.viewAllGrants')}</Button>
@@ -125,7 +114,7 @@
 		</Card.Root>
 	</div>
 	<Separator class="mb-8" />
-	<div class="flex items-center flex-col space-y-5">
+	<div class="container flex items-center flex-col space-y-5">
 		{#if data.documents.length !== 0}
 			<Card.Root class="bg-secondary w-full  p-6 rounded-lg">
 				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">

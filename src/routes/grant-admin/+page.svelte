@@ -34,8 +34,7 @@
 					</p>
 				</div>
 			</div>
-			<Separator />
-			<div class="py-2 grid grid-flow-row-dense grid-cols-3 grid-rows-3 gap-4">
+			<div class="py-2 grid grid-flow-row-dense sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-3 gap-4">
 				<div class="col-span-2 hover:drop-shadow-md">
 					<Card.Root>
 						<Card.Header>

@@ -104,7 +104,7 @@
 	};
 </script>
 
-<div class="{className} bg-white rounded-md border p-4">
+<div class="{className}">
 	<div class="flex items-center py-4 gap-6">
 		<Input
 			class="max-w-sm"
@@ -122,7 +122,7 @@
 			{$t('button.deleteAll')}
 		</Button>
 	</div>
-	<div class="rounded-md border">
+	<div class="rounded-md border bg-white">
 		<Table.Root {...$tableAttrs}>
 			<Table.Header>
 				{#each $headerRows as headerRow}
