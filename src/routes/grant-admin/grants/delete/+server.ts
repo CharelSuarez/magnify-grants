@@ -2,7 +2,6 @@ import { setFlash } from 'sveltekit-flash-message/server';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async (event) => {
-	console.log('in req');
 	try {
 		// verify user
 		const data = await event.request.json();

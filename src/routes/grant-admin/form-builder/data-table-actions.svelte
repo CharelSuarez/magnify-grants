@@ -1,7 +1,7 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 	import { Button } from '$lib/components/ui/button';
-	import { ArrowUpRightFromSquare, Edit, Trash2 } from 'lucide-svelte';
+	import { Pencil, Trash2, Eye } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { t } from '$lib/i18n/i18n';
 	import { toShort } from '$lib/utils/url';
@@ -17,14 +17,15 @@
 	export let id: string;
 </script>
 
-<div class="flex flex-row space-x-2 w-full">
+<div class="flex flex-row gap-2 w-full">
 	<Button
 		href={`/grant-admin/form-builder/${toShort(id)}/view`}
 		variant="ghost"
-		title="View Form"
+		title="View Form Preview"
 		size="icon"
+		aria-label="View form preview"
 	>
-		<ArrowUpRightFromSquare />
+		<Eye />
 	</Button>
 
 	<Button
@@ -32,13 +33,14 @@
 		href={`/grant-admin/form-builder/${toShort(id)}/edit`}
 		title="Edit Form"
 		size="icon"
+		aria-label="Edit form"
 	>
-		<Edit />
+		<Pencil />
 	</Button>
 
 	<AlertDialog.Root>
 		<AlertDialog.Trigger>
-			<Button name="Delete Form" variant="ghost" size="icon">
+			<Button name="Delete Form" variant="ghost" size="icon" aria-label="Delete form">
 				<Trash2 />
 			</Button>
 		</AlertDialog.Trigger>

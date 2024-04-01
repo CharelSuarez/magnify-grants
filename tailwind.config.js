@@ -57,7 +57,7 @@ const config = {
 				inherit: "inherit"
 			},
 			fontFamily: {
-				sans: ['Varela Round', ...fontFamily.sans],
+				sans: ['Satoshi', ...fontFamily.sans],
 				satoshi: ['Satoshi', ...fontFamily.sans]
 			}
 		}

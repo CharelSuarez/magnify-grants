@@ -111,7 +111,7 @@
 			}),
 			table.column({
 				accessor: ({ id }) => id,
-				header: '',
+				header: $t('menu.actions'),
 				cell: ({ value }) => {
 					return createRender(DataTableActions, { id: value }).on('delete', (e) =>
 						deleteForm(e.detail.id)

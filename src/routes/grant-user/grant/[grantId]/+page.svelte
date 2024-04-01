@@ -79,7 +79,7 @@
 	<title>{data.grant.title}</title>
 </svelte:head>
 
-<div class="min-h-screen flex-1 flex-col p-20 md:flex items-center">
+<div class="min-h-screen flex-1 flex-col p-20 pt-0 md:flex items-center">
 	<div class="flex justify-start h-full items-center space-y-2 gap-10 mt-8 mb-8">
 		{#if data.banner}
 			<Card.Root class="basis-1/4">
@@ -144,45 +144,47 @@
 			</Card.Root>
 		{/if}
 
-		{#if data.forms.length !== 0}
-			<Card.Root class="bg-secondary w-full p-6 rounded-lg">
-				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">
-					{$t('grant.application.forms')}
-				</h2>
-				<p class="tracking-tight text-center mb-8 text-muted-foreground">
-					{$t('apply.instructions')}
-				</p>
-				<div class="flex justify-center w-full gap-10 items-center">
-					{#each data.forms as form}
-						<GrantForm {form} grantId={data.grant.id} />
-					{/each}
-				</div>
-			</Card.Root>
-		{/if}
-		{#if data.grant.requiredDocuments.length !== 0}
-			<Card.Root class="bg-secondary w-full p-6 rounded-lg">
-				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">
-					{$t('grant.application.required_documentation')}
-				</h2>
-				<p class="tracking-tight text-center mb-8 text-muted-foreground">
-					{$t('grant.application.upload_documentation')}
-				</p>
-				<form method="POST" enctype="multipart/form-data" id="reqDoc" use:enhance>
-					<Form.Fieldset {form} name="documents">
-						<Form.FieldErrors />
-						<div class="flex justify-center w-full gap-10 items-center">
-							{#each data.grant.requiredDocuments as doc}
-								<RequiredDocumentation
-									{submitted}
-									on:uploaded={(e) => addFile(e, doc.id)}
-									fieldName={doc.prompt}
-								/>
-							{/each}
-						</div>
-					</Form.Fieldset>
-				</form>
-			</Card.Root>
-		{/if}
+		<div class="flex gap-10">
+			{#if data.forms.length !== 0}
+				<Card.Root class="bg-secondary w-full p-6 rounded-lg">
+					<h2 class="text-3xl font-bold tracking-tight text-center mb-2">
+						{$t('grant.application.forms')}
+					</h2>
+					<p class="tracking-tight text-center mb-8 text-muted-foreground">
+						{$t('apply.instructions')}
+					</p>
+					<div class="flex justify-center w-full gap-10 items-center">
+						{#each data.forms as form}
+							<GrantForm {form} grantId={data.grant.id} />
+						{/each}
+					</div>
+				</Card.Root>
+			{/if}
+			{#if data.grant.requiredDocuments.length !== 0}
+				<Card.Root class="bg-secondary w-full p-6 rounded-lg">
+					<h2 class="text-3xl font-bold tracking-tight text-center mb-2">
+						{$t('grant.application.required_documentation')}
+					</h2>
+					<p class="tracking-tight text-center mb-8 text-muted-foreground">
+						{$t('grant.application.upload_documentation')}
+					</p>
+					<form method="POST" enctype="multipart/form-data" id="reqDoc" use:enhance>
+						<Form.Fieldset {form} name="documents">
+							<Form.FieldErrors />
+							<div class="flex justify-center w-full gap-10 items-center">
+								{#each data.grant.requiredDocuments as doc}
+									<RequiredDocumentation
+										{submitted}
+										on:uploaded={(e) => addFile(e, doc.id)}
+										fieldName={doc.prompt}
+									/>
+								{/each}
+							</div>
+						</Form.Fieldset>
+					</form>
+				</Card.Root>
+			{/if}
+		</div>
 		{#if submitted}
 			<Card.Root class="bg-secondary w-full p-6 rounded-lg">
 				<h2 class="text-3xl font-bold tracking-tight text-center mb-2">

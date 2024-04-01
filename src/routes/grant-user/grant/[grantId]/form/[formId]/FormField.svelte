@@ -150,7 +150,7 @@
 				<Form.FieldErrors />
 			</Form.Field>
 		{:else if field.type == FieldType.LinearScale}
-			<RadioGroup.Root class="flex flex-col" value={$formData[field.id].toString()}>
+			<RadioGroup.Root class="flex flex-col" value={$formData[field.id] ? $formData[field.id].toString() : null}>
 				<Form.Field form={filterForm} name={field.id} class="flex gap-4 items-center h-10">
 					<Form.Control let:attrs>
 						{#each { length: 10 } as _, i}

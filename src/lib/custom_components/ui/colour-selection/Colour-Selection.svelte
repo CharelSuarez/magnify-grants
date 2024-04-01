@@ -3,6 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import Palette from 'lucide-svelte/icons/palette';
 	import { t } from '$lib/i18n/i18n';
+	import { onMount } from 'svelte';
 
 	interface Colour {
 		saturation: number;
@@ -39,11 +40,23 @@
 				classList.remove(className);
 			}
 		}
+		if (loadedColours) {
+			window.localStorage.setItem('contrast', contrast.toString());
+			window.localStorage.setItem('saturation', saturation.toString());
+		}
 		if (saturation != 100) classList.add(`${mapSat[saturation]}`);
 		if (contrast != 100) classList.add(`${mapCon[contrast]}`);
 	};
 
 	$: updateFilter(colour.saturation, colour.contrast);
+
+	let loadedColours = false;
+
+	onMount(() => {
+		colour.contrast = parseInt(window.localStorage.getItem('contrast') || '100');
+		colour.saturation = parseInt(window.localStorage.getItem('saturation') || '100');
+		loadedColours = true;
+	});
 </script>
 
 <DropdownMenu.Root>
@@ -56,7 +69,7 @@
 	<DropdownMenu.Content class="w-56">
 		<DropdownMenu.Label>{$t('colour_selection.adjust_saturation')}</DropdownMenu.Label>
 		<DropdownMenu.Separator />
-		<div class="flex flex-wrap justify-center">
+		<div class="flex flex-wrap justify-center gap-2">
 			<Button aria-label="Very low saturation" on:click={() => (colour.saturation = 0)} variant="outline"
 				>{$t('colour_selection.very_low')}</Button
 			>
@@ -75,7 +88,7 @@
 		</div>
 		<DropdownMenu.Label>{$t('colour_selection.adjust_contrast')}</DropdownMenu.Label>
 		<DropdownMenu.Separator />
-		<div class="flex flex-wrap justify-center">
+		<div class="flex flex-wrap justify-center gap-2">
 			<Button aria-label="Normal contrast" on:click={() => (colour.contrast = 100)} variant="outline"
 				>{$t('colour_selection.normal')}</Button
 			>

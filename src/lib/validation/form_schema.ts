@@ -123,7 +123,7 @@ export function getFormDraftSchema(fields: Field[]) {
 				break;
 			}
 			case FieldType.Date:
-				form[field.id] = z.date().optional();
+				form[field.id] = z.date().optional().nullable();
 				break;
 			case FieldType.LinearScale:
 				form[field.id] = z.number().int().min(1).max(10).optional();

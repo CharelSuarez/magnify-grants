@@ -12,7 +12,6 @@ import { getBannerURL } from '$lib/utils/downloads';
 
 export const load: PageServerLoad = async (event) => {
 	if (event.locals.user === null) {
-		console.log('error 2');
 		redirect(
 			307,
 			'/grant-user',
@@ -64,7 +63,6 @@ export const load: PageServerLoad = async (event) => {
 		});
 
 		if (!formOnGrants) {
-			console.log('error 1');
 			redirect(
 				307,
 				'/grant-user',
@@ -93,7 +91,7 @@ export const load: PageServerLoad = async (event) => {
 		});
 		if (possibleApp) {
 			const app = possibleApp;
-			const fields = await db.applicationEntry.findMany({
+			let fields = await db.applicationEntry.findMany({
 				where: {
 					appId: app.id
 				},
@@ -107,6 +105,11 @@ export const load: PageServerLoad = async (event) => {
 					}
 				}
 			});
+
+			// Remove null fields...
+			fields = fields.filter((field) => field.value !== undefined && field.value !== "null" 
+				&& field.value !== "");
+
 			// Parse application entries into their objects.
 			const formData = Object.fromEntries(
 				fields.map((field) => {
@@ -134,7 +137,6 @@ export const load: PageServerLoad = async (event) => {
 		const formSchema = getFormSubmissionSchema(formOnGrants.form.fields);
 		const superform = await superValidate(zod(formSchema));
 
-		console.log(formOnGrants);
 		return {
 			editable: appCount === 0,
 			formOnGrants,
@@ -142,6 +144,7 @@ export const load: PageServerLoad = async (event) => {
 			banner: bannerData ? bannerData.signedUrl : null
 		};
 	} catch (err) {
+		console.error(err);
 		redirect(
 			307,
 			'/grant-user',
@@ -198,17 +201,20 @@ export const actions: Actions = {
 			});
 		}
 
+		const requestForm = await event.request.formData();
+
 		// Check if the form matches the form's schema.
-		const formSchema = getFormSubmissionSchema(form.fields);
-		const superform = await superValidate(event, zod(formSchema));
-		const formData = superform.data;
+		let formSchema = getFormSubmissionSchema(form.fields);
+		let superform = await superValidate(requestForm, zod(formSchema));
+		let formData = superform.data;
 
 		let complete = true;
 		if (!superform.valid) {
 			// If not, check if the form matches the form's draft schema.
-			const draftSchema = getFormDraftSchema(form.fields);
-			const draftValidation = await zod(draftSchema).validate(formData);
-			if (!draftValidation.success) {
+			formSchema = getFormDraftSchema(form.fields);
+			superform = await superValidate(requestForm, zod(formSchema));
+			formData = superform.data;
+			if (!superform.valid) {
 				return fail(400, { message: 'Invalid draft', superform });
 			}
 			complete = false;
