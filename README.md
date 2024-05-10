@@ -1,6 +1,11 @@
-# Magnify Access Grant Website (CSCC01 Project)
+# Magnify Grant Website
 
 A fully-featured and accessible grant website that allows anyone to find and apply for grants, even with a screen reader. This was a group project for our software engineering class, which we did in partnership with [MagnifyAccess](https://www.magnifyaccess.ai/), a company that provides accessibility solutions, and who gave us a list of requirements for an accessible grant website.
+
+<figure>
+  <img src="images/home.png"/>
+</figure>
+
 
 On the user side, some notable features include: a grant exploration page, grant description page, fully-featured form submission page, and grant statuses page.
 
